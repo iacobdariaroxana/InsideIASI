@@ -1,0 +1,20 @@
+import { Camera, CameraResultType } from '@capacitor/camera';
+
+export async function captureImage() {
+  const image = await Camera.getPhoto({
+    quality: 90,
+    allowEditing: false,
+    resultType: CameraResultType.Base64,
+  });
+}
+
+export function openGoogleMaps(lat: number, lng: number) {
+  const latLng = `${lat}, ${lng}`; // Replace with the desired latitude and longitude
+  let url = `https://maps.google.com/?q=${latLng}`;
+  if (/(android)/i.test(navigator.userAgent)) {
+    url = `geo:${latLng}`;
+  } else if (/(ipod|iphone|ipad)/i.test(navigator.userAgent)) {
+    url = `maps://maps.apple.com/?q=${latLng}`;
+  }
+  window.open(url, '_system');
+}

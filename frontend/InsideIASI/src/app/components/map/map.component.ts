@@ -1,12 +1,12 @@
 import { AfterViewInit, Component, OnInit, ViewChild } from '@angular/core';
 import { GoogleMap, MapInfoWindow } from '@angular/google-maps';
-import { Camera, CameraResultType } from '@capacitor/camera';
 import { first } from 'rxjs';
-import { Marker } from 'src/app/model';
+import { Marker, MarkerInfo } from 'src/app/model';
 import { MapService } from './services/map.service';
 import { Geolocation } from '@capacitor/geolocation';
 import { ActivatedRoute } from '@angular/router';
 import { Location } from '@angular/common';
+import { captureImage, openGoogleMaps } from './utils';
 
 @Component({
   selector: 'app-map',
@@ -32,9 +32,7 @@ export class MapComponent implements OnInit, AfterViewInit {
     zoom: 16,
     // minZoom: 12.5,
   };
-
-  namePOI: string = '';
-  ratingPOI: string = '';
+  info: MarkerInfo = { name: '', rating: '', lat: 0, lng: 0 };
 
   constructor(
     private readonly _mapService: MapService,
@@ -71,17 +69,12 @@ export class MapComponent implements OnInit, AfterViewInit {
       });
   };
 
-  async captureImage() {
-    const image = await Camera.getPhoto({
-      quality: 90,
-      allowEditing: false,
-      resultType: CameraResultType.Base64,
-    });
+  captureImage() {
+    captureImage();
   }
 
   getMarkers(query: string) {
     // this.center.lat, this.center.long
-    console.log(query);
     this._mapService
       .getPointsOfInterest(47.17778798149116, 27.57176764209399, query)
       .pipe(first())
@@ -116,14 +109,25 @@ export class MapComponent implements OnInit, AfterViewInit {
       });
   }
 
-  openInfo(marker: any, name: string, rating: number) {
-    this.namePOI = name;
-    rating == 0? this.ratingPOI = '-' : this.ratingPOI = `${rating}`;
-    // this.ratingPOI = `${rating}`;
+  openInfo(
+    marker: any,
+    name: string,
+    rating: number,
+    lat: number,
+    lng: number
+  ) {
+    this.info.name = name;
+    rating == 0 ? (this.info.rating = '-') : (this.info.rating = `${rating}`);
+    this.info.lat = lat;
+    this.info.lng = lng;
     this.infoWindow.open(marker);
   }
 
   goBack() {
     this.location.back();
+  }
+
+  openGoogleMaps() {
+    openGoogleMaps(this.info.lat, this.info.lng);
   }
 }

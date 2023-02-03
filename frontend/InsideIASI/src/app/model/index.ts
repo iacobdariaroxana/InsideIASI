@@ -23,20 +23,27 @@ export interface PointOfInterestDTO {
 
 export interface Marker {
   position: {
-    lat: number,
-    lng: number
-  },
+    lat: number;
+    lng: number;
+  };
   label: {
-    color: string,
-    text: string
-  }
-  title: string,
+    color: string;
+    text: string;
+  };
+  title: string;
   options: {
-    animation: google.maps.Animation
-  },
+    animation: google.maps.Animation;
+  };
   icon: {
-    url: string,
-    scaledSize: google.maps.Size
-  },
-  rating: number
+    url: string;
+    scaledSize: google.maps.Size;
+  };
+  rating: number;
+}
+
+export interface MarkerInfo {
+  name: string;
+  rating: string;
+  lat: number;
+  lng: number;
 }

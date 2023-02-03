@@ -15,18 +15,26 @@
         [visible]="true"
         [options]="marker.options"
         [icon]="marker.icon"
-        (mapClick)="openInfo(info_marker, marker.title, marker.rating)"
+        (mapClick)="
+          openInfo(
+            info_marker,
+            marker.title,
+            marker.rating,
+            marker.position.lat,
+            marker.position.lng
+          )
+        "
       ></map-marker>
-      <map-info-window
-        class="show-map-info-window"
-      >
+      <map-info-window class="show-map-info-window">
         <div class="poi-title">
-          {{ namePOI }}
+          {{ info.name }}
         </div>
         <div>
-          Rating: <b>{{ ratingPOI }}</b>
+          Rating: <b>{{ info.rating }}</b>
         </div>
-        <ion-button class="app-button">visit</ion-button>
+        <ion-button class="app-button" (click)="openGoogleMaps()"
+          >visit</ion-button
+        >
       </map-info-window>
     </google-map>
     <button class="camera-button" (click)="captureImage()">
@@ -34,6 +42,6 @@
     </button>
     <button (click)="goBack()" class="back-button">
       <ion-icon name="chevron-back-outline"></ion-icon>
-  </button>
+    </button>
   </div>
 </div>
