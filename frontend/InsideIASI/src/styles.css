@@ -1,0 +1,54 @@
+/* font */
+*,
+*::after,
+*::before {
+  margin: 0;
+  padding: 0;
+  box-sizing: border-box;
+  font-family: "Times New Roman", Times, serif;
+}
+
+/* set colors variables */
+:root {
+  --button-color: #232946;
+  --secondary-color: #fffffe;
+  --main-color: #b8c1ec;
+  --highlight-color: rgba(238, 187, 195, 0.8);
+  --stroke-color: #121629;
+}
+
+/* css for buttons*/
+.app-button {
+  width: 220px;
+  height: 47px;
+  font-size: 16px;
+  --border-radius: 10px;
+  --border-width: 2px;
+  --border-style: solid;
+}
+
+/* css for background*/
+.background-container::before {
+  background-color: var(--button-color);
+  background-size: cover;
+  position: absolute;
+  content: "";
+  width: 100%;
+  height: 100%;
+  z-index: -1;
+  left: 0;
+  top: 0;
+}
+
+/* map info window (here bc of priority of css files) */
+.gm-style .gm-style-iw-c {
+  background-color: var(--main-color);
+}
+
+.gm-style .gm-style-iw-tc::after {
+  background: var(--main-color);
+}
+
+.gm-style-iw-d::-webkit-scrollbar {
+  display: none !important;
+}

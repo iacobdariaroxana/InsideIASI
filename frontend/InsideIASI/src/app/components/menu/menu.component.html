@@ -1,0 +1,12 @@
+<div class="background-container">
+    <div class="wrapper">
+        <button (click)="goBack()" class="back-button">
+            <ion-icon name="chevron-back-outline"></ion-icon>
+        </button>
+        <ion-button class="app-button" routerLink="/map" [queryParams]="{query: 'museum,theater'}">MUSEUMS & THEATERS</ion-button>
+        <ion-button class="app-button" routerLink="/map" [queryParams]="{query: 'park,monument'}">PARKS & MONUMENTS</ion-button>
+        <ion-button class="app-button" routerLink="/map" [queryParams]="{query: 'church,cathedral'}">CHURCHES & CATHEDRALS</ion-button>
+        <ion-button class="app-button" routerLink="/map" [queryParams]="{query: 'tourist'}">ALL POINTS OF INTEREST</ion-button>
+    </div>
+    
+</div>

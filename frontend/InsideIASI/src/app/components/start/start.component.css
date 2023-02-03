@@ -1,0 +1,61 @@
+#start-container::before {
+    background-image: url('../../../assets/images/start_palace.jpg');
+    background-size: cover;
+    background-position: bottom;
+    position: absolute;
+    content: '';
+    z-index: -1;
+    width: 100%;
+    height: 100%;
+    left: 0;
+    top: 0;
+}
+
+.container {
+    height: 98vh;
+    width: auto;
+    display: flex;
+    flex-direction: column;
+    justify-content: space-between;
+    align-items: center;
+    padding: 8px;
+}
+
+.title-container {
+    font-size: 16px;
+    color: var(--secondary-color);
+    align-self: center;
+}
+
+.top-container {
+    display: flex;
+    flex-direction: column;
+    gap: 80px;
+}
+
+.description {
+    color: rgba(184, 193, 236, 0.7);;
+    font-style: italic;
+    font-size: 16px;
+    text-align: center;
+}
+
+.buttons {
+    display: flex;
+    flex-direction: column;
+    gap: 10px;
+}
+
+.app-button, .custom-start-button {
+    --color: var(--secondary-color);
+    text-transform: lowercase;
+}
+
+.app-button {
+    --background: var(--button-color);
+    --border-color: var(--main-color);
+}
+
+.custom-start-button {
+    font-size: 12px;
+}
