@@ -6,6 +6,7 @@ export async function captureImage() {
     allowEditing: false,
     resultType: CameraResultType.Base64,
   });
+  console.log(image.base64String)
 }
 
 export function openGoogleMaps(lat: number, lng: number) {

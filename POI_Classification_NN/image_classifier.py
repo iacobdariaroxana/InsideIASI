@@ -3,22 +3,34 @@ import os
 import tensorflow as tf
 import numpy as np
 import keras.utils as image
-from fastapi import FastAPI
+from fastapi import FastAPI, Request
 import uvicorn
+from fastapi.middleware.cors import CORSMiddleware
 
 app = FastAPI()
+app.add_middleware(
+    CORSMiddleware,
+    allow_origins=["*"],
+    allow_credentials=True,
+    allow_methods=["*"],
+    allow_headers=["*"])
+
+model_n = 2
+epoch = 10
 
 
-@app.get("/my-first-api")
-def classify_image(image_path, model_n, epoch):
-    image_path = image_path.replace("'", "")
-    model_n = int(model_n)
-    epoch = int(epoch)
+@app.post("/image_api")
+async def classify_image(request: Request):
+    data = await request.json()
+    # Access the data using the keys
+    image_path = data['path']
+    print(image_path)
+    # image_path = image_path.replace("'", "")
     model = tf.keras.models.load_model("models/Model/model-{}-updated2-epoch_{:0>2d}".format(model_n, epoch))
 
-    target_size = (224, 224)
-    if model_n == 1:
-        target_size = (256, 341)
+    target_sizes = {1: (256, 341), 2: (224, 224), 3: (256, 256)}
+
+    target_size = target_sizes[model_n]
 
     img = image.load_img(image_path, target_size=target_size)
     img_array = image.img_to_array(img)
@@ -40,10 +52,9 @@ def classify_image(image_path, model_n, epoch):
     return poi_dict[actual_label]
 
 
-# uvicorn.run(app, host="0.0.0.0", port=8001)
+uvicorn.run(app, host="0.0.0.0", port=8001)
 
-print(classify_image('img.png', 2, 10))
-
+# print(classify_image('img.png'))
 
 # model2-updated - epoch 5, 10
 # model2 epoch 8
