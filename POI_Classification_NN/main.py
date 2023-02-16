@@ -16,7 +16,7 @@ test_batches = tf.keras.preprocessing.image.ImageDataGenerator(
                                                                                              shuffle=False)
 
 # 9
-model = tf.keras.models.load_model("models/Model/model-2-updated-epoch_08")
+model = tf.keras.models.load_model("models/Model/model-2-updated3(retrain)-epoch_10")
 loss, acc = model.evaluate(test_batches)
 
 print("loss: %.2f" % loss)

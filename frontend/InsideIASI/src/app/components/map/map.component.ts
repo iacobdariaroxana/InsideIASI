@@ -7,6 +7,8 @@ import { Geolocation } from '@capacitor/geolocation';
 import { ActivatedRoute } from '@angular/router';
 import { Location } from '@angular/common';
 import { captureImage, openGoogleMaps } from './utils';
+import { ImageService } from './services/image.service';
+import { Camera, CameraResultType } from '@capacitor/camera';
 
 @Component({
   selector: 'app-map',
@@ -37,7 +39,8 @@ export class MapComponent implements OnInit, AfterViewInit {
   constructor(
     private readonly _mapService: MapService,
     private readonly _route: ActivatedRoute,
-    private location: Location
+    private location: Location,
+    private readonly _imageService: ImageService
   ) {}
 
   ngOnInit(): void {
@@ -69,8 +72,24 @@ export class MapComponent implements OnInit, AfterViewInit {
       });
   };
 
-  captureImage() {
-    captureImage();
+  async captureImage() {
+    const image = await Camera.getPhoto({
+      quality: 90,
+      allowEditing: false,
+      resultType: CameraResultType.Base64,
+    });
+    // console.log(image.base64String);
+    this._imageService
+      .getImagePlace(image.base64String!)
+      .pipe(first())
+      .subscribe({
+        next: (response) => {
+          console.log(response);
+        },
+        error: (err) => {
+          console.log(err);
+        },
+      });
   }
 
   getMarkers(query: string) {

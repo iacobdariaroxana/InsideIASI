@@ -6,9 +6,9 @@ for class_name in ['MetropolitanCathedral', 'NationalTheater', 'PalaceOfCulture'
     # Define the path to your original data
     original_data_path = f'../dataset/{class_name}'
     # Define the paths to your training, test, and validation directories
-    train_data_path = f'../vgg16-dataset-updated2/train/{class_name}'
-    test_data_path = f'../vgg16-dataset-updated2/test/{class_name}'
-    val_data_path = f'../vgg16-dataset-updated2/val/{class_name}'
+    train_data_path = f'../vgg16-dataset-updated3/train/{class_name}'
+    test_data_path = f'../vgg16-dataset-updated3/test/{class_name}'
+    val_data_path = f'../vgg16-dataset-updated3/val/{class_name}'
 
     # Get a list of all the files in your original data directory
     files = os.listdir(original_data_path)
@@ -17,8 +17,8 @@ for class_name in ['MetropolitanCathedral', 'NationalTheater', 'PalaceOfCulture'
     random.shuffle(files)
 
     # Split the list of files into training, test, and validation sets
-    train_files = files[:int(0.7 * len(files))]
-    val_files = files[int(0.7 * len(files)):int(0.9 * len(files))]
+    train_files = files[:int(0.8 * len(files))]
+    val_files = files[int(0.8 * len(files)):int(0.9 * len(files))]
     test_files = files[int(0.9 * len(files)):]
 
     # Copy the training files to the train_data_path directory

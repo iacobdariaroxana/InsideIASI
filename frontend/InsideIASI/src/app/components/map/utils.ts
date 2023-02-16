@@ -1,12 +1,8 @@
 import { Camera, CameraResultType } from '@capacitor/camera';
+import { ImageService } from './services/image.service';
 
 export async function captureImage() {
-  const image = await Camera.getPhoto({
-    quality: 90,
-    allowEditing: false,
-    resultType: CameraResultType.Base64,
-  });
-  console.log(image.base64String)
+
 }
 
 export function openGoogleMaps(lat: number, lng: number) {

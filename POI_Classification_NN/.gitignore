@@ -129,10 +129,12 @@ dmypy.json
 .pyre/
 
 
-vgg16-dataset-updated2
+vgg16-dataset-updated2/
+vgg16-dataset-updated3/
 
 models/Model/
 models/History/
 dataset/
 prepdata/
 
+/db/database.ini
