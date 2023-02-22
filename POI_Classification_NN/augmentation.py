@@ -103,7 +103,7 @@ def alb_save(alb_dataset, limit):
 
     alb_dataset.transform = A.Compose(
         [t for t in alb_dataset.transform if not isinstance(t, (A.Normalize, ToTensorV2))])
-    lens = {0: 6000 // 1917, 1: 6000 // 2184, 2: 6000 // 1821}
+    lens = {0: 6500 // 2013, 1: 6500 // 2306, 2: 6500 // 2110}
     for idx in range(limit):
         try:
             image, label = alb_dataset[idx]
@@ -117,3 +117,6 @@ def alb_save(alb_dataset, limit):
 alb_save(alb_dataset, dataset_sizes['train'])
 shutil.move('./output/val', './prepdata/')
 shutil.move('./output/test', './prepdata/')
+shutil.move('./output/train/MetropolitanCathedral', './prepdata/train/MetropolitanCathedral')
+shutil.move('./output/train/NationalTheater', './prepdata/train/NationalTheater')
+shutil.move('./output/train/PalaceOfCulture', './prepdata/train/PalaceOfCulture')

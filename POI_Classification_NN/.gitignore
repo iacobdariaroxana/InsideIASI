@@ -130,7 +130,7 @@ dmypy.json
 
 
 vgg16-dataset-updated2/
-vgg16-dataset-updated3/
+vgg-dataset/
 
 models/Model/
 models/History/

@@ -19,7 +19,7 @@ export class ApiService {
     httpOptions.headers.append('Content-Type', 'application/json');
     return this._httpClient
       .get(
-        `http://192.168.100.5:5002/Map?latitude=${lat}&longitude=${long}&query=${query}`,
+        `http://192.168.136.121:5002/Map?latitude=${lat}&longitude=${long}&query=${query}`,
         { responseType: 'json' }
       )
       .pipe(

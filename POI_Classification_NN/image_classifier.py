@@ -17,18 +17,37 @@ app.add_middleware(
     allow_methods=["*"],
     allow_headers=["*"])
 
-model_n = 2
-epoch = 10
-
 
 def prepare_data(actual_label):
     result = functions.get_poi(actual_label)
-    info = result[3]
-    response = {"name": result[1], "opening_hours": result[2]}
+    info = result[2]
+    response = {"name": result[1]}
     if info[-1] == '.':
         info = info[:-1]
     for index, info in enumerate(info.split('.')):
         response[f"info{index}"] = info
+
+    hours_data = functions.get_opening_hours(result[0])
+    opening_hours = "Opening hours:\n"
+    for day in hours_data:
+        if day[1] is None:
+            opening_hours += f"{day[0]} Closed\n"
+        else:
+            opening_hours += f"{day[0]} {day[1]} - {day[2]}\n"
+
+    lines = opening_hours.split('\n')
+    max_day_length = max(len(line.split()[0]) for line in lines[1:-1])
+
+    # Pad the days of the week with spaces so that all the hours start at the same index
+    formatted_lines = [lines[0]]
+    for line in lines[1:-1]:
+        day, hours = line.split(maxsplit=1)
+        padded_day = day.ljust(max_day_length)
+        formatted_lines.append(f"{padded_day} {hours}")
+
+    formatted_hours = '\n'.join(formatted_lines)
+
+    response["opening_hours"] = formatted_hours
     return response
 
 
@@ -42,9 +61,9 @@ async def classify_image(request: Request):
     image_result = open(f'api_images/{image_id}.jpg', 'wb')  # create a writable image and write the decoding result
     image_result.write(image64)
 
-    model = tf.keras.models.load_model("models/Model/model-{}-updated3(retrain)-epoch_{:0>2d}".format(model_n, epoch))
+    model = tf.keras.models.load_model("models/Model/model-{}-epoch_{:0>2d}".format(model_n, epoch))
 
-    target_sizes = {1: (256, 341), 2: (224, 224), 3: (256, 256)}
+    target_sizes = {1: (256, 341), 2: (224, 224), 4: (224, 224), 6: (224, 224)}
 
     target_size = target_sizes[model_n]
 
@@ -54,7 +73,8 @@ async def classify_image(request: Request):
 
     if model_n == 2:
         img_array = tf.keras.applications.vgg16.preprocess_input(img_array)
-
+    if model_n in (4, 6):
+        img_array = tf.keras.applications.vgg19.preprocess_input(img_array)
     prediction = model.predict(img_array)
     # print(prediction)
 
@@ -75,9 +95,8 @@ async def classify_image(request: Request):
 
     return prepare_data(actual_label)
 
+
+model_n = 2
+epoch = 12
+
 uvicorn.run(app, host="0.0.0.0", port=8001)
-
-
-# model2-updated - epoch 5, 10
-# model2 epoch 8
-# model1 epoch 5

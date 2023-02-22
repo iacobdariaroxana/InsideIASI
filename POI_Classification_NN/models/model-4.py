@@ -2,22 +2,20 @@ import warnings
 import os
 import tensorflow as tf
 import numpy as np
+import matplotlib.pyplot as plt
 
 
 warnings.simplefilter(action='ignore', category=FutureWarning)
 
-vgg16_model = tf.keras.applications.vgg16.VGG16(weights='imagenet', include_top=True, input_shape=(224, 224, 3))
-
-# vgg16_model.summary()
+vgg19_model = tf.keras.applications.vgg19.VGG19()
+# vgg19_model.summary()
 
 model = tf.keras.models.Sequential()
-for layer in vgg16_model.layers[:-1]:
+for layer in vgg19_model.layers[:-1]:
     model.add(layer)
 
+# model.summary()
 
-# Freeze the pre-trained layers
-for layer in model.layers:
-    layer.trainable = False
 
 model.add(tf.keras.layers.Dense(units=3, activation='softmax'))
 model.summary()
@@ -27,7 +25,7 @@ val_path = '../vgg-dataset/val'
 test_path = '../vgg-dataset/test'
 
 train_batches = tf.keras.preprocessing.image.ImageDataGenerator(
-    preprocessing_function=tf.keras.applications.vgg16.preprocess_input).flow_from_directory(directory=train_path,
+    preprocessing_function=tf.keras.applications.vgg19.preprocess_input).flow_from_directory(directory=train_path,
                                                                                              target_size=(224, 224),
                                                                                              classes=[
                                                                                                  'MetropolitanCathedral',
@@ -36,7 +34,7 @@ train_batches = tf.keras.preprocessing.image.ImageDataGenerator(
                                                                                              batch_size=10)
 
 val_batches = tf.keras.preprocessing.image.ImageDataGenerator(
-    preprocessing_function=tf.keras.applications.vgg16.preprocess_input).flow_from_directory(directory=val_path,
+    preprocessing_function=tf.keras.applications.vgg19.preprocess_input).flow_from_directory(directory=val_path,
                                                                                              target_size=(224, 224),
                                                                                              classes=[
                                                                                                  'MetropolitanCathedral',
@@ -45,7 +43,7 @@ val_batches = tf.keras.preprocessing.image.ImageDataGenerator(
                                                                                              batch_size=10)
 
 test_batches = tf.keras.preprocessing.image.ImageDataGenerator(
-    preprocessing_function=tf.keras.applications.vgg16.preprocess_input).flow_from_directory(directory=test_path,
+    preprocessing_function=tf.keras.applications.vgg19.preprocess_input).flow_from_directory(directory=test_path,
                                                                                              target_size=(224, 224),
                                                                                              classes=[
                                                                                                  'MetropolitanCathedral',
@@ -54,6 +52,22 @@ test_batches = tf.keras.preprocessing.image.ImageDataGenerator(
                                                                                              batch_size=10,
                                                                                              shuffle=False)
 
+# images, labels = next(train_batches)
+#
+#
+# def plot_images(images_arr):
+#     fig, axes = plt.subplots(1, 10, figsize=(10, 10))
+#     axes = axes.flatten()
+#     for img, ax in zip(images_arr, axes):
+#         ax.imshow(img)
+#         ax.axis('off')
+#     plt.tight_layout()
+#     plt.show()
+#
+#
+# plot_images(images)
+# plt.show()
+# print(labels)
 
 filename = os.path.splitext(os.path.basename(__file__))[0]
 
@@ -70,7 +84,7 @@ history = model.fit(x=train_batches,
                     validation_data=val_batches,
                     validation_steps=len(val_batches),
                     callbacks=callbacks,
-                    epochs=15,
+                    epochs=10,
                     verbose=2
                     )
 
@@ -80,5 +94,3 @@ np.save(f'History/{filename}-history.npy', history.history)
 loss, acc = model.evaluate(test_batches)
 print("loss: %.2f" % loss)
 print("acc: %.2f" % acc)
-
-

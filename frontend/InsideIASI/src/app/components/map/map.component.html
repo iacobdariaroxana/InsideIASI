@@ -1,42 +1,6 @@
 <div class="background-container">
   <div class="wrapper">
-    <google-map
-      [center]="center"
-      [options]="options"
-      width="360px"
-      height="700px"
-    >
-      <map-marker
-        #info_marker="mapMarker"
-        *ngFor="let marker of markers"
-        [position]="marker.position"
-        [label]="marker.label"
-        [title]="marker.title"
-        [visible]="true"
-        [options]="marker.options"
-        [icon]="marker.icon"
-        (mapClick)="
-          openInfo(
-            info_marker,
-            marker.title,
-            marker.rating,
-            marker.position.lat,
-            marker.position.lng
-          )
-        "
-      ></map-marker>
-      <map-info-window class="show-map-info-window">
-        <div class="poi-title">
-          {{ info.name }}
-        </div>
-        <div>
-          Rating: <b>{{ info.rating }}</b>
-        </div>
-        <ion-button class="app-button" (click)="openGoogleMaps()"
-          >visit</ion-button
-        >
-      </map-info-window>
-    </google-map>
+    <app-google-maps></app-google-maps>
     <button class="camera-button" (click)="captureImage()">
       <ion-icon class="camera-icon" name="camera"></ion-icon>
     </button>

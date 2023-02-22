@@ -1,61 +1,66 @@
-import warnings
-import os
+from keras.applications.vgg19 import VGG19
+from keras.models import Model
+from keras.layers import Dense, Dropout, GlobalAveragePooling2D
 import tensorflow as tf
+import os
 import numpy as np
 
+# Load pre-trained VGG19 model
+base_model = VGG19(weights='imagenet', include_top=False, input_shape=(224, 224, 3))
 
-warnings.simplefilter(action='ignore', category=FutureWarning)
+# Freeze the pre-trained layers
+for layer in base_model.layers:
+    layer.trainable = False
 
-vgg16_model = tf.keras.applications.vgg16.VGG16()
-# vgg16_model.summary()
+# Add new trainable layers
+x = base_model.output
+x = GlobalAveragePooling2D()(x)
+x = Dense(1024, activation='relu')(x)
+x = Dropout(0.5)(x)
+x = Dense(512, activation='relu')(x)
+x = Dropout(0.5)(x)
+predictions = Dense(3, activation='softmax')(x)
 
-model = tf.keras.models.Sequential()
-for layer in vgg16_model.layers[:-1]:
-    model.add(layer)
+# Create the final model
+model = Model(inputs=base_model.input, outputs=predictions)
 
-# model.summary()
-
-
-model.add(tf.keras.layers.Dense(units=3, activation='softmax'))
-model.summary()
-
-train_path = '../vgg16-dataset-updated3/train'
-val_path = '../vgg16-dataset-updated3/val'
-test_path = '../vgg16-dataset-updated3/test'
+train_path = '../vgg-dataset/train'
+val_path = '../vgg-dataset/val'
+test_path = '../vgg-dataset/test'
 
 train_batches = tf.keras.preprocessing.image.ImageDataGenerator(
-    preprocessing_function=tf.keras.applications.vgg16.preprocess_input).flow_from_directory(directory=train_path,
+    preprocessing_function=tf.keras.applications.vgg19.preprocess_input).flow_from_directory(directory=train_path,
                                                                                              target_size=(224, 224),
                                                                                              classes=[
                                                                                                  'MetropolitanCathedral',
                                                                                                  'NationalTheater',
                                                                                                  'PalaceOfCulture'],
-                                                                                             batch_size=10)
+                                                                                             batch_size=64)
 
 val_batches = tf.keras.preprocessing.image.ImageDataGenerator(
-    preprocessing_function=tf.keras.applications.vgg16.preprocess_input).flow_from_directory(directory=val_path,
+    preprocessing_function=tf.keras.applications.vgg19.preprocess_input).flow_from_directory(directory=val_path,
                                                                                              target_size=(224, 224),
                                                                                              classes=[
                                                                                                  'MetropolitanCathedral',
                                                                                                  'NationalTheater',
                                                                                                  'PalaceOfCulture'],
-                                                                                             batch_size=10)
+                                                                                             batch_size=64)
 
 test_batches = tf.keras.preprocessing.image.ImageDataGenerator(
-    preprocessing_function=tf.keras.applications.vgg16.preprocess_input).flow_from_directory(directory=test_path,
+    preprocessing_function=tf.keras.applications.vgg19.preprocess_input).flow_from_directory(directory=test_path,
                                                                                              target_size=(224, 224),
                                                                                              classes=[
                                                                                                  'MetropolitanCathedral',
                                                                                                  'NationalTheater',
                                                                                                  'PalaceOfCulture'],
-                                                                                             batch_size=10,
+                                                                                             batch_size=64,
                                                                                              shuffle=False)
 
 
 filename = os.path.splitext(os.path.basename(__file__))[0]
 
 callbacks = [
-    tf.keras.callbacks.ModelCheckpoint(filepath=f'Model/{filename}3-epoch_' + '{epoch:02d}',
+    tf.keras.callbacks.ModelCheckpoint(filepath=f'Model/{filename}-epoch_' + '{epoch:02d}',
                                        save_freq='epoch')
 ]
 
@@ -67,15 +72,13 @@ history = model.fit(x=train_batches,
                     validation_data=val_batches,
                     validation_steps=len(val_batches),
                     callbacks=callbacks,
-                    epochs=15,
+                    epochs=10,
                     verbose=2
                     )
 
 print(history.history)
-np.save(f'History/{filename}3-history.npy', history.history)
+np.save(f'History/{filename}-history.npy', history.history)
 
 loss, acc = model.evaluate(test_batches)
 print("loss: %.2f" % loss)
 print("acc: %.2f" % acc)
-
-

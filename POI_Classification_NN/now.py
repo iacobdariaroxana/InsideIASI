@@ -1,30 +1,11 @@
-import warnings
-import os
 import tensorflow as tf
+
+import matplotlib.pyplot as plt
 import numpy as np
 
-
-warnings.simplefilter(action='ignore', category=FutureWarning)
-
-vgg16_model = tf.keras.applications.vgg16.VGG16(weights='imagenet', include_top=True, input_shape=(224, 224, 3))
-
-# vgg16_model.summary()
-
-model = tf.keras.models.Sequential()
-for layer in vgg16_model.layers[:-1]:
-    model.add(layer)
-
-
-# Freeze the pre-trained layers
-for layer in model.layers:
-    layer.trainable = False
-
-model.add(tf.keras.layers.Dense(units=3, activation='softmax'))
-model.summary()
-
-train_path = '../vgg-dataset/train'
-val_path = '../vgg-dataset/val'
-test_path = '../vgg-dataset/test'
+train_path = 'vgg-dataset/train'
+val_path = 'vgg-dataset/val'
+test_path = 'vgg-dataset/test'
 
 train_batches = tf.keras.preprocessing.image.ImageDataGenerator(
     preprocessing_function=tf.keras.applications.vgg16.preprocess_input).flow_from_directory(directory=train_path,
@@ -54,31 +35,68 @@ test_batches = tf.keras.preprocessing.image.ImageDataGenerator(
                                                                                              batch_size=10,
                                                                                              shuffle=False)
 
+train_loss = []
+train_acc = []
 
-filename = os.path.splitext(os.path.basename(__file__))[0]
+val_loss = []
+val_acc = []
 
-callbacks = [
-    tf.keras.callbacks.ModelCheckpoint(filepath=f'Model/{filename}-epoch_' + '{epoch:02d}',
-                                       save_freq='epoch')
-]
+test_loss = []
+test_acc = []
+for i in range(11, 16):
+    print(i)
+    model = tf.keras.models.load_model("models/Model/model-2-epoch_{:0>2d}".format(i))
+    loss, acc = model.evaluate(train_batches)
+    train_loss += [loss]
+    train_acc += [acc]
+    print("loss: %.2f" % loss)
+    print("acc: %.2f" % acc)
 
-model.compile(optimizer=tf.keras.optimizers.Adam(learning_rate=0.0001), loss='categorical_crossentropy',
-              metrics=['accuracy'])
+for i in range(11, 16):
+    print(i)
+    model = tf.keras.models.load_model("models/Model/model-2-epoch_{:0>2d}".format(i))
+    loss, acc = model.evaluate(val_batches)
+    val_loss += [loss]
+    val_acc += [acc]
+    print("loss: %.2f" % loss)
+    print("acc: %.2f" % acc)
 
-history = model.fit(x=train_batches,
-                    steps_per_epoch=len(train_batches),
-                    validation_data=val_batches,
-                    validation_steps=len(val_batches),
-                    callbacks=callbacks,
-                    epochs=15,
-                    verbose=2
-                    )
+for i in range(1, 16):
+    print(i)
+    model = tf.keras.models.load_model("models/Model/model-2-epoch_{:0>2d}".format(i))
+    loss, acc = model.evaluate(test_batches)
+    test_loss += [loss]
+    test_acc += [acc]
+    print("loss: %.2f" % loss)
+    print("acc: %.2f" % acc)
 
-print(history.history)
-np.save(f'History/{filename}-history.npy', history.history)
+history = np.load("models/History/model-2-updated3-history.npy", allow_pickle=True).item()
 
-loss, acc = model.evaluate(test_batches)
-print("loss: %.2f" % loss)
-print("acc: %.2f" % acc)
+print(history)
+history['loss'] += train_loss
+history['val_loss'] += val_loss
+history['accuracy'] += train_acc
+history['val_accuracy'] += val_acc
 
+fig, axs = plt.subplots(2, 1, figsize=(15, 15))
+fig.tight_layout(pad=8)
+axs[0].plot(history['loss'])
+axs[0].plot(history['val_loss'])
+axs[0].plot(test_loss)
+axs[0].title.set_text('Training Loss vs Validation Loss vs Test Loss')
+axs[0].set_xlabel('Epochs')
+axs[0].set_ylabel('Loss')
+axs[0].legend(['Train', 'Val', 'Test'])
 
+axs[1].plot(history['accuracy'])
+axs[1].plot(history['val_accuracy'])
+axs[1].plot(test_acc)
+axs[1].title.set_text('Training Accuracy vs Validation Accuracy vs Test Accuracy')
+axs[1].set_xlabel('Epochs')
+axs[1].set_ylabel('Accuracy')
+axs[1].legend(['Train', 'Val', 'Test'])
+
+plt.savefig('results/model-2-plot.png')
+# plt.show()
+
+np.save(f'models/History/model-2(try)-history.npy', history)

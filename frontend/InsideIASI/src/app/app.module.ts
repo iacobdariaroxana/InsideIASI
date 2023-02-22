@@ -8,13 +8,15 @@ import { StartComponent } from './components/start/start.component';
 import { MenuComponent } from './components/menu/menu.component';
 import { MapComponent } from './components/map/map.component';
 import { HttpClientModule } from '@angular/common/http';
+import { GoogleMapsComponent } from './components/google-maps/google-maps.component';
 
 @NgModule({
   declarations: [
     AppComponent,
     StartComponent,
     MenuComponent,
-    MapComponent
+    MapComponent,
+    GoogleMapsComponent
   ],
   imports: [
     BrowserModule,

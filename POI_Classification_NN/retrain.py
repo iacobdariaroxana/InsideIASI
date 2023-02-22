@@ -1,9 +1,9 @@
 import tensorflow as tf
 import numpy as np
 
-train_path = 'vgg16-dataset-updated3/train'
-val_path = 'vgg16-dataset-updated3/val'
-test_path = 'vgg16-dataset-updated3/test'
+train_path = 'vgg-dataset/train'
+val_path = 'vgg-dataset/val'
+test_path = 'vgg-dataset/test'
 
 train_batches = tf.keras.preprocessing.image.ImageDataGenerator(
     preprocessing_function=tf.keras.applications.vgg16.preprocess_input).flow_from_directory(directory=train_path,
@@ -33,10 +33,10 @@ test_batches = tf.keras.preprocessing.image.ImageDataGenerator(
                                                                                              batch_size=10,
                                                                                              shuffle=False)
 
-model = tf.keras.models.load_model("models/Model/model-2-updated3-epoch_05")
+model = tf.keras.models.load_model("models/Model/model-2-epoch_14")
 
 callbacks = [
-    tf.keras.callbacks.ModelCheckpoint(filepath=f'models/Model/model-2-updated3(retrain)-epoch_' + '{epoch:02d}',
+    tf.keras.callbacks.ModelCheckpoint(filepath=f'models/Model/model-2(retrain)-epoch_' + '{epoch:02d}',
                                        save_freq='epoch')
 ]
 history = model.fit(x=train_batches,
@@ -44,12 +44,12 @@ history = model.fit(x=train_batches,
                     validation_data=val_batches,
                     validation_steps=len(val_batches),
                     callbacks=callbacks,
-                    epochs=10,
+                    epochs=1,
                     verbose=2
                     )
 
 print(history.history)
-np.save(f'models/History/model-2-updated3-history.npy', history.history)
+np.save(f'models/History/model-2(retrain)-history.npy', history.history)
 
 loss, acc = model.evaluate(test_batches)
 print("loss: %.2f" % loss)
