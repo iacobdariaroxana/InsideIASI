@@ -1,4 +1,4 @@
-import { NgModule } from '@angular/core';
+import { CUSTOM_ELEMENTS_SCHEMA, NgModule } from '@angular/core';
 import { BrowserModule } from '@angular/platform-browser';
 import { AppComponent } from './app.component';
 import { AppRoutingModule } from './app-routing.module';
@@ -9,6 +9,8 @@ import { MenuComponent } from './components/menu/menu.component';
 import { MapComponent } from './components/map/map.component';
 import { HttpClientModule } from '@angular/common/http';
 import { GoogleMapsComponent } from './components/google-maps/google-maps.component';
+import { ARComponent } from './components/ar/ar.component';
+
 
 @NgModule({
   declarations: [
@@ -16,7 +18,8 @@ import { GoogleMapsComponent } from './components/google-maps/google-maps.compon
     StartComponent,
     MenuComponent,
     MapComponent,
-    GoogleMapsComponent
+    GoogleMapsComponent,
+    ARComponent
   ],
   imports: [
     BrowserModule,
@@ -26,6 +29,7 @@ import { GoogleMapsComponent } from './components/google-maps/google-maps.compon
     HttpClientModule
   ],
   providers: [],
-  bootstrap: [AppComponent]
+  bootstrap: [AppComponent],
+  schemas: [CUSTOM_ELEMENTS_SCHEMA]
 })
 export class AppModule { }

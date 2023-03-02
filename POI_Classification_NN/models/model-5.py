@@ -20,7 +20,7 @@ predictions = tf.keras.layers.Dense(3, activation='softmax')(x)
 
 # Define the complete model with inputs and outputs
 model = tf.keras.models.Model(inputs=inceptionV3_model.input, outputs=predictions)
-
+print(model.summary())
 # Freeze all the layers in the base model to prevent them from being retrained
 for layer in inceptionV3_model.layers:
     layer.trainable = False

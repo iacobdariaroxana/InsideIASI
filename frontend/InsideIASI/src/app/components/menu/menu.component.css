@@ -1,10 +1,18 @@
+:host {
+  background-color: var(--button-color);
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  min-height: 100vh;
+  position: relative;
+}
+
 .wrapper {
   display: flex;
   flex-direction: column;
   align-items: center;
   justify-content: center;
-  height: 98vh;
-  gap: 10px;
+  gap: 0.5rem;
   position: relative;
 }
 
@@ -17,10 +25,11 @@
 
 .back-button {
   position: absolute;
-  top: 16px;
-  left: 16px;
+  top: 1rem;
+  left: 1rem;
   background-color: transparent;
   border: none;
-  font-size: 24px;
+  font-size: 2rem;
   color: var(--highlight-color);
 }
+

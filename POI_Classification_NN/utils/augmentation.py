@@ -35,7 +35,7 @@ class ClassificationDataset(Dataset):
         return image, label
 
 
-class_names = os.listdir('dataset')
+class_names = os.listdir('../dataset')
 
 datasets = {
     'train': [],
@@ -73,11 +73,11 @@ dataset_sizes = {x: len(datasets[x]) for x in ['train', 'val']}
 class_names = ['MetropolitanCathedral', 'NationalTheater', 'PalaceOfCulture']
 
 try:
-    os.mkdir('./prepdata')
-    os.mkdir('./prepdata/train')
-    os.mkdir('./prepdata/train/MetropolitanCathedral')
-    os.mkdir('./prepdata/train/NationalTheater')
-    os.mkdir('./prepdata/train/PalaceOfCulture')
+    os.mkdir('../prepdata')
+    os.mkdir('../prepdata/train')
+    os.mkdir('../prepdata/train/MetropolitanCathedral')
+    os.mkdir('../prepdata/train/NationalTheater')
+    os.mkdir('../prepdata/train/PalaceOfCulture')
 except IsADirectoryError as e:
     print(e)
 
@@ -115,8 +115,8 @@ def alb_save(alb_dataset, limit):
 
 
 alb_save(alb_dataset, dataset_sizes['train'])
-shutil.move('./output/val', './prepdata/')
-shutil.move('./output/test', './prepdata/')
-shutil.move('./output/train/MetropolitanCathedral', './prepdata/train/MetropolitanCathedral')
-shutil.move('./output/train/NationalTheater', './prepdata/train/NationalTheater')
-shutil.move('./output/train/PalaceOfCulture', './prepdata/train/PalaceOfCulture')
+shutil.move('./output/val', '../prepdata/')
+shutil.move('./output/test', '../prepdata/')
+shutil.move('./output/train/MetropolitanCathedral', '../prepdata/train/MetropolitanCathedral')
+shutil.move('./output/train/NationalTheater', '../prepdata/train/NationalTheater')
+shutil.move('./output/train/PalaceOfCulture', '../prepdata/train/PalaceOfCulture')

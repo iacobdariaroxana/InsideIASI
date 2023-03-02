@@ -1,9 +1,9 @@
 import tensorflow as tf
 import numpy as np
 
-train_path = 'vgg-dataset/train'
-val_path = 'vgg-dataset/val'
-test_path = 'vgg-dataset/test'
+train_path = '../vgg-dataset/train'
+val_path = '../vgg-dataset/val'
+test_path = '../vgg-dataset/test'
 
 train_batches = tf.keras.preprocessing.image.ImageDataGenerator(
     preprocessing_function=tf.keras.applications.vgg16.preprocess_input).flow_from_directory(directory=train_path,
@@ -33,7 +33,7 @@ test_batches = tf.keras.preprocessing.image.ImageDataGenerator(
                                                                                              batch_size=10,
                                                                                              shuffle=False)
 
-model = tf.keras.models.load_model("models/Model/model-2-epoch_14")
+model = tf.keras.models.load_model("../models/Model/model-2-epoch_14")
 
 callbacks = [
     tf.keras.callbacks.ModelCheckpoint(filepath=f'models/Model/model-2(retrain)-epoch_' + '{epoch:02d}',

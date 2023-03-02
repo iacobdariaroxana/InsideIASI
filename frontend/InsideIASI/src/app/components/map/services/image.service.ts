@@ -13,7 +13,7 @@ export class ImageService {
     httpOptions.headers.append('Content-Type', 'application/json');
     const body = { image64: image64 };
     return this._httpClient
-      .post('http://127.0.0.1:8001/image_api', JSON.stringify(body), {
+      .post('http://192.168.136.121:8001/image_api', JSON.stringify(body), {
         responseType: 'json',
       })
       .pipe(

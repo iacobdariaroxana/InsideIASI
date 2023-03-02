@@ -1,11 +1,10 @@
-<div class="background-container">
-  <div class="wrapper">
-    <app-google-maps></app-google-maps>
-    <button class="camera-button" (click)="captureImage()">
-      <ion-icon class="camera-icon" name="camera"></ion-icon>
-    </button>
-    <button (click)="goBack()" class="back-button">
-      <ion-icon name="chevron-back-outline"></ion-icon>
-    </button>
-  </div>
+<div class="wrapper">
+  <app-google-maps></app-google-maps>
+  <button class="camera-button" (click)="captureImage()">
+    <ion-icon class="camera-icon" name="camera"></ion-icon>
+  </button>
+  <button (click)="goBack()" class="back-button">
+    <ion-icon name="chevron-back-outline"></ion-icon>
+  </button>
+  <!-- <button routerLink="/ar">AR</button> -->
 </div>

@@ -7,6 +7,7 @@ import numpy as np
 warnings.simplefilter(action='ignore', category=FutureWarning)
 
 vgg16_model = tf.keras.applications.vgg16.VGG16()
+
 # vgg16_model.summary()
 
 model = tf.keras.models.Sequential()

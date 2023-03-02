@@ -3,9 +3,9 @@ import tensorflow as tf
 import matplotlib.pyplot as plt
 import numpy as np
 
-train_path = 'vgg-dataset/train'
-val_path = 'vgg-dataset/val'
-test_path = 'vgg-dataset/test'
+train_path = '../vgg-dataset/train'
+val_path = '../vgg-dataset/val'
+test_path = '../vgg-dataset/test'
 
 train_batches = tf.keras.preprocessing.image.ImageDataGenerator(
     preprocessing_function=tf.keras.applications.vgg16.preprocess_input).flow_from_directory(directory=train_path,
@@ -70,7 +70,7 @@ for i in range(1, 16):
     print("loss: %.2f" % loss)
     print("acc: %.2f" % acc)
 
-history = np.load("models/History/model-2-updated3-history.npy", allow_pickle=True).item()
+history = np.load("../models/History/model-2-updated3-history.npy", allow_pickle=True).item()
 
 print(history)
 history['loss'] += train_loss
