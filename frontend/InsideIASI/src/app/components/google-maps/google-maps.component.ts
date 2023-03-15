@@ -53,6 +53,7 @@ export class GoogleMapsComponent implements OnInit {
           lat: response.coords.latitude,
           lng: response.coords.longitude,
         };
+        console.log(this.center);
         const userLocationMarker = new google.maps.Marker({
           position: this.center,
         });

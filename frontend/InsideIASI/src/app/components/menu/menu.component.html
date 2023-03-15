@@ -23,6 +23,12 @@
   <ion-button
     class="app-button"
     routerLink="/map"
+    [queryParams]="{ query: 'library,university' }"
+    >LIBRARIES & UNIVERSITIES</ion-button
+  >
+  <ion-button
+    class="app-button"
+    routerLink="/map"
     [queryParams]="{ query: 'tourist' }"
     >POPULAR ATTRACTIONS</ion-button
   >

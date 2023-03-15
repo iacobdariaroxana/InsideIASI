@@ -3,7 +3,8 @@ import os
 import tensorflow as tf
 import numpy as np
 import matplotlib.pyplot as plt
-
+import visualkeras
+from PIL import ImageFont
 
 warnings.simplefilter(action='ignore', category=FutureWarning)
 
@@ -19,6 +20,9 @@ for layer in vgg19_model.layers[:-1]:
 
 model.add(tf.keras.layers.Dense(units=3, activation='softmax'))
 model.summary()
+
+font = ImageFont.truetype("arial.ttf", 48)
+visualkeras.layered_view(model, legend=True, font=font, to_file='../results/model-4/model.png', spacing=25, padding=30)
 
 train_path = '../vgg-dataset/train'
 val_path = '../vgg-dataset/val'

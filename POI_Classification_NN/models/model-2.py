@@ -2,7 +2,9 @@ import warnings
 import os
 import tensorflow as tf
 import numpy as np
-
+import visualkeras
+from PIL import ImageFont
+from matplotlib import pyplot as plt
 
 warnings.simplefilter(action='ignore', category=FutureWarning)
 
@@ -18,6 +20,10 @@ for layer in vgg16_model.layers[:-1]:
 
 
 model.add(tf.keras.layers.Dense(units=3, activation='softmax'))
+
+# font = ImageFont.truetype("arial.ttf", 48)
+# visualkeras.layered_view(model, legend=True,font=font, to_file='../results/model-2/model.png', spacing=25, padding=30)
+
 model.summary()
 
 train_path = '../vgg-dataset/train'
@@ -52,6 +58,22 @@ test_batches = tf.keras.preprocessing.image.ImageDataGenerator(
                                                                                              batch_size=10,
                                                                                              shuffle=False)
 
+images, labels = next(train_batches)
+
+
+# def plot_images(images_arr):
+#     fig, axes = plt.subplots(3, 3, figsize=(10, 10))
+#     axes = axes.flatten()
+#     for img, ax in zip(images_arr, axes):
+#         ax.imshow(img)
+#         ax.axis('off')
+#     plt.tight_layout()
+#     plt.savefig('../results/model-vgg16-preprocessing.png')
+#     plt.show()
+#
+#
+# plot_images(images)
+
 
 filename = os.path.splitext(os.path.basename(__file__))[0]
 
@@ -78,5 +100,3 @@ np.save(f'History/{filename}-history.npy', history.history)
 loss, acc = model.evaluate(test_batches)
 print("loss: %.2f" % loss)
 print("acc: %.2f" % acc)
-
-

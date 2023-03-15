@@ -47,3 +47,12 @@ export interface MarkerInfo {
   lat: number;
   lng: number;
 }
+
+export interface CustomEvent1 extends Event {
+  detail: {
+    position: {
+      longitude: number;
+      latitude: number;
+    };
+  };
+}

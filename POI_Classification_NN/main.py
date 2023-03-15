@@ -30,7 +30,7 @@ cm = confusion_matrix(y_true=test_batches.classes, y_pred=np.argmax(predictions,
 def plot_confusion_matrix(cm, classes,
                           normalize=False,
                           title='Confusion matrix',
-                          cmap=plt.cm.Blues):
+                          cmap=plt.cm.Reds):
     """
     This function prints and plots the confusion matrix.
     Normalization can be applied by setting `normalize=True`.
@@ -65,39 +65,39 @@ def plot_confusion_matrix(cm, classes,
 
 cm_plot_labels = ['MetropolitanCathedral', 'NationalTheater', 'PalaceOfCulture']
 plot_confusion_matrix(cm=cm, classes=cm_plot_labels, title='Confusion Matrix')
-
-test_loss = []
-test_acc = []
-for i in range(1, 16):
-    print(i)
-    model = tf.keras.models.load_model("models/Model/model-5-epoch_{:0>2d}".format(i))
-    loss, acc = model.evaluate(test_batches)
-    test_loss += [loss]
-    test_acc += [acc]
-    print("loss: %.2f" % loss)
-    print("acc: %.2f" % acc)
-
-history = np.load("models/History/model-5-history.npy", allow_pickle=True).item()
-# # history_re = np.load("models/History/model-6(retrain)-history.npy", allow_pickle=True).item()
-print(history)
-
-fig, axs = plt.subplots(2, 1, figsize=(15, 15))
-fig.tight_layout(pad=8)
-axs[0].plot(history['loss'])
-axs[0].plot(history['val_loss'])
-axs[0].plot(test_loss)
-axs[0].title.set_text('Training Loss vs Validation Loss vs Test Loss')
-axs[0].set_xlabel('Epochs')
-axs[0].set_ylabel('Loss')
-axs[0].legend(['Train', 'Val', 'Test'])
-
-axs[1].plot(history['accuracy'])
-axs[1].plot(history['val_accuracy'])
-axs[1].plot(test_acc)
-axs[1].title.set_text('Training Accuracy vs Validation Accuracy vs Test Accuracy')
-axs[1].set_xlabel('Epochs')
-axs[1].set_ylabel('Accuracy')
-axs[1].legend(['Train', 'Val', 'Test'])
-
-plt.savefig('results/model-5-plot.png')
-plt.show()
+#
+# test_loss = []
+# test_acc = []
+# for i in range(1, 16):
+#     print(i)
+#     model = tf.keras.models.load_model("models/Model/model-5-epoch_{:0>2d}".format(i))
+#     loss, acc = model.evaluate(test_batches)
+#     test_loss += [loss]
+#     test_acc += [acc]
+#     print("loss: %.2f" % loss)
+#     print("acc: %.2f" % acc)
+#
+# history = np.load("models/History/model-5-history.npy", allow_pickle=True).item()
+# # # history_re = np.load("models/History/model-6(retrain)-history.npy", allow_pickle=True).item()
+# print(history)
+#
+# fig, axs = plt.subplots(2, 1, figsize=(15, 15))
+# fig.tight_layout(pad=8)
+# axs[0].plot(history['loss'])
+# axs[0].plot(history['val_loss'])
+# axs[0].plot(test_loss)
+# axs[0].title.set_text('Training Loss vs Validation Loss vs Test Loss')
+# axs[0].set_xlabel('Epochs')
+# axs[0].set_ylabel('Loss')
+# axs[0].legend(['Train', 'Val', 'Test'])
+#
+# axs[1].plot(history['accuracy'])
+# axs[1].plot(history['val_accuracy'])
+# axs[1].plot(test_acc)
+# axs[1].title.set_text('Training Accuracy vs Validation Accuracy vs Test Accuracy')
+# axs[1].set_xlabel('Epochs')
+# axs[1].set_ylabel('Accuracy')
+# axs[1].legend(['Train', 'Val', 'Test'])
+#
+# plt.savefig('results/model-5-plot.png')
+# plt.show()

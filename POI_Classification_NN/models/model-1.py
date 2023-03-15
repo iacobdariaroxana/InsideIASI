@@ -1,6 +1,10 @@
+import matplotlib.pyplot as plt
 import tensorflow as tf
+import visualkeras
+from PIL import ImageFont
 import numpy as np
 import os
+
 
 train_dataset = tf.keras.preprocessing.image_dataset_from_directory(
     '../prepdata/train', batch_size=64, image_size=(256, 341))
@@ -24,6 +28,11 @@ num_classes = 3
 outputs = tf.keras.layers.Dense(num_classes, activation="softmax")(x)
 
 model = tf.keras.Model(inputs=inputs, outputs=outputs)
+
+# font = ImageFont.truetype("arial.ttf", 24)
+# visualkeras.layered_view(model, legend=True, font=font, to_file='../results/model-1/model.png', spacing=25,
+#                          scale_xy=0.8)
+
 model.summary()
 
 filename = os.path.splitext(os.path.basename(__file__))[0]
