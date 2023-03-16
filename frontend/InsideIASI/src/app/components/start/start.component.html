@@ -1,19 +1,28 @@
+<div class="language-buttons">
+  <button (click)="switchRo()" *ngIf="roFlag" id="ro"></button>
+  <button (click)="switchEn()" *ngIf="enFlag" id="en"></button>
+</div>
+
 <div class="top-container">
   <div class="title-container">
-    <h1>InsideIAȘI</h1>
+    <h1>{{ "SiteTitle" | translate }}</h1>
   </div>
   <div class="buttons">
-    <ion-button class="app-button" routerLink="/menu">login</ion-button>
-    <ion-button class="app-button" routerLink="/menu">sign up</ion-button>
-    <ion-button fill="clear" class="custom-start-button" routerLink="/menu"
-      >continue without account</ion-button
-    >
+    <ion-button class="app-button" routerLink="/menu">{{
+      "Login" | translate
+    }}</ion-button>
+    <ion-button class="app-button" routerLink="/menu">{{
+      "SignUp" | translate
+    }}</ion-button>
+    <ion-button fill="clear" class="custom-start-button" routerLink="/menu">{{
+      "NoAccount" | translate
+    }}</ion-button>
   </div>
 </div>
 
 <div class="description-container">
   <p class="description">
-    AR app designed mainly for <br />
-    discovering Iași city
+    {{ "AppDescription1" | translate }} <br />
+    {{ "AppDescription2" | translate }}
   </p>
 </div>

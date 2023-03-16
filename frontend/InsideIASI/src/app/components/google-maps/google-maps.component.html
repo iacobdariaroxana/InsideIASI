@@ -23,8 +23,10 @@
       {{ info.name }}
     </div>
     <div>
-      Rating: <b>{{ info.rating }}</b>
+      {{'Rating' | translate}}: <b>{{ info.rating }}</b>
     </div>
-    <ion-button class="app-button" (click)="openGoogleMaps()">visit</ion-button>
+    <ion-button class="app-button" (click)="openGoogleMaps()">{{
+      "Visit" | translate
+    }}</ion-button>
   </map-info-window>
 </google-map>

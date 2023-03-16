@@ -8,6 +8,8 @@
   padding: 1.5rem;
   background-size: cover;
   background-position: bottom;
+  position: relative;
+  /* object-fit: contain; */
 }
 
 .title-container {
@@ -48,4 +50,34 @@
 
 .custom-start-button {
   font-size: 12px;
+}
+
+.language-buttons {
+  position: absolute;
+  top: 0.6rem;
+  right: 0.6rem;
+  color: var(--secondary-color);
+  display: flex;
+  gap: 0.4rem;
+}
+
+.language-buttons > button {
+  /* font-size: 2rem; */
+  color: var(--secondary-color);
+  background-color: var(--highlight-color);
+  border: 1px solid var(--secondary-color);
+  border-radius: 5px;
+  object-fit: cover;
+  width: 1.6rem;
+  height: 1.1rem;
+  background-size: cover;
+  background-position: center;
+}
+
+#ro {
+  background-image: url("../../../assets/images/ro.png") ;
+}
+
+#en {
+  background-image: url('../../../assets//images//en.png');
 }

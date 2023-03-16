@@ -39,3 +39,12 @@
 .gm-style-iw-d::-webkit-scrollbar {
   display: none !important;
 }
+
+.gm-style .transit-container .transit-title,
+.gm-style .transit-container div,
+.poi-info-window div,
+.poi-info-window a,
+.gm-style .transit-div-line-name .renderable-component-bold {
+  background-color: var(--main-color);
+  color: var(--stroke-color);
+}
