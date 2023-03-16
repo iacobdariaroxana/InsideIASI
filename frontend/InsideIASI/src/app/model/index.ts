@@ -6,6 +6,7 @@ export interface PointOfInterest {
   name: string;
   icon: string;
   rating: number;
+  open_now: boolean;
 }
 
 export interface PointOfInterestDTO {
@@ -19,6 +20,9 @@ export interface PointOfInterestDTO {
   place_id: string;
   rating: number;
   icon: string;
+  opening_Hours: {
+    openNow: boolean
+  }
 }
 
 export interface Marker {
@@ -39,6 +43,7 @@ export interface Marker {
     scaledSize: google.maps.Size;
   };
   rating: number;
+  open_now: boolean;
 }
 
 export interface MarkerInfo {
@@ -46,6 +51,7 @@ export interface MarkerInfo {
   rating: string;
   lat: number;
   lng: number;
+  open: string;
 }
 
 export interface CustomEvent1 extends Event {

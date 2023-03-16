@@ -24,7 +24,6 @@ export class ApiService {
       )
       .pipe(
         map<any, PointOfInterestDTO[]>((response) => {
-          // console.log(`Api service: ${response}`);
           return response;
         })
       );

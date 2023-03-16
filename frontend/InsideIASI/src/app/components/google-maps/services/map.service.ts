@@ -13,7 +13,6 @@ export class MapService {
       .getPointsOfInterest(lat, lng, query)
       .pipe(
         map<PointOfInterestDTO[], PointOfInterest[]>((pointsOfInterest) => {
-          // console.log(`Map service: ${pointsOfInterest}`);
           const result: PointOfInterest[] = pointsOfInterest.map(
             (pointOfInterest) => {
               return {
@@ -23,7 +22,8 @@ export class MapService {
                 },
                 name: pointOfInterest.name,
                 icon: pointOfInterest.icon,
-                rating: pointOfInterest.rating
+                rating: pointOfInterest.rating,
+                open_now: pointOfInterest.opening_Hours?.openNow
               };
             }
           );

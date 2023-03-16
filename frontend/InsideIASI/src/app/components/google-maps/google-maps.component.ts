@@ -6,6 +6,7 @@ import { MapService } from './services/map.service';
 import { Geolocation } from '@capacitor/geolocation';
 import { ActivatedRoute } from '@angular/router';
 import { openGoogleMaps } from './utils';
+import { TranslateService } from '@ngx-translate/core';
 
 @Component({
   selector: 'app-google-maps',
@@ -31,11 +32,12 @@ export class GoogleMapsComponent implements OnInit {
     zoom: 16,
     minZoom: 12.5,
   };
-  info: MarkerInfo = { name: '', rating: '', lat: 0, lng: 0 };
+  info: MarkerInfo = { name: '', rating: '', lat: 0, lng: 0, open: '' };
 
   constructor(
     private readonly _mapService: MapService,
-    private readonly _route: ActivatedRoute
+    private readonly _route: ActivatedRoute,
+    public translate: TranslateService
   ) {}
 
   ngOnInit(): void {
@@ -53,7 +55,7 @@ export class GoogleMapsComponent implements OnInit {
           lat: response.coords.latitude,
           lng: response.coords.longitude,
         };
-        console.log(this.center);
+        // console.log(this.center);
         const userLocationMarker = new google.maps.Marker({
           position: this.center,
         });
@@ -73,6 +75,7 @@ export class GoogleMapsComponent implements OnInit {
       .pipe(first())
       .subscribe({
         next: (pointsOfInterest) => {
+          console.log(pointsOfInterest);
           this.markers = pointsOfInterest.map((pointOfInterest) => {
             return {
               position: {
@@ -92,6 +95,7 @@ export class GoogleMapsComponent implements OnInit {
                 scaledSize: new google.maps.Size(32, 32),
               },
               rating: pointOfInterest.rating,
+              open_now: pointOfInterest.open_now,
             };
           });
           // console.log(this.markers);
@@ -107,12 +111,21 @@ export class GoogleMapsComponent implements OnInit {
     name: string,
     rating: number,
     lat: number,
-    lng: number
+    lng: number,
+    open: boolean
   ) {
     this.info.name = name;
     rating == 0 ? (this.info.rating = '-') : (this.info.rating = `${rating}`);
     this.info.lat = lat;
     this.info.lng = lng;
+    open == undefined ? (this.info.open = '-') : (this.info.open = `${open}`);
+    if(open == undefined){
+      this.info.open = '-';
+    } else if(open == true){
+      this.info.open = `${this.translate.instant('Yes')}`;
+    } else {
+      this.info.open = `${this.translate.instant('No')}`;
+    }
     this.infoWindow.open(marker);
   }
 

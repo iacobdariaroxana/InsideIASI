@@ -14,7 +14,8 @@
         marker.title,
         marker.rating,
         marker.position.lat,
-        marker.position.lng
+        marker.position.lng,
+        marker.open_now
       )
     "
   ></map-marker>
@@ -24,6 +25,9 @@
     </div>
     <div>
       {{'Rating' | translate}}: <b>{{ info.rating }}</b>
+    </div>
+    <div>
+      {{'Open' | translate}}: <b>{{ info.open }}</b>
     </div>
     <ion-button class="app-button" (click)="openGoogleMaps()">{{
       "Visit" | translate

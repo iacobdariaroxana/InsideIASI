@@ -1,18 +1,23 @@
 import { Component } from '@angular/core';
 import { TranslateService } from '@ngx-translate/core';
+import { DataService } from './services/data.service';
 
 @Component({
   selector: 'app-start',
   templateUrl: './start.component.html',
-  styleUrls: ['./start.component.css']
+  styleUrls: ['./start.component.css'],
 })
 export class StartComponent {
-  roFlag: boolean = true;
-  enFlag: boolean = false;
+  roFlag!: boolean;
+  defaultFlag: boolean = true;
 
-  constructor(public translate: TranslateService) {
+  constructor(
+    public translate: TranslateService,
+    private _dataService: DataService
+  ) {
     translate.addLangs(['en', 'ro']);
     translate.setDefaultLang('en');
+    this._dataService.flag != undefined? this.roFlag = this._dataService.flag : this.roFlag = this.defaultFlag;
   }
 
   switchLanguage(lang: string) {
@@ -21,13 +26,13 @@ export class StartComponent {
 
   switchRo() {
     this.switchLanguage('ro');
+    this._dataService.flag = false;
     this.roFlag = false;
-    this.enFlag = true;
   }
 
   switchEn() {
     this.switchLanguage('en');
-    this.enFlag = false;
+    this._dataService.flag = true;
     this.roFlag = true;
   }
 }

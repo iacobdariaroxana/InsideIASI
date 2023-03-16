@@ -10,5 +10,8 @@
     "MenuOption3": "CHURCHES & CATHEDRALS",
     "MenuOption4": "LIBRARIES & UNIVERSITIES",
     "MenuOption5": "POPULAR ATTRACTIONS",
-    "Rating": "Rating"
+    "Rating": "Rating",
+    "Open": "Open now",
+    "Yes": "yes",
+    "No": "no"
 }
