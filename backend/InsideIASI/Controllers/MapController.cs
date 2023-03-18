@@ -1,4 +1,6 @@
 ﻿using InsideIASI.Entities;
+using InsideIASI.Models.PlacesDistance;
+using InsideIASI.Models.PointOfInterest;
 using InsideIASI.Services;
 using Microsoft.AspNetCore.Mvc;
 
@@ -14,11 +16,23 @@ namespace InsideIASI.Controllers
             _mapService = mapService;
         }
 
-        [HttpGet(Name = "GetPointsOfInterest")]
-        public async Task<IActionResult> Get(double latitude, double longitude, string query)
+        [HttpGet]
+        [Route("pois")]
+        public async Task<IActionResult> GetPointsOfInterest([FromQuery] PointOfInterestRequestModel pointOfInterestRequestModel)
         {
-            var pois = await _mapService.GetPointsOfInterestAsync(query, latitude, longitude);
+            var pois = await _mapService.GetPointsOfInterestAsync(pointOfInterestRequestModel);
+
             return Ok(pois);
+        }
+
+
+        [HttpGet]
+        [Route("distance")]
+        public async Task<IActionResult> GetDistance([FromQuery] DistanceRequestModel distanceRequestModel)
+        {
+            var distance = await _mapService.GetDistanceFromUserLocation(distanceRequestModel);
+
+            return Ok(distance);
         }
     }
 }

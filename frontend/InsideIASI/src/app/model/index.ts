@@ -17,12 +17,26 @@ export interface PointOfInterestDTO {
     };
   };
   name: string;
-  place_id: string;
+  placeid: string;
   rating: number;
   icon: string;
-  opening_Hours: {
-    openNow: boolean
-  }
+  openingHours: {
+    open_Now: boolean;
+  };
+}
+
+export interface DistanceDTO {
+  numberOfKilometers: {
+    text: string;
+  };
+  estimatedTime: {
+    text: string;
+  };
+}
+
+export interface Distance {
+  number_of_km: number;
+  eta: number;
 }
 
 export interface Marker {
@@ -52,13 +66,6 @@ export interface MarkerInfo {
   lat: number;
   lng: number;
   open: string;
-}
-
-export interface CustomEvent1 extends Event {
-  detail: {
-    position: {
-      longitude: number;
-      latitude: number;
-    };
-  };
+  distance: number;
+  eta: number;
 }

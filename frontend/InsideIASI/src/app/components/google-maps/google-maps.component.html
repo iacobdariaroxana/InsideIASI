@@ -23,11 +23,17 @@
     <div class="poi-title">
       {{ info.name }}
     </div>
-    <div>
-      {{'Rating' | translate}}: <b>{{ info.rating }}</b>
+    <div *ngIf="info.rating != '0'">
+      {{ "Rating" | translate }}: <b>{{ info.rating }}</b>
+    </div>
+    <div *ngIf="info.open != ''">
+      {{ "Open" | translate }}: <b>{{ info.open }}</b>
     </div>
     <div>
-      {{'Open' | translate}}: <b>{{ info.open }}</b>
+      {{ "Distance" | translate }}: <b>{{ info.distance }} km </b>
+    </div>
+    <div>
+      ETA: <b>{{ info.eta }} {{ "Minutes" | translate }} </b>
     </div>
     <ion-button class="app-button" (click)="openGoogleMaps()">{{
       "Visit" | translate

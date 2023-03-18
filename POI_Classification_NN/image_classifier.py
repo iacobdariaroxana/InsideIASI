@@ -20,7 +20,7 @@ app.add_middleware(
     allow_headers=["*"])
 
 
-def now(image_id, label):
+def move_image_to_directory(image_id, label):
     shutil.move(f'api_images/{image_id}.jpg', f'api_images/{label}/{image_id}.jpg')
 
 
@@ -44,7 +44,6 @@ def prepare_data(actual_label):
     lines = opening_hours.split('\n')
     max_day_length = max(len(line.split()[0]) for line in lines[1:-1])
 
-    # Pad the days of the week with spaces so that all the hours start at the same index
     formatted_lines = [lines[0]]
     for line in lines[1:-1]:
         day, hours = line.split(maxsplit=1)
@@ -57,13 +56,13 @@ def prepare_data(actual_label):
     return response
 
 
-def get_poi_label(image64, model_n, epoch):
+model = tf.keras.models.load_model("models/Model/model-{}-epoch_{:0>2d}".format(1, 7))
+
+
+def get_poi_label(image64, model_n):
     image_id = uuid.uuid4()
     image_result = open(f'api_images/{image_id}.jpg', 'wb')
     image_result.write(image64)
-
-    model = tf.keras.models.load_model("models/Model/model-{}-epoch_{:0>2d}".format(model_n, epoch))
-
     target_sizes = {1: (256, 341), 2: (224, 224), 4: (224, 224), 6: (224, 224)}
     target_size = target_sizes[model_n]
 
@@ -71,12 +70,10 @@ def get_poi_label(image64, model_n, epoch):
     img_array = image.img_to_array(img)
     img_array = np.expand_dims(img_array, axis=0)
 
-    # if model_n == 1:
-    #     img_array = image.normalize(img_array)
-    if model_n == 2:
-        img_array = tf.keras.applications.vgg16.preprocess_input(img_array)
-    if model_n in (4, 6):
-        img_array = tf.keras.applications.vgg19.preprocess_input(img_array)
+    # if model_n == 2:
+    #     img_array = tf.keras.applications.vgg16.preprocess_input(img_array)
+    # if model_n in (4, 6):
+    #     img_array = tf.keras.applications.vgg19.preprocess_input(img_array)
     prediction = model.predict(img_array)
     print(prediction)
 
@@ -91,9 +88,7 @@ def get_poi_label(image64, model_n, epoch):
         actual_label += str(int(b))
     actual_label = poi_dict[actual_label]
 
-    print(functions.get_poi(actual_label))
-
-    t = threading.Timer(2.0, now, args=(image_id, actual_label))
+    t = threading.Timer(2.0, move_image_to_directory, args=(image_id, actual_label))
     t.start()
     return prepare_data(actual_label)
 
@@ -103,7 +98,7 @@ async def classify_image(request: Request):
     data = await request.json()
     image64 = data['image64']
     image64 = base64.b64decode(image64)
-    return get_poi_label(image64, 6, 14)
+    return get_poi_label(image64, 1)
 
 
 models = {1: 5, 2: 12, 4: 8, 6: 14}
@@ -111,14 +106,13 @@ uvicorn.run(app, host="0.0.0.0", port=8001)
 
 
 # def verify_images():
-#     model = tf.keras.models.load_model("models/Model/model-{}-epoch_{:0>2d}".format(1, 7))
 #     count = 0
-#     for file in os.listdir('thtr'):
-#         img = image.load_img(os.path.join('thtr', file), target_size=(256, 341))
+#     for file in os.listdir('plt'):
+#         img = image.load_img(os.path.join('plt', file), target_size=(256, 341))
 #         img_array = image.img_to_array(img)
 #         img_array = np.expand_dims(img_array, axis=0)
 #         prediction = model.predict(img_array)
-#         # print(prediction)
+#         print(prediction)
 #
 #         max_value = max(prediction[0])
 #         prediction[0] = [1 if x == max_value else 0 for x in prediction[0]]
@@ -130,7 +124,10 @@ uvicorn.run(app, host="0.0.0.0", port=8001)
 #         for b in prediction[0]:
 #             actual_label += str(int(b))
 #         actual_label = poi_dict[actual_label]
-#         if actual_label != "NationalTheater":
+#         if actual_label != "PalaceOfCulture":
 #             count += 1
 #         print(actual_label)
 #     print(count)
+#
+#
+# verify_images()

@@ -32,12 +32,20 @@ export class GoogleMapsComponent implements OnInit {
     zoom: 16,
     minZoom: 12.5,
   };
-  info: MarkerInfo = { name: '', rating: '', lat: 0, lng: 0, open: '' };
+  info: MarkerInfo = {
+    name: '',
+    rating: '',
+    lat: 0,
+    lng: 0,
+    open: '',
+    distance: 0,
+    eta: 0,
+  };
 
   constructor(
     private readonly _mapService: MapService,
     private readonly _route: ActivatedRoute,
-    public translate: TranslateService
+    private _translate: TranslateService
   ) {}
 
   ngOnInit(): void {
@@ -71,11 +79,11 @@ export class GoogleMapsComponent implements OnInit {
   getMarkers(query: string) {
     // this.center.lat, this.center.long
     this._mapService
-      .getPointsOfInterest(47.17778798149116, 27.57176764209399, query)
+      .getPointsOfInterest(this.center.lat, this.center.lng, query)
       .pipe(first())
       .subscribe({
         next: (pointsOfInterest) => {
-          console.log(pointsOfInterest);
+          // console.log(pointsOfInterest);
           this.markers = pointsOfInterest.map((pointOfInterest) => {
             return {
               position: {
@@ -115,18 +123,34 @@ export class GoogleMapsComponent implements OnInit {
     open: boolean
   ) {
     this.info.name = name;
-    rating == 0 ? (this.info.rating = '-') : (this.info.rating = `${rating}`);
+    rating == 0 ? (this.info.rating = '0') : (this.info.rating = `${rating}`);
     this.info.lat = lat;
     this.info.lng = lng;
-    open == undefined ? (this.info.open = '-') : (this.info.open = `${open}`);
-    if(open == undefined){
-      this.info.open = '-';
-    } else if(open == true){
-      this.info.open = `${this.translate.instant('Yes')}`;
+
+    if (open == undefined) {
+      this.info.open = '';
+    } else if (open == true) {
+      this.info.open = `${this._translate.instant('Yes')}`;
     } else {
-      this.info.open = `${this.translate.instant('No')}`;
+      this.info.open = `${this._translate.instant('No')}`;
     }
+    this.setDistanceAndETA(lat, lng);
     this.infoWindow.open(marker);
+  }
+
+  setDistanceAndETA(lat: number, lng: number) {
+    this._mapService
+      .getDistanceBetweenPlaces(this.center.lat, this.center.lng, lat, lng)
+      .pipe(first())
+      .subscribe({
+        next: (distance) => {
+          this.info.distance = distance.number_of_km;
+          this.info.eta = distance.eta;
+        },
+        error: (err) => {
+          console.log(err);
+        },
+      });
   }
 
   openGoogleMaps() {

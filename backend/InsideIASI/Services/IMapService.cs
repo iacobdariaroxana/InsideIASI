@@ -1,10 +1,11 @@
-﻿using InsideIASI.Entities;
-using InsideIASI.Models;
+﻿using InsideIASI.Models.PlacesDistance;
+using InsideIASI.Models.PointOfInterest;
 
 namespace InsideIASI.Services
 {
     public interface IMapService
     {
-        Task<IEnumerable<PointOfInterest>> GetPointsOfInterestAsync(string query, double latitude, double longitude);
+        Task<IEnumerable<PointOfInterestResponseModel>> GetPointsOfInterestAsync(PointOfInterestRequestModel pointOfInterestRequestModel);
+        Task<InfoResponseModel> GetDistanceFromUserLocation(DistanceRequestModel distanceRequestModel);
     }
 }

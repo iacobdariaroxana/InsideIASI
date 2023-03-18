@@ -87,28 +87,28 @@ def plot_images(images_arr):
 
 plot_images(images)
 
-# filename = os.path.splitext(os.path.basename(__file__))[0]
-#
-# callbacks = [
-#     tf.keras.callbacks.ModelCheckpoint(filepath=f'Model/{filename}-epoch_' + '{epoch:02d}',
-#                                        save_freq='epoch')
-# ]
-#
-# model.compile(optimizer=tf.keras.optimizers.Adam(learning_rate=0.0001), loss='categorical_crossentropy',
-#               metrics=['accuracy'])
-#
-# history = model.fit(x=train_batches,
-#                     steps_per_epoch=len(train_batches),
-#                     validation_data=val_batches,
-#                     validation_steps=len(val_batches),
-#                     callbacks=callbacks,
-#                     epochs=15,
-#                     verbose=2
-#                     )
-#
-# print(history.history)
-# np.save(f'History/{filename}-history.npy', history.history)
-#
-# loss, acc = model.evaluate(test_batches)
-# print("loss: %.2f" % loss)
-# print("acc: %.2f" % acc)
+filename = os.path.splitext(os.path.basename(__file__))[0]
+
+callbacks = [
+    tf.keras.callbacks.ModelCheckpoint(filepath=f'Model/{filename}-epoch_' + '{epoch:02d}',
+                                       save_freq='epoch')
+]
+
+model.compile(optimizer=tf.keras.optimizers.Adam(learning_rate=0.0001), loss='categorical_crossentropy',
+              metrics=['accuracy'])
+
+history = model.fit(x=train_batches,
+                    steps_per_epoch=len(train_batches),
+                    validation_data=val_batches,
+                    validation_steps=len(val_batches),
+                    callbacks=callbacks,
+                    epochs=15,
+                    verbose=2
+                    )
+
+print(history.history)
+np.save(f'History/{filename}-history.npy', history.history)
+
+loss, acc = model.evaluate(test_batches)
+print("loss: %.2f" % loss)
+print("acc: %.2f" % acc)

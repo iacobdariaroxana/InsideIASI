@@ -56,22 +56,22 @@ test_batches = tf.keras.preprocessing.image.ImageDataGenerator(
                                                                                              batch_size=10,
                                                                                              shuffle=False)
 
-# images, labels = next(train_batches)
-#
-#
-# def plot_images(images_arr):
-#     fig, axes = plt.subplots(1, 10, figsize=(10, 10))
-#     axes = axes.flatten()
-#     for img, ax in zip(images_arr, axes):
-#         ax.imshow(img)
-#         ax.axis('off')
-#     plt.tight_layout()
-#     plt.show()
-#
-#
-# plot_images(images)
-# plt.show()
-# print(labels)
+images, labels = next(train_batches)
+
+
+def plot_images(images_arr):
+    fig, axes = plt.subplots(1, 10, figsize=(10, 10))
+    axes = axes.flatten()
+    for img, ax in zip(images_arr, axes):
+        ax.imshow(img)
+        ax.axis('off')
+    plt.tight_layout()
+    plt.show()
+
+
+plot_images(images)
+plt.show()
+print(labels)
 
 filename = os.path.splitext(os.path.basename(__file__))[0]
 

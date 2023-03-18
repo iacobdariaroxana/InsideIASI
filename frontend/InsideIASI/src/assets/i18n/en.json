@@ -13,5 +13,7 @@
     "Rating": "Rating",
     "Open": "Open now",
     "Yes": "yes",
-    "No": "no"
+    "No": "no",
+    "Distance": "Distance",
+    "Minutes": "minutes"
 }
