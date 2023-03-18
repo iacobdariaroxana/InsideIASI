@@ -107,8 +107,8 @@ uvicorn.run(app, host="0.0.0.0", port=8001)
 
 # def verify_images():
 #     count = 0
-#     for file in os.listdir('plt'):
-#         img = image.load_img(os.path.join('plt', file), target_size=(256, 341))
+#     for file in os.listdir('mtr'):
+#         img = image.load_img(os.path.join('mtr', file), target_size=(256, 341))
 #         img_array = image.img_to_array(img)
 #         img_array = np.expand_dims(img_array, axis=0)
 #         prediction = model.predict(img_array)
@@ -124,7 +124,7 @@ uvicorn.run(app, host="0.0.0.0", port=8001)
 #         for b in prediction[0]:
 #             actual_label += str(int(b))
 #         actual_label = poi_dict[actual_label]
-#         if actual_label != "PalaceOfCulture":
+#         if actual_label != "MetropolitanCathedral":
 #             count += 1
 #         print(actual_label)
 #     print(count)

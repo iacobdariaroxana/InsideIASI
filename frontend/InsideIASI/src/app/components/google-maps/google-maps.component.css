@@ -22,3 +22,14 @@
   text-transform: lowercase;
 }
 
+google-map {
+  position: relative;
+}
+
+#compass {
+  position: absolute;
+  left: 15px;
+  bottom: 25px;
+  font-size: 2.7rem;
+  color: var(--button-color);
+}

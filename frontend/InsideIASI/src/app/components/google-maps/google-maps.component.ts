@@ -1,4 +1,4 @@
-import { Component, OnInit, ViewChild } from '@angular/core';
+import { AfterViewInit, Component, OnInit, ViewChild } from '@angular/core';
 import { GoogleMap, MapInfoWindow } from '@angular/google-maps';
 import { first } from 'rxjs';
 import { Marker, MarkerInfo } from 'src/app/model';
@@ -13,7 +13,7 @@ import { TranslateService } from '@ngx-translate/core';
   templateUrl: './google-maps.component.html',
   styleUrls: ['./google-maps.component.css'],
 })
-export class GoogleMapsComponent implements OnInit {
+export class GoogleMapsComponent implements OnInit, AfterViewInit {
   @ViewChild(GoogleMap) map!: GoogleMap;
   @ViewChild(MapInfoWindow) infoWindow!: MapInfoWindow;
 
@@ -22,6 +22,9 @@ export class GoogleMapsComponent implements OnInit {
     lng: 27.553303223560913,
   };
   markers!: Marker[];
+  userLocationMarker = new google.maps.Marker({
+    position: this.center,
+  });
   options: google.maps.MapOptions = {
     styles: [
       {
@@ -48,33 +51,63 @@ export class GoogleMapsComponent implements OnInit {
     private _translate: TranslateService
   ) {}
 
+  ngAfterViewInit(): void {
+    if (this.map.googleMap) {
+      this.userLocationMarker.setMap(this.map.googleMap);
+    }
+  }
+
   ngOnInit(): void {
-    this.setCurrentPosition();
+    this.setInitialPosition();
+
+    setInterval(() => this.setCurrentPosition(), 2000);
 
     this._route.queryParams.subscribe((params) => {
       this.getMarkers(params['query']);
     });
   }
 
-  setCurrentPosition = async () => {
+  setInitialPosition = async () => {
     await Geolocation.getCurrentPosition()
       .then((response) => {
         this.center = {
           lat: response.coords.latitude,
           lng: response.coords.longitude,
         };
-        // console.log(this.center);
-        const userLocationMarker = new google.maps.Marker({
-          position: this.center,
-        });
-        if (this.map.googleMap) {
-          userLocationMarker.setMap(this.map.googleMap);
-        }
+        this.userLocationMarker.setPosition(this.center);
       })
       .catch(async (err) => {
         console.log(err);
       });
   };
+
+  setCurrentPosition = async () => {
+    await Geolocation.getCurrentPosition()
+      .then((response) => {
+        this.userLocationMarker.setPosition({
+          lat: response.coords.latitude,
+          lng: response.coords.longitude,
+        });
+      })
+      .catch(async (err) => {
+        console.log(err);
+      });
+  };
+
+  setDistanceAndETA(lat: number, lng: number) {
+    this._mapService
+      .getDistanceBetweenPlaces(this.center.lat, this.center.lng, lat, lng)
+      .pipe(first())
+      .subscribe({
+        next: (distance) => {
+          this.info.distance = distance.number_of_km;
+          this.info.eta = distance.eta;
+        },
+        error: (err) => {
+          console.log(err);
+        },
+      });
+  }
 
   getMarkers(query: string) {
     // this.center.lat, this.center.long
@@ -122,6 +155,11 @@ export class GoogleMapsComponent implements OnInit {
     lng: number,
     open: boolean
   ) {
+    this.center = {
+      lat: lat,
+      lng: lng,
+    };
+
     this.info.name = name;
     rating == 0 ? (this.info.rating = '0') : (this.info.rating = `${rating}`);
     this.info.lat = lat;
@@ -138,22 +176,14 @@ export class GoogleMapsComponent implements OnInit {
     this.infoWindow.open(marker);
   }
 
-  setDistanceAndETA(lat: number, lng: number) {
-    this._mapService
-      .getDistanceBetweenPlaces(this.center.lat, this.center.lng, lat, lng)
-      .pipe(first())
-      .subscribe({
-        next: (distance) => {
-          this.info.distance = distance.number_of_km;
-          this.info.eta = distance.eta;
-        },
-        error: (err) => {
-          console.log(err);
-        },
-      });
-  }
-
   openGoogleMaps() {
     openGoogleMaps(this.info.lat, this.info.lng);
+  }
+
+  setCenterToUserLocation() {
+    this.center = {
+      lat: this.userLocationMarker.getPosition()?.lat() || this.center.lat,
+      lng: this.userLocationMarker.getPosition()?.lng() || this.center.lng,
+    };
   }
 }
