@@ -1,9 +1,10 @@
+@import 'colors';
 :host {
   display: flex;
   flex-direction: column;
   justify-content: center;
   align-items: center;
-  background-color: var(--button-color);
+  background-color: $button-color;
   min-height: 100vh;
   /* gap: 1rem;
   padding: 0.5rem;
@@ -21,16 +22,16 @@
 }
 
 .camera-icon {
-  color: var(--secondary-color);
+  color: $secondary-color;
   font-size: 32px;
 }
 
 .camera-button {
-  background-color: var(--highlight-color);
+  background-color: $highlight-color;
   width: 3.2rem;
   height: 3.2rem;
   border-radius: 40px;
-  border: 2px solid var(--secondary-color);
+  border: 2px solid $secondary-color;
 }
 
 .back-button {
@@ -38,7 +39,7 @@
   background-color: transparent;
   border: none;
   font-size: 2rem;
-  color: var(--highlight-color);
+  color: $highlight-color;
   /* bottom: 0.7rem; */
   /* left: 0.7rem; */
 }

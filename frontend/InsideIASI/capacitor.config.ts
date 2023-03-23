@@ -6,7 +6,7 @@ const config: CapacitorConfig = {
   webDir: 'dist/inside-iasi',
   bundledWebRuntime: false,
   server: {
-    url: 'http://192.168.249.121:4200',
+    url: 'http://192.168.43.121:4200',
     cleartext: true
   }
 };

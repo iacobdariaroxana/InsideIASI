@@ -50,8 +50,8 @@ export class MapService {
       .pipe(
         map<DistanceDTO, Distance>((distance) => {
           return {
-            number_of_km: parseFloat(distance.numberOfKilometers.text),
-            eta: parseInt(distance.estimatedTime.text.split(" ")[0]),
+            number_of_km: distance.numberOfKilometers.text,
+            eta: distance.estimatedTime.text.replace("hours", "h").replace("mins", "m"),
           };
         })
       );

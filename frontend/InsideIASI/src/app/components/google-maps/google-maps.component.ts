@@ -11,7 +11,7 @@ import { TranslateService } from '@ngx-translate/core';
 @Component({
   selector: 'app-google-maps',
   templateUrl: './google-maps.component.html',
-  styleUrls: ['./google-maps.component.css'],
+  styleUrls: ['./google-maps.component.scss'],
 })
 export class GoogleMapsComponent implements OnInit, AfterViewInit {
   @ViewChild(GoogleMap) map!: GoogleMap;
@@ -40,9 +40,9 @@ export class GoogleMapsComponent implements OnInit, AfterViewInit {
     rating: '',
     lat: 0,
     lng: 0,
-    open: '',
-    distance: 0,
-    eta: 0,
+    distance: '0',
+    eta: '0',
+    open: undefined,
   };
 
   constructor(
@@ -60,7 +60,7 @@ export class GoogleMapsComponent implements OnInit, AfterViewInit {
   ngOnInit(): void {
     this.setInitialPosition();
 
-    setInterval(() => this.setCurrentPosition(), 2000);
+    setInterval(() => this.setCurrentPosition(), 5000);
 
     this._route.queryParams.subscribe((params) => {
       this.getMarkers(params['query']);
@@ -95,8 +95,12 @@ export class GoogleMapsComponent implements OnInit, AfterViewInit {
   };
 
   setDistanceAndETA(lat: number, lng: number) {
+    const userLat =
+      this.userLocationMarker.getPosition()?.lat() || this.center.lat;
+    const userLng =
+      this.userLocationMarker.getPosition()?.lng() || this.center.lng;
     this._mapService
-      .getDistanceBetweenPlaces(this.center.lat, this.center.lng, lat, lng)
+      .getDistanceBetweenPlaces(userLat, userLng, lat, lng)
       .pipe(first())
       .subscribe({
         next: (distance) => {
@@ -139,7 +143,7 @@ export class GoogleMapsComponent implements OnInit, AfterViewInit {
               open_now: pointOfInterest.open_now,
             };
           });
-          // console.log(this.markers);
+          console.log(this.markers);
         },
         error: (err) => {
           console.log(err);
@@ -161,13 +165,13 @@ export class GoogleMapsComponent implements OnInit, AfterViewInit {
     };
 
     this.info.name = name;
-    rating == 0 ? (this.info.rating = '0') : (this.info.rating = `${rating}`);
+    // rating == 0 ? (this.info.rating = '0') : (this.info.rating = `${rating}`);
     this.info.lat = lat;
     this.info.lng = lng;
-
-    if (open == undefined) {
-      this.info.open = '';
-    } else if (open == true) {
+    if (rating != 0) {
+      this.info.rating = `${rating}`;
+    }
+    if (open == true) {
       this.info.open = `${this._translate.instant('Yes')}`;
     } else {
       this.info.open = `${this._translate.instant('No')}`;

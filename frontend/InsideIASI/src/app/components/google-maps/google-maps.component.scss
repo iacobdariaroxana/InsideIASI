@@ -1,0 +1,49 @@
+@import '_colors';
+
+.show-map-info-window {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  padding: 1rem;
+  gap: 0.3rem;
+}
+
+.poi-title {
+  align-self: center;
+  font-weight: bold;
+}
+
+.app-button {
+  width: 5rem;
+  height: 1.5rem;
+  font-size: 14px; 
+  background: $button-color;
+  border: 2px solid $secondary-color;
+  color: $secondary-color;
+  border-radius: 10px;
+  text-transform: lowercase;
+}
+
+google-map {
+  position: relative;
+}
+
+.user-location {
+  position: absolute;
+  left: 15px;
+  bottom: 30px;
+  padding: 0.5rem;
+  background-color: lighten($button-color, 15%);
+  border: 1px solid $button-color;
+  border-radius: 35px;
+  display: flex;
+  align-items: center;
+  flex-direction: center;
+}
+
+.user-location-icon {
+  width: 1.4rem;
+  height: 1.4rem;
+  fill: $secondary-color;
+}

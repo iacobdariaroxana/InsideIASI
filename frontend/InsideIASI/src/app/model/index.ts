@@ -35,8 +35,8 @@ export interface DistanceDTO {
 }
 
 export interface Distance {
-  number_of_km: number;
-  eta: number;
+  number_of_km: string;
+  eta: string;
 }
 
 export interface Marker {
@@ -62,10 +62,10 @@ export interface Marker {
 
 export interface MarkerInfo {
   name: string;
-  rating: string;
+  rating: string | number;
   lat: number;
   lng: number;
-  open: string;
-  distance: number;
-  eta: number;
+  open: string | undefined;
+  distance: string;
+  eta: string;
 }
