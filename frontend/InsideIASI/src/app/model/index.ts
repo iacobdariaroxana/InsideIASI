@@ -69,3 +69,12 @@ export interface MarkerInfo {
   distance: string;
   eta: string;
 }
+
+export interface HourWeatherInfo {
+  startTime: Date;
+  values: {
+    humidity: number,
+    precipitationProbability: number;
+    temperature: number;
+  }
+}

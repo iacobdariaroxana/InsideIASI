@@ -15,5 +15,6 @@
     "Yes": "yes",
     "No": "no",
     "Distance": "Distance",
-    "Minutes": "minutes"
+    "Minutes": "minutes",
+    "Weather" : "Weather"
 }

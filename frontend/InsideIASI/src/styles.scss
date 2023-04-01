@@ -1,4 +1,6 @@
-@import 'colors';
+@import "~@angular/material/prebuilt-themes/deeppurple-amber.css";
+@import "_colors";
+
 /* font */
 *,
 *::after,
@@ -8,17 +10,6 @@
   box-sizing: border-box;
   font-family: "Times New Roman", Times, serif;
 }
-
-
-/* css for buttons*/
-// .app-button {
-//   width: 15rem;
-//   height: 3rem;
-//   font-size: 16px;
-//   border-radius: 10px;
-//   border-width: 2px;
-//   border-style: solid;
-// }
 
 /* map info window (here bc of priority of css files) */
 .gm-style .gm-style-iw-c {
@@ -42,3 +33,7 @@
   color: $stroke-color;
 }
 
+.dialog .mat-mdc-dialog-container .mdc-dialog__surface {
+  background-color: $main-color !important;
+  border-radius: 10px;
+}

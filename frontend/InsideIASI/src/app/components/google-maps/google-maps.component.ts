@@ -143,7 +143,7 @@ export class GoogleMapsComponent implements OnInit, AfterViewInit {
               open_now: pointOfInterest.open_now,
             };
           });
-          console.log(this.markers);
+          // console.log(this.markers);
         },
         error: (err) => {
           console.log(err);

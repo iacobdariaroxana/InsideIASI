@@ -1,0 +1,24 @@
+@import "_colors";
+
+:host {
+    color: $stroke-color;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    padding: 2rem;
+    gap: 1.2rem;
+    position: relative;
+}
+
+.close {
+    position: absolute;
+    top: 0.5rem;
+    right: 0.5rem;
+    background: transparent;
+    border: none;
+    svg {
+        fill: $stroke-color;
+        width: 1.5rem;
+    }
+}

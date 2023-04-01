@@ -1,4 +1,4 @@
-@import 'colors';
+@import "colors";
 :host {
   display: flex;
   flex-direction: column;
@@ -49,4 +49,14 @@
   justify-content: space-between;
   align-items: center;
   width: 100%;
+  padding: 0 0.5rem 0 0.5rem;
+}
+
+.weather {
+  background-color: transparent;
+  border: none;
+  svg {
+    width: 2.5rem;
+    fill: $highlight-color;
+  }
 }

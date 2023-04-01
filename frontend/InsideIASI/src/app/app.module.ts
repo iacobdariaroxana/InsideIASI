@@ -12,6 +12,11 @@ import { GoogleMapsComponent } from './components/google-maps/google-maps.compon
 import { ARComponent } from './components/ar/ar.component';
 import { TranslateLoader, TranslateModule } from '@ngx-translate/core';
 import { TranslateHttpLoader } from '@ngx-translate/http-loader';
+import { HourWeatherComponent } from './components/hour-weather/hour-weather.component';
+import { WeatherDialogComponent } from './components/weather-dialog/weather-dialog.component';
+import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
+import {MatDialogModule} from '@angular/material/dialog';
+
 
 @NgModule({
   declarations: [
@@ -20,7 +25,9 @@ import { TranslateHttpLoader } from '@ngx-translate/http-loader';
     MenuComponent,
     MapComponent,
     GoogleMapsComponent,
-    ARComponent
+    ARComponent,
+    HourWeatherComponent,
+    WeatherDialogComponent
   ],
   imports: [
     BrowserModule,
@@ -34,11 +41,12 @@ import { TranslateHttpLoader } from '@ngx-translate/http-loader';
         useFactory: httpTranslateLoader,
         deps: [HttpClient]
       }
-    })
+    }),
+    BrowserAnimationsModule,
+    MatDialogModule
   ],
   providers: [],
-  bootstrap: [AppComponent],
-  schemas: [CUSTOM_ELEMENTS_SCHEMA]
+  bootstrap: [AppComponent]
 })
 export class AppModule { }
 export function httpTranslateLoader(http: HttpClient ){
