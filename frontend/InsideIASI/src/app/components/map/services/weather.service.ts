@@ -1,13 +1,12 @@
-import { HttpClient, HttpClientModule } from '@angular/common/http';
+import { HttpClient } from '@angular/common/http';
 import { Injectable } from '@angular/core';
-
 
 @Injectable({
   providedIn: 'root',
 })
 export class WeatherService {
   url =
-    `https://api.tomorrow.io/v4/timelines?apikey=${process.env['TOMORROW_API_KEY']}`;
+    'https://api.tomorrow.io/v4/timelines?apikey=';
   constructor(private readonly _httpClient: HttpClient) {}
 
   getCurrentWeather() {
