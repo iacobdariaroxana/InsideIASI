@@ -17,5 +17,10 @@
     "No": "nu",
     "Distance": "Distanță",
     "Minutes": "minute",
-    "Weather": "Vreme"
+    "Weather": "Vreme",
+    "WeatherAlertRainMessage": "Șansele de ploaie pentru următoarea oră sunt ridicate",
+    "WeatherAlertHighMessage": "În următoarea oră temperatura este de peste 35 grade celsius, adăpostiți-vă într-un loc răcoros",
+    "WeatherAlertLowMessage": "În următoarea oră temperatura scade sub zero grade celsius",
+    "WeatherAlertTitle": "Alertă de vreme",
+    "WeatherAlertButton": "Am înțeles"
 }

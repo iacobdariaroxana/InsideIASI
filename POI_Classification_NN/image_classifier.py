@@ -102,7 +102,7 @@ async def classify_image(request: Request):
 
 
 models = {1: 5, 2: 12, 4: 8, 6: 14}
-uvicorn.run(app, host="0.0.0.0", port=8001)
+uvicorn.run(app, host="0.0.0.0", port=8003)
 
 
 # def verify_images():

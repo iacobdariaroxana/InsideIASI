@@ -16,5 +16,10 @@
     "No": "no",
     "Distance": "Distance",
     "Minutes": "minutes",
-    "Weather" : "Weather"
+    "Weather" : "Weather",
+    "WeatherAlertRainMessage": "Chances of rain are high for the next hour",
+    "WeatherAlertHighMessage": "In the next hour the temperature exceeds 35 celsius degrees, shelter in a safe place",
+    "WeatherAlertLowMessage": "In the next hour the temperature drops below zero celsius degrees",
+    "WeatherAlertTitle": "Weather alert",
+    "WeatherAlertButton": "Understood"
 }

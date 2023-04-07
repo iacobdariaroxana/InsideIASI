@@ -1,38 +1,68 @@
-import { AfterViewInit, Component, OnInit } from '@angular/core';
+import { AfterViewInit, Component, OnDestroy, OnInit } from '@angular/core';
 import { first } from 'rxjs';
 import { Location } from '@angular/common';
 import { ImageService } from './services/image.service';
 import { Camera, CameraResultType } from '@capacitor/camera';
-import { WeatherService } from './services/weather.service';
 import { HourWeatherInfo } from 'src/app/model';
 import { MatDialog } from '@angular/material/dialog';
 import { WeatherDialogComponent } from 'src/app/components/weather-dialog/weather-dialog.component';
+import { Dialog } from '@capacitor/dialog';
+import { TranslateService } from '@ngx-translate/core';
+import { DataService } from './services/data.service';
 
 @Component({
   selector: 'app-map',
   templateUrl: './map.component.html',
   styleUrls: ['./map.component.scss'],
 })
-export class MapComponent implements OnInit, AfterViewInit {
+export class MapComponent implements AfterViewInit, OnDestroy {
   hoursWeatherInfo: HourWeatherInfo[] = [];
+  weatherIntervalId!: NodeJS.Timer;
+  weatherAlertTitle!: string;
+  weatherAlertMessage!: string;
+  weatherAlertButton!: string;
+  readonly showWeatherAlert = async () => {
+    await Dialog.alert({
+      title: this.weatherAlertTitle,
+      message: this.weatherAlertMessage,
+      buttonTitle: this.weatherAlertButton,
+    });
+  };
+
   constructor(
     private location: Location,
     private readonly _imageService: ImageService,
-    private readonly _weatherService: WeatherService,
-    private _dialogRef: MatDialog
-  ) {}
+    private _dialogRef: MatDialog,
+    private _translate: TranslateService,
+    private _dataService: DataService
+  ) {
+    this._translate
+      .get('WeatherAlertTitle')
+      .subscribe((title) => (this.weatherAlertTitle = title));
+    this._translate
+      .get('WeatherAlertButton')
+      .subscribe((buttonText) => (this.weatherAlertButton = buttonText));
+  }
 
-  ngOnInit(): void {}
-
-  ngAfterViewInit(): void {}
+  ngAfterViewInit(): void {
+    if (this._dataService.getHourFlag()) {
+      setTimeout(() => {
+        this.hoursWeatherInfo = this._dataService.getHoursWeatherInfo();
+        this.checkWeatherAlert();
+      }, 3000);
+    }
+    this.weatherIntervalId = setInterval(() => {
+      this.hoursWeatherInfo = this._dataService.getHoursWeatherInfo();
+      this.checkWeatherAlert();
+    }, 3600000);
+  }
 
   async captureImage() {
     const image = await Camera.getPhoto({
-      quality: 90,
+      quality: 70,
       allowEditing: false,
       resultType: CameraResultType.Base64,
     });
-    // console.log(image.base64String);
     this._imageService
       .getImagePlace(image.base64String!)
       .pipe(first())
@@ -46,38 +76,40 @@ export class MapComponent implements OnInit, AfterViewInit {
       });
   }
 
+  checkWeatherAlert() {
+    if (this.hoursWeatherInfo[1].values.precipitationProbability > 50) {
+      this._translate.get('WeatherAlertRainMessage').subscribe((message) => {
+        this.weatherAlertMessage = message;
+        this.showWeatherAlert();
+      });
+    } else if (this.hoursWeatherInfo[1].values.temperature > 35) {
+      this._translate.get('WeatherAlertHighMessage').subscribe((message) => {
+        this.weatherAlertMessage = message;
+        this.showWeatherAlert();
+      });
+    } else if (this.hoursWeatherInfo[1].values.temperature < 0) {
+      this._translate.get('WeatherAlertLowMessage').subscribe((message) => {
+        this.weatherAlertMessage = message;
+        this.showWeatherAlert();
+      });
+    }
+  }
+
+  openDialog() {
+    if (this.hoursWeatherInfo.length != 0) {
+      this._dialogRef.open(WeatherDialogComponent, {
+        hasBackdrop: true,
+        data: this.hoursWeatherInfo,
+        panelClass: 'dialog',
+      });
+    }
+  }
+
   goBack() {
     this.location.back();
   }
 
-  getCurrentWeather() {
-    this._weatherService
-      .getCurrentWeather()
-      .subscribe((response) => {
-        const intervals = response.data.timelines[0].intervals;
-          this.hoursWeatherInfo = intervals.map((interval) => {
-            return {
-              startTime: new Date(interval.startTime),
-              values: {
-                humidity: interval.values.humidity,
-                precipitationProbability:
-                  interval.values.precipitationProbability,
-                temperature: interval.values.temperature,
-              },
-            };
-          });
-          if (this.hoursWeatherInfo.length != 0) {
-            this.openDialog();
-          }
-      }
-      );
-  }
-
-  openDialog() {
-    this._dialogRef.open(WeatherDialogComponent, {
-      hasBackdrop: true,
-      data: this.hoursWeatherInfo,
-      panelClass: 'dialog',
-    });
+  ngOnDestroy(): void {
+    clearInterval(this.weatherIntervalId);
   }
 }
