@@ -6,15 +6,12 @@
   align-items: center;
   background-color: $button-color;
   min-height: 100vh;
-  /* gap: 1rem;
-  padding: 0.5rem;
-  position: relative; */
 }
 
 .wrapper {
   display: flex;
   flex-direction: column;
-  justify-content: center;
+  justify-content: space-between;
   align-items: center;
   gap: 1rem;
   padding: 0.5rem;
