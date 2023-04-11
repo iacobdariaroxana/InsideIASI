@@ -2,7 +2,7 @@
 :host {
   display: flex;
   flex-direction: column;
-  justify-content: center;
+  justify-content: space-around;
   align-items: center;
   background-color: $button-color;
   min-height: 100vh;
@@ -13,7 +13,7 @@
   flex-direction: column;
   justify-content: space-between;
   align-items: center;
-  gap: 1rem;
+  // gap: 1rem;
   padding: 0.5rem;
   position: relative;
 }
