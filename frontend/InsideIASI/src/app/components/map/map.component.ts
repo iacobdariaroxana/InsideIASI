@@ -45,16 +45,20 @@ export class MapComponent implements AfterViewInit, OnDestroy {
   }
 
   ngAfterViewInit(): void {
-    // if (this._dataService.getHourFlag()) {
-    //   setTimeout(() => {
-    //     this.hoursWeatherInfo = this._dataService.getHoursWeatherInfo();
-    //     this.checkWeatherAlert();
-    //   }, 3000);
-    // }
-    // this.weatherIntervalId = setInterval(() => {
-    //   this.hoursWeatherInfo = this._dataService.getHoursWeatherInfo();
-    //   this.checkWeatherAlert();
-    // }, 3600000);
+    setTimeout(() => {
+      this.hoursWeatherInfo = this._dataService.getHoursWeatherInfo();
+    }, 1500);
+
+    if (this._dataService.getHourFlag()) {
+      setTimeout(() => {
+        this.checkWeatherAlert();
+      }, 2000);
+    }
+    
+    this.weatherIntervalId = setInterval(() => {
+      this.hoursWeatherInfo = this._dataService.getHoursWeatherInfo();
+      this.checkWeatherAlert();
+    }, 3600000);
   }
 
   async captureImage() {
@@ -96,6 +100,7 @@ export class MapComponent implements AfterViewInit, OnDestroy {
   }
 
   openDialog() {
+    console.log(this.hoursWeatherInfo.length);
     if (this.hoursWeatherInfo.length != 0) {
       this._dialogRef.open(WeatherDialogComponent, {
         hasBackdrop: true,
