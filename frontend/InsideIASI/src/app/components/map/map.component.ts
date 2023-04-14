@@ -100,7 +100,7 @@ export class MapComponent implements AfterViewInit, OnDestroy {
   }
 
   openDialog() {
-    console.log(this.hoursWeatherInfo.length);
+    // console.log(this.hoursWeatherInfo.length);
     if (this.hoursWeatherInfo.length != 0) {
       this._dialogRef.open(WeatherDialogComponent, {
         hasBackdrop: true,

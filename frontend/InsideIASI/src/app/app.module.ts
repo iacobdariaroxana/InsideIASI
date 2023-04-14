@@ -16,6 +16,7 @@ import { HourWeatherComponent } from './components/hour-weather/hour-weather.com
 import { WeatherDialogComponent } from './components/weather-dialog/weather-dialog.component';
 import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
 import {MatDialogModule} from '@angular/material/dialog';
+import { InstructionsComponent } from './instructions/instructions.component';
 
 
 @NgModule({
@@ -27,7 +28,8 @@ import {MatDialogModule} from '@angular/material/dialog';
     GoogleMapsComponent,
     ARComponent,
     HourWeatherComponent,
-    WeatherDialogComponent
+    WeatherDialogComponent,
+    InstructionsComponent
   ],
   imports: [
     BrowserModule,

@@ -90,3 +90,15 @@
 #en {
   background-image: url('../../../assets//images//en.png');
 }
+
+.info {
+  background-color: transparent;
+  border: none;
+  position: absolute;
+  left: 1rem;
+  top: 0.5rem;
+  svg {
+    width: 1.5rem;
+    fill: $main-color;
+  }
+}

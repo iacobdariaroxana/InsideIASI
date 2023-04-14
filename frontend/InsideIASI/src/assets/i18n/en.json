@@ -16,10 +16,13 @@
     "No": "no",
     "Distance": "Distance",
     "Minutes": "minutes",
-    "Weather" : "Weather",
+    "Weather": "Weather",
     "WeatherAlertRainMessage": "Chances of rain are high for the next hour",
     "WeatherAlertHighMessage": "In the next hour the temperature exceeds 35 celsius degrees, shelter in a safe place",
     "WeatherAlertLowMessage": "In the next hour the temperature drops below zero celsius degrees",
     "WeatherAlertTitle": "Weather alert",
-    "WeatherAlertButton": "Understood"
+    "WeatherAlertButton": "Understood",
+    "Instructions": "Instructions",
+    "InstructionsWeather": "Use the weather button to discover if there is bad weather incoming.",
+    "InstructionsAR": " Tap the camera button and point the device to a specific point of interest to enjoy an immersive experience using augmented reality in which you'll discover interesting infomations about the place you're at."
 }

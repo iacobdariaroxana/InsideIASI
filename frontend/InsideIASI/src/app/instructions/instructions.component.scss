@@ -1,0 +1,30 @@
+@import "_colors";
+
+:host {
+  display: flex;
+  flex-direction: column;
+  padding: 2rem;
+  gap: 1rem;
+}
+
+.instruction {
+  display: flex;
+  gap: 1rem;
+  align-items: center;
+  justify-content: center;
+  svg {
+    fill: #b57f87;
+  }
+}
+
+.close {
+  position: absolute;
+  top: 0.5rem;
+  right: 0.5rem;
+  background: transparent;
+  border: none;
+  svg {
+    fill: $stroke-color;
+    width: 1.5rem;
+  }
+}

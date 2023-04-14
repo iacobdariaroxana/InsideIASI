@@ -1,6 +1,8 @@
 import { Component } from '@angular/core';
 import { TranslateService } from '@ngx-translate/core';
 import { DataService } from './services/data.service';
+import { MatDialog } from '@angular/material/dialog';
+import { InstructionsComponent } from 'src/app/instructions/instructions.component';
 
 @Component({
   selector: 'app-start',
@@ -13,26 +15,36 @@ export class StartComponent {
 
   constructor(
     public translate: TranslateService,
-    private _dataService: DataService
+    private _dataService: DataService,
+    private _dialogRef: MatDialog
   ) {
     translate.addLangs(['en', 'ro']);
     translate.setDefaultLang('en');
-    this._dataService.flag != undefined? this.roFlag = this._dataService.flag : this.roFlag = this.defaultFlag;
+    this._dataService.flag != undefined
+      ? (this.roFlag = this._dataService.flag)
+      : (this.roFlag = this.defaultFlag);
   }
 
-  switchLanguage(lang: string) {
+  switchLanguage(lang: string): void {
     this.translate.use(lang);
   }
 
-  switchRo() {
+  switchRo(): void {
     this.switchLanguage('ro');
     this._dataService.flag = false;
     this.roFlag = false;
   }
 
-  switchEn() {
+  switchEn(): void {
     this.switchLanguage('en');
     this._dataService.flag = true;
     this.roFlag = true;
+  }
+
+  openInfoDialog(): void {
+    this._dialogRef.open(InstructionsComponent, {
+      hasBackdrop: true, 
+      panelClass: 'dialog'
+    })
   }
 }

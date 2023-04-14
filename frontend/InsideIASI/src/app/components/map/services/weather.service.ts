@@ -6,7 +6,7 @@ import { Injectable } from '@angular/core';
 })
 export class WeatherService {
   url =
-    'http://192.168.224.121:5002/weather';
+    'https://inside-iasi.azurewebsites.net/weather';
   constructor(private readonly _httpClient: HttpClient) {}
 
   getCurrentWeather() {

@@ -20,6 +20,7 @@ export class DataService implements OnDestroy {
 
   getCurrentWeather() {
     this._weatherService.getCurrentWeather().subscribe((response) => {
+      // console.log(response);
       const intervals = response.data.timelines[0].intervals;
       this.hoursWeatherInfo = intervals.map((interval) => {
         return {

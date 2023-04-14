@@ -22,5 +22,8 @@
     "WeatherAlertHighMessage": "În următoarea oră temperatura este de peste 35 grade celsius, adăpostiți-vă într-un loc răcoros",
     "WeatherAlertLowMessage": "În următoarea oră temperatura scade sub zero grade celsius",
     "WeatherAlertTitle": "Alertă de vreme",
-    "WeatherAlertButton": "Am înțeles"
+    "WeatherAlertButton": "Am înțeles",
+    "Instructions": "Instrucțiuni",
+    "InstructionsWeather": "Utilizați butonul cu vremea pentru a afla dacă condițiile meteo sunt prielnice pentru călătoria dvs.",
+    "InstructionsAR": "Apăsați pictograma cu camera foto și îndreptați dispozitivul către monumentul dorit pentru a avea parte de o experiență imersivă prin intermediul realității augmentate în care veți descoperi informații despre locul în care vă aflați."
 }
