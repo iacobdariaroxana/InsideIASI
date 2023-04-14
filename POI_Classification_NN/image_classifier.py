@@ -53,6 +53,7 @@ def prepare_data(actual_label):
     formatted_hours = '\n'.join(formatted_lines)
 
     response["opening_hours"] = formatted_hours
+    response["link"] = result[3]
     return response
 
 
@@ -88,8 +89,8 @@ def get_poi_label(image64, model_n):
         actual_label += str(int(b))
     actual_label = poi_dict[actual_label]
 
-    t = threading.Timer(2.0, move_image_to_directory, args=(image_id, actual_label))
-    t.start()
+    # t = threading.Timer(2.0, move_image_to_directory, args=(image_id, actual_label))
+    # t.start()
     return prepare_data(actual_label)
 
 
