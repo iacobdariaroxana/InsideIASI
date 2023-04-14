@@ -6,7 +6,7 @@ import { Injectable } from '@angular/core';
 })
 export class WeatherService {
   url =
-    'https://api.tomorrow.io/v4/timelines?apikey=';
+    'http://192.168.224.121:5002/weather';
   constructor(private readonly _httpClient: HttpClient) {}
 
   getCurrentWeather() {

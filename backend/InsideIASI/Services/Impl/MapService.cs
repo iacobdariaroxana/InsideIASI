@@ -25,11 +25,11 @@ namespace InsideIASI.Services.Impl
                 HttpResponseMessage response = await _httpClient.GetAsync(url);
 
                 if (response.IsSuccessStatusCode)
-                {
+                {                   
                     var jsonString = await response.Content.ReadAsStringAsync();
                     var pointsList = JsonConvert.DeserializeObject<Models.PointOfInterest.ResultResponseModel>(jsonString);
 
-                    if (pointsList != null)
+                    if (pointsList != null && pointsList.PointsOfInterests != null)
                     {
                         pois.AddRange(pointsList.PointsOfInterests);
                     }

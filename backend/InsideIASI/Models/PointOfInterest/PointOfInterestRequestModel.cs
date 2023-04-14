@@ -6,6 +6,6 @@
 
         public double Longitude { get; set; } 
 
-        public string Query { get; set; }
+        public string? Query { get; set; }
     }
 }

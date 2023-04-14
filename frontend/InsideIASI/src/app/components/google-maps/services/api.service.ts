@@ -8,7 +8,7 @@ import { DistanceDTO, PointOfInterestDTO } from 'src/app/model';
 })
 export class ApiService {
   constructor(private readonly _httpClient: HttpClient) {}
-  url: string = 'http://192.168.43.121:5002/map';
+  url: string = 'http://192.168.224.121:5002/map';
 
   getPointsOfInterest(
     lat: number,
