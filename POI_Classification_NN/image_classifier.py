@@ -132,3 +132,26 @@ uvicorn.run(app, host="0.0.0.0", port=8003)
 #
 #
 # verify_images()
+
+
+# img = image.load_img('utils/23.jpg', target_size=(256, 341))
+# img_array = image.img_to_array(img)
+# img_array = np.expand_dims(img_array, axis=0)
+# prediction = model.predict(img_array)
+# print(prediction)
+#
+# max_value = max(prediction[0])
+# prediction[0] = [1 if x == max_value else 0 for x in prediction[0]]
+# print(prediction[0])
+#
+# poi_dict = {'100': 'MetropolitanCathedral', '010': 'NationalTheater', '001': 'PalaceOfCulture'}
+# actual_label = ""
+#
+# for b in prediction[0]:
+#     actual_label += str(int(b))
+# actual_label = poi_dict[actual_label]
+#
+# print(actual_label)
+
+
+

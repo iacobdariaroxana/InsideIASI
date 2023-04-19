@@ -9,6 +9,7 @@ import { WeatherDialogComponent } from 'src/app/components/weather-dialog/weathe
 import { Dialog } from '@capacitor/dialog';
 import { TranslateService } from '@ngx-translate/core';
 import { DataService } from './services/data.service';
+import { Haptics } from '@capacitor/haptics';
 
 @Component({
   selector: 'app-map',
@@ -21,6 +22,7 @@ export class MapComponent implements AfterViewInit, OnDestroy {
   weatherAlertTitle!: string;
   weatherAlertMessage!: string;
   weatherAlertButton!: string;
+
   readonly showWeatherAlert = async () => {
     await Dialog.alert({
       title: this.weatherAlertTitle,
@@ -54,7 +56,7 @@ export class MapComponent implements AfterViewInit, OnDestroy {
         this.checkWeatherAlert();
       }, 2000);
     }
-    
+
     this.weatherIntervalId = setInterval(() => {
       this.hoursWeatherInfo = this._dataService.getHoursWeatherInfo();
       this.checkWeatherAlert();
@@ -80,22 +82,21 @@ export class MapComponent implements AfterViewInit, OnDestroy {
       });
   }
 
-  checkWeatherAlert() {
-    if (this.hoursWeatherInfo[1].values.precipitationProbability > 50) {
-      this._translate.get('WeatherAlertRainMessage').subscribe((message) => {
-        this.weatherAlertMessage = message;
-        this.showWeatherAlert();
-      });
+  async triggerAlert(key: string) {
+    await Haptics.vibrate({ duration: 1000 });
+    this._translate.get(key).subscribe((message) => {
+      this.weatherAlertMessage = message;
+      this.showWeatherAlert();
+    });
+  }
+
+  async checkWeatherAlert() {
+    if (this.hoursWeatherInfo[1].values.precipitationProbability > -1) {
+      this.triggerAlert('WeatherAlertRainMessage');
     } else if (this.hoursWeatherInfo[1].values.temperature > 35) {
-      this._translate.get('WeatherAlertHighMessage').subscribe((message) => {
-        this.weatherAlertMessage = message;
-        this.showWeatherAlert();
-      });
+      this.triggerAlert('WeatherAlertHighMessage');
     } else if (this.hoursWeatherInfo[1].values.temperature < 0) {
-      this._translate.get('WeatherAlertLowMessage').subscribe((message) => {
-        this.weatherAlertMessage = message;
-        this.showWeatherAlert();
-      });
+      this.triggerAlert('WeatherAlertLowMessage');
     }
   }
 

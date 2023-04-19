@@ -1,4 +1,5 @@
-﻿using InsideIASI.Models.Weather;
+﻿
+using InsideIASI.Models.Weather;
 
 namespace InsideIASI.Services
 {

@@ -18,6 +18,12 @@ class _ExploreState extends State<Explore> {
   bool show = false;
 
   @override
+  void initState() {
+    super.initState();
+    selectedOptionWidget = getProgramWidget();
+  }
+
+  @override
   Widget build(BuildContext context) {
     return Stack(
       children: [
@@ -25,13 +31,16 @@ class _ExploreState extends State<Explore> {
             left: 20.0,
             right: 20.0,
             top: 40.0,
-            child: SizedBox(height: 100,child: 
-            ListView.separated(
-                // shrinkWrap: true,
-                separatorBuilder: (context, index) => const Divider(indent: 6,),
-                scrollDirection: Axis.horizontal,
-                itemCount: poiOptions.length,
-                itemBuilder: (context, index) => createCard(index)))),
+            child: SizedBox(
+                height: 100,
+                child: ListView.separated(
+                    // shrinkWrap: true,
+                    separatorBuilder: (context, index) => const Divider(
+                          indent: 6,
+                        ),
+                    scrollDirection: Axis.horizontal,
+                    itemCount: poiOptions.length,
+                    itemBuilder: (context, index) => createCard(index)))),
         Align(
           alignment: Alignment.center,
           child: selectedOptionWidget,

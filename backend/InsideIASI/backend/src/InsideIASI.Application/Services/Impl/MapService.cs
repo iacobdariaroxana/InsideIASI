@@ -27,7 +27,7 @@ namespace InsideIASI.Services.Impl
                 if (response.IsSuccessStatusCode)
                 {                   
                     var jsonString = await response.Content.ReadAsStringAsync();
-                    var pointsList = JsonConvert.DeserializeObject<Models.PointOfInterest.ResultResponseModel>(jsonString);
+                    var pointsList = JsonConvert.DeserializeObject<ResultResponseModel>(jsonString);
 
                     if (pointsList != null && pointsList.PointsOfInterests != null)
                     {

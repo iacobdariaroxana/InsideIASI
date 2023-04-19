@@ -1,9 +1,17 @@
-import tensorflow as tf
+import onnxruntime as rt
+import keras.utils as image
+import numpy as np
 
-# convert the model
-converter = tf.lite.TFLiteConverter.from_saved_model('../models/Model/model-1-epoch_07')
-tflite_model = converter.convert()
+sess = rt.InferenceSession('model.onnx', providers=rt.get_available_providers())
+print("input name='{}' and shape={}".format(sess.get_inputs()[0].name, sess.get_inputs()[0].shape))
+print("output name='{}' and shape={}".format(sess.get_outputs()[0].name, sess.get_outputs()[0].shape))
 
-# save the model to tflite format
-with open('model.tflite', 'wb') as f:
-    f.write(tflite_model)
+input_name = sess.get_inputs()[0].name
+label_name = sess.get_outputs()[0].name
+
+img = image.load_img('palat.png', target_size=(256, 341))
+img_array = image.img_to_array(img)
+img_array = np.expand_dims(img_array, axis=0)
+
+prediction = sess.run([label_name], {input_name: img_array})[0]
+print(prediction)

@@ -1,50 +1,66 @@
-import { Component } from '@angular/core';
+import { Component, OnInit } from '@angular/core';
 import { TranslateService } from '@ngx-translate/core';
-import { DataService } from './services/data.service';
 import { MatDialog } from '@angular/material/dialog';
 import { InstructionsComponent } from 'src/app/instructions/instructions.component';
+import { Preferences } from '@capacitor/preferences';
+import { AppLauncher } from '@capacitor/app-launcher';
 
 @Component({
   selector: 'app-start',
   templateUrl: './start.component.html',
   styleUrls: ['./start.component.scss'],
 })
-export class StartComponent {
+export class StartComponent implements OnInit {
   roFlag!: boolean;
-  defaultFlag: boolean = true;
 
   constructor(
     public translate: TranslateService,
-    private _dataService: DataService,
     private _dialogRef: MatDialog
   ) {
     translate.addLangs(['en', 'ro']);
     translate.setDefaultLang('en');
-    this._dataService.flag != undefined
-      ? (this.roFlag = this._dataService.flag)
-      : (this.roFlag = this.defaultFlag);
+  }
+
+  async ngOnInit() {
+    Preferences.get({ key: 'languageFlag' }).then((value) => {
+      value.value != null
+        ? (this.roFlag = JSON.parse(value.value!))
+        : (this.roFlag = true);
+    });
+    
+    const { value } = await AppLauncher.canOpenUrl({
+      url: 'https://inside-iasi.netlify.app',
+    });
+
+    console.log('Can open url: ', value);
   }
 
   switchLanguage(lang: string): void {
     this.translate.use(lang);
   }
 
-  switchRo(): void {
+  async switchFromRo() {
     this.switchLanguage('ro');
-    this._dataService.flag = false;
+    await Preferences.set({
+      key: 'languageFlag',
+      value: 'false',
+    });
     this.roFlag = false;
   }
 
-  switchEn(): void {
+  async switchFromEn() {
     this.switchLanguage('en');
-    this._dataService.flag = true;
+    await Preferences.set({
+      key: 'languageFlag',
+      value: 'true',
+    });
     this.roFlag = true;
   }
 
   openInfoDialog(): void {
     this._dialogRef.open(InstructionsComponent, {
-      hasBackdrop: true, 
-      panelClass: 'dialog'
-    })
+      hasBackdrop: true,
+      panelClass: 'dialog',
+    });
   }
 }

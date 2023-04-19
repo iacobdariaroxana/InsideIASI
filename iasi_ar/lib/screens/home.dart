@@ -89,6 +89,7 @@ class _MyHomePageState extends State<MyHomePage> {
       completer.complete(bytes!.buffer.asUint8List());
     }));
     Uint8List bytes = await completer.future;
+  
     var imageData = base64.encode(bytes);
     return imageData;
   }
