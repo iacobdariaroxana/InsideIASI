@@ -8,17 +8,16 @@ import { map, Observable } from 'rxjs';
 export class ImageService {
   constructor(private readonly _httpClient: HttpClient) {}
   getImagePlace(image64: string): Observable<string> {
-    const httpOptions = { headers: new HttpHeaders() };
-    httpOptions.headers.append('Access-Control-Allow-Origin', '*');
-    httpOptions.headers.append('Content-Type', 'application/json');
+    const httpOptions = {
+      headers: new HttpHeaders({
+        'Content-Type':  'application/json'
+      })
+    };
     const body = { image64: image64 };
     return this._httpClient
-      .post('http://192.168.43.121:8003/image_api', JSON.stringify(body), {
-        responseType: 'json',
-      })
+      .post('http://192.168.100.5:8003/image_api', JSON.stringify(body), httpOptions)
       .pipe(
         map<any, string>((response) => {
-          // console.log(response);
           return response;
         })
       );

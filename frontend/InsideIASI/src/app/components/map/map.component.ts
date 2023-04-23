@@ -54,7 +54,7 @@ export class MapComponent implements AfterViewInit, OnDestroy {
     if (this._dataService.getHourFlag()) {
       setTimeout(() => {
         this.checkWeatherAlert();
-      }, 2000);
+      }, 3000);
     }
 
     this.weatherIntervalId = setInterval(() => {
@@ -91,7 +91,7 @@ export class MapComponent implements AfterViewInit, OnDestroy {
   }
 
   async checkWeatherAlert() {
-    if (this.hoursWeatherInfo[1].values.precipitationProbability > -1) {
+    if (this.hoursWeatherInfo[1].values.precipitationProbability > 50) {
       this.triggerAlert('WeatherAlertRainMessage');
     } else if (this.hoursWeatherInfo[1].values.temperature > 35) {
       this.triggerAlert('WeatherAlertHighMessage');

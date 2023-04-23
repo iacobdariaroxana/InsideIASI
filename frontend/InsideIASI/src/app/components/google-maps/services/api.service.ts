@@ -8,8 +8,8 @@ import { DistanceDTO, PointOfInterestDTO } from 'src/app/model';
 })
 export class ApiService {
   constructor(private readonly _httpClient: HttpClient) {}
-  url: string = 'https://inside-iasi.azurewebsites.net/map';
-
+  // url: string = 'https://inside-iasi.azurewebsites.net/map';
+  url: string = 'http://localhost:5217/map';
   getPointsOfInterest(
     lat: number,
     long: number,

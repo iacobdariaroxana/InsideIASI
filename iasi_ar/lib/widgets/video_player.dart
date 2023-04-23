@@ -2,8 +2,8 @@ import 'package:flutter/material.dart';
 import 'package:video_player/video_player.dart';
 
 class Video extends StatefulWidget {
-  String? videoUrl;
-  Video({super.key, this.videoUrl});
+  final String? videoUrl;
+  const Video({super.key, this.videoUrl});
 
   @override
   State<StatefulWidget> createState() => _VideoState();
@@ -15,7 +15,6 @@ class _VideoState extends State<Video> {
   @override
   void initState() {
     super.initState();
-    debugPrint(widget.videoUrl!);
     _controller = VideoPlayerController.asset('assets/${widget.videoUrl!}');
     _controller.addListener(() {
       setState(() {});
@@ -27,8 +26,8 @@ class _VideoState extends State<Video> {
 
   @override
   void dispose() {
-    _controller.dispose();
     super.dispose();
+    _controller.dispose();
   }
 
   @override

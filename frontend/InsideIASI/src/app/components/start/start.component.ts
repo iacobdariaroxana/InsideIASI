@@ -3,7 +3,6 @@ import { TranslateService } from '@ngx-translate/core';
 import { MatDialog } from '@angular/material/dialog';
 import { InstructionsComponent } from 'src/app/instructions/instructions.component';
 import { Preferences } from '@capacitor/preferences';
-import { AppLauncher } from '@capacitor/app-launcher';
 
 @Component({
   selector: 'app-start',
@@ -18,21 +17,22 @@ export class StartComponent implements OnInit {
     private _dialogRef: MatDialog
   ) {
     translate.addLangs(['en', 'ro']);
-    translate.setDefaultLang('en');
+    
   }
 
   async ngOnInit() {
     Preferences.get({ key: 'languageFlag' }).then((value) => {
-      value.value != null
-        ? (this.roFlag = JSON.parse(value.value!))
-        : (this.roFlag = true);
+      if(value.value != null){
+        this.roFlag = JSON.parse(value.value!);
+        this.translate.setDefaultLang('ro');
+      } else {
+        this.roFlag = true;
+        this.translate.setDefaultLang('en');
+      }
+      // value.value != null
+      //   ? (this.roFlag = JSON.parse(value.value!))
+      //   : (this.roFlag = true);
     });
-    
-    const { value } = await AppLauncher.canOpenUrl({
-      url: 'https://inside-iasi.netlify.app',
-    });
-
-    console.log('Can open url: ', value);
   }
 
   switchLanguage(lang: string): void {

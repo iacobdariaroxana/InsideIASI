@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:flutter_gen/gen_l10n/app_localizations.dart';
 
 class PoiDetection extends StatefulWidget {
   Color? borderColor;
@@ -52,8 +53,8 @@ class _PoiDetectionState extends State<PoiDetection> {
                   shape: const CircleBorder(),
                   minimumSize: const Size(120, 120),
                   backgroundColor: const Color(0xFF232946)),
-              child:
-                  const Text("Explore", style: TextStyle(letterSpacing: 1.0)),
+              child: Text(AppLocalizations.of(context)!.explore_button_text,
+                  style: const TextStyle(letterSpacing: 1.0)),
             )),
     ]);
   }
