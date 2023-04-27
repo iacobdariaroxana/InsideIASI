@@ -39,6 +39,16 @@ export interface Distance {
   eta: string;
 }
 
+export interface AddressDTO {
+  address: string;
+}
+
+export interface Address {
+  street: string;
+  city: string;
+  country: string;
+}
+
 export interface Marker {
   position: {
     lat: number;

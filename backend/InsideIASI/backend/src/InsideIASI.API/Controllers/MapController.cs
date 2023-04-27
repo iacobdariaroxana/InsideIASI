@@ -1,4 +1,5 @@
-﻿using InsideIASI.Entities;
+﻿using InsideIASI.backend.src.InsideIASI.API.Models.Address;
+using InsideIASI.Entities;
 using InsideIASI.Models.PlacesDistance;
 using InsideIASI.Models.PointOfInterest;
 using InsideIASI.Services;
@@ -33,6 +34,14 @@ namespace InsideIASI.Controllers
             var distance = await _mapService.GetDistanceFromUserLocation(distanceRequestModel);
 
             return Ok(distance);
+        }
+
+        [HttpGet]
+        [Route("address")]
+        public async Task<IActionResult> GetAddress([FromQuery] AddressRequestModel addressRequestModel)
+        {
+            var address = await _mapService.GetAddressByLongitudinalCoordinates(addressRequestModel);
+            return Ok(address);
         }
     }
 }

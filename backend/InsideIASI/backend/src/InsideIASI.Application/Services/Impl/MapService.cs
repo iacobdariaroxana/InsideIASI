@@ -1,4 +1,5 @@
-﻿using InsideIASI.Models.PlacesDistance;
+﻿using InsideIASI.backend.src.InsideIASI.API.Models.Address;
+using InsideIASI.Models.PlacesDistance;
 using InsideIASI.Models.PointOfInterest;
 using Newtonsoft.Json;
 using System.Net.Http.Headers;
@@ -60,6 +61,29 @@ namespace InsideIASI.Services.Impl
                 }
             }
             return info;
+        }
+
+        public async Task<AddressResponseModel> GetAddressByLongitudinalCoordinates(AddressRequestModel addressRequestModel)
+        {
+            var address = new AddressResponseModel();
+
+            var key = System.Configuration.ConfigurationManager.AppSettings["GoogleMapsKey"];
+
+            var url = $"https://maps.googleapis.com/maps/api/geocode/json?latlng={addressRequestModel.Latitude}, {addressRequestModel.Longitude}&key={key}&result_type=route";
+
+            _httpClient.DefaultRequestHeaders.Accept.Add(new MediaTypeWithQualityHeaderValue("application/json"));
+            HttpResponseMessage response = await _httpClient.GetAsync(url);
+            if (response.IsSuccessStatusCode)
+            {
+                var jsonString = await response.Content.ReadAsStringAsync();
+                var addresses = JsonConvert.DeserializeObject<ApiResultResponseModel>(jsonString);
+                if (addresses != null)
+                {
+                    Console.WriteLine(addresses.Addresses.First().Address);
+                    address = addresses.Addresses.First();
+                }
+            }
+            return address;
         }
     }
 }

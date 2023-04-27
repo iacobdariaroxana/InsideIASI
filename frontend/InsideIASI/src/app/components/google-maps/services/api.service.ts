@@ -1,7 +1,7 @@
 import { HttpClient, HttpHeaders } from '@angular/common/http';
 import { Injectable } from '@angular/core';
 import { Observable, map } from 'rxjs';
-import { DistanceDTO, PointOfInterestDTO } from 'src/app/model';
+import { AddressDTO, DistanceDTO, PointOfInterestDTO } from 'src/app/model';
 
 @Injectable({
   providedIn: 'root',
@@ -21,7 +21,7 @@ export class ApiService {
     return this._httpClient
       .get(
         `${this.url}/pois?latitude=${lat}&longitude=${long}&query=${query}`,
-        { responseType: 'json' }
+        httpOptions
       )
       .pipe(
         map<any, PointOfInterestDTO[]>((response) => {
@@ -42,10 +42,27 @@ export class ApiService {
     return this._httpClient
       .get(
         `${this.url}/distance?originLatitude=${originLat}&originLongitude=${originLong}&destLatitude=${destLat}&destLongitude=${destLong}`,
-        { responseType: 'json' }
+        httpOptions
       )
       .pipe(
         map<any, DistanceDTO>((response) => {
+          // console.log(response);
+          return response;
+        })
+      );
+  }
+
+  getAddressByLongitudinalCoordinates(
+    lat: number,
+    lng: number
+  ): Observable<AddressDTO> {
+    const httpOptions = { headers: new HttpHeaders() };
+    httpOptions.headers.append('Access-Control-Allow-Origin', '*');
+    httpOptions.headers.append('Content-Type', 'application/json');
+    return this._httpClient
+      .get(`${this.url}/address?Latitude=${lat}&Longitude=${lng}`, httpOptions)
+      .pipe(
+        map<any, AddressDTO>((response) => {
           // console.log(response);
           return response;
         })

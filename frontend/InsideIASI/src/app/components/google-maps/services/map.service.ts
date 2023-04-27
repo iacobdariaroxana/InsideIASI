@@ -1,6 +1,8 @@
 import { Injectable } from '@angular/core';
 import { Observable, map } from 'rxjs';
 import {
+  Address,
+  AddressDTO,
   Distance,
   DistanceDTO,
   PointOfInterest,
@@ -55,5 +57,17 @@ export class MapService {
           };
         })
       );
+  }
+
+  getAddressByLongitudinalCoordinates(lat: number, lng: number): Observable<Address> {
+    return this._apiService.getAddressByLongitudinalCoordinates(lat, lng).pipe(map<AddressDTO, Address>((address) => {
+        const data = address.address.split(',');
+        const street = data[0].split(" ").slice(1).join(" ");
+        return {
+          street: street == "fără nume" ? '-' : street,
+          city: data[1],
+          country: data[2]
+        };
+    }));
   }
 }

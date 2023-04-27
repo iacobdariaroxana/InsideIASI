@@ -1,6 +1,6 @@
 <google-map [center]="center" [options]="options" width="360px" height="700px">
   <map-marker
-    #info_marker="mapMarker"
+    #info_poi_marker="mapMarker"
     *ngFor="let marker of markers"
     [position]="marker.position"
     [label]="marker.label"
@@ -9,8 +9,8 @@
     [options]="marker.options"
     [icon]="marker.icon"
     (mapClick)="
-      openInfo(
-        info_marker,
+      openPoiInfo(
+        info_poi_marker,
         marker.title,
         marker.rating,
         marker.position.lat,
@@ -21,26 +21,52 @@
   ></map-marker>
   <map-info-window class="show-map-info-window">
     <div class="poi-title">
-      {{ info.name }}
+      {{ poiInfo.name }}
     </div>
-    <div *ngIf="info.rating != 0">
-      {{ "Rating" | translate }}: <b>{{ info.rating }}</b>
+    <div *ngIf="poiInfo.rating != 0">
+      {{ "Rating" | translate }}: <b>{{ poiInfo.rating }}</b>
     </div>
-    <div *ngIf="info.open">
-      {{ "Open" | translate }}: <b>{{ info.open }}</b>
-    </div>
-    <div>
-      {{ "Distance" | translate }}: <b>{{ info.distance }} </b>
+    <div *ngIf="poiInfo.open">
+      {{ "Open" | translate }}: <b>{{ poiInfo.open }}</b>
     </div>
     <div>
-      ETA: <b>{{ info.eta }} </b>
+      {{ "Distance" | translate }}: <b>{{ poiInfo.distance }} </b>
     </div>
-    <button class="app-button" (click)="openGoogleMaps()">{{
-      "Visit" | translate
-    }}</button>
+    <div>
+      ETA: <b>{{ poiInfo.eta }} </b>
+    </div>
+    <button class="app-button" (click)="openGoogleMaps()">
+      {{ "Visit" | translate }}
+    </button>
   </map-info-window>
-  
+
+  <map-marker
+    #user_location_marker="mapMarker"
+    [position]="userLocation"
+    (mapClick)="openUserLocationInfo(user_location_marker)"
+  >
+  </map-marker>
+  <map-info-window class="show-map-info-window">
+    <div>
+      {{ "Street" | translate }}: <b> {{ userLocationInfo.street }} </b>
+    </div>
+    <div>
+      {{ "City" | translate }}: <b> {{ userLocationInfo.city }} </b>
+    </div>
+    <div>
+      {{ "Country" | translate }}: <b> {{ userLocationInfo.country }} </b>
+    </div>
+  </map-info-window>
   <button class="user-location" (click)="setCenterToUserLocation()">
-    <svg class="user-location-icon" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 512 512"><!--! Font Awesome Pro 6.3.0 by @fontawesome - https://fontawesome.com License - https://fontawesome.com/license (Commercial License) Copyright 2023 Fonticons, Inc. --><path d="M256 0c17.7 0 32 14.3 32 32V66.7C368.4 80.1 431.9 143.6 445.3 224H480c17.7 0 32 14.3 32 32s-14.3 32-32 32H445.3C431.9 368.4 368.4 431.9 288 445.3V480c0 17.7-14.3 32-32 32s-32-14.3-32-32V445.3C143.6 431.9 80.1 368.4 66.7 288H32c-17.7 0-32-14.3-32-32s14.3-32 32-32H66.7C80.1 143.6 143.6 80.1 224 66.7V32c0-17.7 14.3-32 32-32zM128 256a128 128 0 1 0 256 0 128 128 0 1 0 -256 0zm128-80a80 80 0 1 1 0 160 80 80 0 1 1 0-160z"/></svg>
+    <svg
+      class="user-location-icon"
+      xmlns="http://www.w3.org/2000/svg"
+      viewBox="0 0 512 512"
+    >
+      <!--! Font Awesome Pro 6.3.0 by @fontawesome - https://fontawesome.com License - https://fontawesome.com/license (Commercial License) Copyright 2023 Fonticons, Inc. -->
+      <path
+        d="M256 0c17.7 0 32 14.3 32 32V66.7C368.4 80.1 431.9 143.6 445.3 224H480c17.7 0 32 14.3 32 32s-14.3 32-32 32H445.3C431.9 368.4 368.4 431.9 288 445.3V480c0 17.7-14.3 32-32 32s-32-14.3-32-32V445.3C143.6 431.9 80.1 368.4 66.7 288H32c-17.7 0-32-14.3-32-32s14.3-32 32-32H66.7C80.1 143.6 143.6 80.1 224 66.7V32c0-17.7 14.3-32 32-32zM128 256a128 128 0 1 0 256 0 128 128 0 1 0 -256 0zm128-80a80 80 0 1 1 0 160 80 80 0 1 1 0-160z"
+      />
+    </svg>
   </button>
 </google-map>

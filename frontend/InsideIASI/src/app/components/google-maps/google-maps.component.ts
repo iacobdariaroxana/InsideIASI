@@ -1,7 +1,13 @@
-import { AfterViewInit, Component, OnInit, ViewChild } from '@angular/core';
+import {
+  Component,
+  OnInit,
+  QueryList,
+  ViewChild,
+  ViewChildren,
+} from '@angular/core';
 import { GoogleMap, MapInfoWindow } from '@angular/google-maps';
 import { first } from 'rxjs';
-import { Marker, MarkerInfo } from 'src/app/model';
+import { Address, Marker, MarkerInfo } from 'src/app/model';
 import { MapService } from './services/map.service';
 import { Geolocation } from '@capacitor/geolocation';
 import { ActivatedRoute } from '@angular/router';
@@ -13,18 +19,15 @@ import { TranslateService } from '@ngx-translate/core';
   templateUrl: './google-maps.component.html',
   styleUrls: ['./google-maps.component.scss'],
 })
-export class GoogleMapsComponent implements OnInit, AfterViewInit {
+export class GoogleMapsComponent implements OnInit {
   @ViewChild(GoogleMap) map!: GoogleMap;
-  @ViewChild(MapInfoWindow) infoWindow!: MapInfoWindow;
+  @ViewChildren(MapInfoWindow) infoWindow!: QueryList<MapInfoWindow>;
 
   center: google.maps.LatLngLiteral = {
     lat: 47.186931656055684,
     lng: 27.553303223560913,
   };
   markers!: Marker[];
-  userLocationMarker = new google.maps.Marker({
-    position: this.center,
-  });
   options: google.maps.MapOptions = {
     styles: [
       {
@@ -35,7 +38,7 @@ export class GoogleMapsComponent implements OnInit, AfterViewInit {
     zoom: 16,
     minZoom: 12.5,
   };
-  info: MarkerInfo = {
+  poiInfo: MarkerInfo = {
     name: '',
     rating: '',
     lat: 0,
@@ -44,6 +47,15 @@ export class GoogleMapsComponent implements OnInit, AfterViewInit {
     eta: '0',
     open: undefined,
   };
+  userLocation: google.maps.LatLngLiteral = {
+    lat: 47.186931656055684,
+    lng: 27.553303223560913,
+  };
+  userLocationInfo: Address = {
+    street: '',
+    city: '',
+    country: '',
+  };
 
   constructor(
     private readonly _mapService: MapService,
@@ -51,17 +63,9 @@ export class GoogleMapsComponent implements OnInit, AfterViewInit {
     private _translate: TranslateService
   ) {}
 
-  ngAfterViewInit(): void {
-    if (this.map.googleMap) {
-      this.userLocationMarker.setMap(this.map.googleMap);
-    }
-  }
-
   ngOnInit(): void {
     this.setInitialPosition();
-
-    setInterval(() => this.setCurrentPosition(), 90000);
-
+    // setInterval(() => this.setCurrentPosition(), 30 * 1000);
     this._route.queryParams.subscribe((params) => {
       this.getMarkers(params['query']);
     });
@@ -74,7 +78,7 @@ export class GoogleMapsComponent implements OnInit, AfterViewInit {
           lat: response.coords.latitude,
           lng: response.coords.longitude,
         };
-        this.userLocationMarker.setPosition(this.center);
+        this.userLocation = this.center;
       })
       .catch(async (err) => {
         console.log(err);
@@ -84,34 +88,30 @@ export class GoogleMapsComponent implements OnInit, AfterViewInit {
   setCurrentPosition = async () => {
     await Geolocation.getCurrentPosition()
       .then((response) => {
-        this.center = {
+        this.userLocation = {
           lat: response.coords.latitude,
           lng: response.coords.longitude,
         };
-        this.userLocationMarker.setPosition(this.center);
-        // this.center = {
-        //   lat: 47.17778435599965,
-        //   lng: 27.57173545767212,
-        // };
-        // this.userLocationMarker.setPosition(this.center);
       })
       .catch(async (err) => {
         console.log(err);
       });
   };
 
+  setCenterToUserLocation() {
+    this.center = this.userLocation;
+  }
+
   setDistanceAndETA(lat: number, lng: number) {
-    const userLat =
-      this.userLocationMarker.getPosition()?.lat() || this.center.lat;
-    const userLng =
-      this.userLocationMarker.getPosition()?.lng() || this.center.lng;
+    const userLat = this.userLocation.lat;
+    const userLng = this.userLocation.lng;
     this._mapService
       .getDistanceBetweenPlaces(userLat, userLng, lat, lng)
       .pipe(first())
       .subscribe({
         next: (distance) => {
-          this.info.distance = distance.number_of_km;
-          this.info.eta = distance.eta;
+          this.poiInfo.distance = distance.number_of_km;
+          this.poiInfo.eta = distance.eta;
         },
         error: (err) => {
           console.log(err);
@@ -157,7 +157,7 @@ export class GoogleMapsComponent implements OnInit, AfterViewInit {
       });
   }
 
-  openInfo(
+  openPoiInfo(
     marker: any,
     name: string,
     rating: number,
@@ -170,30 +170,38 @@ export class GoogleMapsComponent implements OnInit, AfterViewInit {
       lng: lng,
     };
 
-    this.info.name = name;
+    this.poiInfo.name = name;
     // rating == 0 ? (this.info.rating = '0') : (this.info.rating = `${rating}`);
-    this.info.lat = lat;
-    this.info.lng = lng;
+    this.poiInfo.lat = lat;
+    this.poiInfo.lng = lng;
     if (rating != 0) {
-      this.info.rating = `${rating}`;
+      this.poiInfo.rating = `${rating}`;
     }
     if (open == true) {
-      this.info.open = `${this._translate.instant('Yes')}`;
+      this.poiInfo.open = `${this._translate.instant('Yes')}`;
     } else {
-      this.info.open = `${this._translate.instant('No')}`;
+      this.poiInfo.open = `${this._translate.instant('No')}`;
     }
     this.setDistanceAndETA(lat, lng);
-    this.infoWindow.open(marker);
+    this.infoWindow.get(0)!.open(marker);
+  }
+
+  openUserLocationInfo(marker: any) {
+    this._mapService
+      .getAddressByLongitudinalCoordinates(this.center.lat, this.center.lng)
+      .pipe(first())
+      .subscribe({
+        next: (addressInfo) => {
+          this.userLocationInfo = addressInfo;
+          this.infoWindow.get(1)!.open(marker);
+        },
+        error: (err) => {
+          console.log(err);
+        },
+      });
   }
 
   openGoogleMaps() {
-    openGoogleMaps(this.info.lat, this.info.lng);
-  }
-
-  setCenterToUserLocation() {
-    this.center = {
-      lat: this.userLocationMarker.getPosition()?.lat() || this.center.lat,
-      lng: this.userLocationMarker.getPosition()?.lng() || this.center.lng,
-    };
+    openGoogleMaps(this.poiInfo.lat, this.poiInfo.lng);
   }
 }

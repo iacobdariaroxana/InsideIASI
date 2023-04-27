@@ -2,7 +2,7 @@ import psycopg2
 
 from db.config import config_database
 
-conn_string = ""
+
 # conn = psycopg2.connect(conn_string)
 
 
