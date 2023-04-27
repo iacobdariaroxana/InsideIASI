@@ -2,11 +2,14 @@ import psycopg2
 
 from db.config import config_database
 
+conn_string = ""
+# conn = psycopg2.connect(conn_string)
+
 
 def get_poi(name):
     connection = None
     try:
-        connection = psycopg2.connect(**config_database())
+        connection = psycopg2.connect(conn_string)
         cursor = connection.cursor()
 
         query = f"select * from pois where name='{name}'"
@@ -25,7 +28,7 @@ def get_poi(name):
 def get_opening_hours(poi_id):
     connection = None
     try:
-        connection = psycopg2.connect(**config_database())
+        connection = psycopg2.connect(conn_string)
         cursor = connection.cursor()
         query = f"select day, opening_time, closing_time from opening_hours where poi_id={poi_id}"
         cursor.execute(query)

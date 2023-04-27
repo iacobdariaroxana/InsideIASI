@@ -15,7 +15,7 @@ export class ImageService {
     };
     const body = { image64: image64 };
     return this._httpClient
-      .post('http://192.168.100.5:8003/image_api', JSON.stringify(body), httpOptions)
+      .post('http://192.168.81.121:8003/image_api', JSON.stringify(body), httpOptions)
       .pipe(
         map<any, string>((response) => {
           return response;

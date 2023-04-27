@@ -91,6 +91,7 @@ export class MapComponent implements AfterViewInit, OnDestroy {
   }
 
   async checkWeatherAlert() {
+    if(this.hoursWeatherInfo.length < 1) return;
     if (this.hoursWeatherInfo[1].values.precipitationProbability > 50) {
       this.triggerAlert('WeatherAlertRainMessage');
     } else if (this.hoursWeatherInfo[1].values.temperature > 35) {

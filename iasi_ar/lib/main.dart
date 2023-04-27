@@ -3,9 +3,11 @@ import 'package:google_fonts/google_fonts.dart';
 import 'package:iasi_ar/provider/app_locale.dart';
 import 'package:iasi_ar/screens/home.dart';
 import 'package:flutter_gen/gen_l10n/app_localizations.dart';
+import 'package:iasi_ar/service_locator.dart';
 import 'package:provider/provider.dart';
 
 void main() {
+  setupServiceLocator();
   runApp(const MyApp());
 }
 

@@ -1,11 +1,9 @@
 import 'dart:async';
-import 'dart:convert';
-import 'dart:ui';
-import 'package:flutter/foundation.dart';
-import 'package:http/http.dart' as http;
 import 'package:flutter/material.dart';
 import 'package:iasi_ar/models/app_language.dart';
 import 'package:iasi_ar/provider/app_locale.dart';
+import 'package:iasi_ar/services/image_convertor_service.dart';
+import 'package:iasi_ar/services/implementations/image_api_service.dart';
 import 'package:iasi_ar/widgets/detector.dart';
 import 'package:iasi_ar/widgets/ar.dart';
 import 'package:iasi_ar/models/poi.dart';
@@ -13,6 +11,8 @@ import 'package:iasi_ar/widgets/explore.dart';
 import 'package:flutter_gen/gen_l10n/app_localizations.dart';
 import 'package:provider/provider.dart';
 import 'package:translator/translator.dart';
+
+import '../service_locator.dart';
 
 class MyHomePage extends StatefulWidget {
   const MyHomePage({super.key, required this.title});
@@ -23,15 +23,18 @@ class MyHomePage extends StatefulWidget {
 }
 
 class _MyHomePageState extends State<MyHomePage> {
+  final ImageConvertorService _imageConvertorService =
+      getIt<ImageConvertorService>();
+  final ImageApiService _imageApiService = getIt<ImageApiService>();
+  final _translator = GoogleTranslator();
+  var _appLocale;
+  late AppLanguage dropdownValue;
   Color borderColor = Colors.transparent;
   String predictedPOI = '';
-  bool exploreButtonVisibility = false;
-  bool detectionMode = true;
   PointOfInterest? poi;
   AR? ar = AR();
-  late AppLanguage dropdownValue;
-  var _appLocale;
-  final _translator = GoogleTranslator();
+  bool exploreButtonVisibility = false;
+  bool detectionMode = true;
 
   @override
   void initState() {
@@ -84,7 +87,8 @@ class _MyHomePageState extends State<MyHomePage> {
               predictedPOI: predictedPOI,
               exploreButtonVisibility: exploreButtonVisibility,
               onChangeMode: onChangeMode),
-        if (!detectionMode) Explore(poi: poi, languageCode: _appLocale.locale.languageCode),
+        if (!detectionMode)
+          Explore(poi: poi, languageCode: _appLocale.locale.languageCode),
       ]),
       floatingActionButton: FloatingActionButton.extended(
           onPressed: onTakeScreenshot,
@@ -101,48 +105,27 @@ class _MyHomePageState extends State<MyHomePage> {
       predictedPOI = AppLocalizations.of(context)!.loading_text;
     });
     ImageProvider image = await ar!.arSessionManager!.snapshot();
-    String image64 = await imageToBase64(image);
-
-    var response = await http.post(
-        Uri.parse('http://192.168.197.121:8003/image_api'),
-        headers: {"Content-Type": "application/json"},
-        body: jsonEncode({"image64": image64}));
-
-    if (response.statusCode == 200) {
-      poi = PointOfInterest.fromJson(jsonDecode(response.body));
-      var actualPOI =
-          poi!.name!.split(RegExp(r"(?<=[a-z])(?=[A-Z])")).join(" ");
-      setState(() {
-        borderColor = const Color(0xFF0B6623);
-        exploreButtonVisibility = true;
-      });
-      if (_appLocale.locale.languageCode == 'ro') {
-        _translator.translate(actualPOI, from: 'en', to: 'ro').then((value) => {
-              setState(() {
-                predictedPOI = value.text;
+    _imageConvertorService.imageToBase64(image).then((image64) => {
+          _imageApiService.detectPoi(image64).then((response) => {
+                poi = response,
+                setState(() {
+                  borderColor = const Color(0xFF0B6623);
+                  exploreButtonVisibility = true;
+                }),
+                _translator
+                    .translate(
+                        poi!.name!
+                            .split(RegExp(r"(?<=[a-z])(?=[A-Z])"))
+                            .join(" "),
+                        from: 'en',
+                        to: _appLocale.locale.languageCode)
+                    .then((value) => {
+                          setState(() {
+                            predictedPOI = value.text;
+                          })
+                        })
               })
-            });
-      } else {
-        setState(() {
-          predictedPOI = actualPOI;
         });
-      }
-    }
-  }
-
-  Future<String> imageToBase64(ImageProvider imageProvider) async {
-    var completer = Completer<Uint8List>();
-    ImageStream stream = imageProvider.resolve(ImageConfiguration.empty);
-
-    stream.addListener(ImageStreamListener((image, synchronousCall) async {
-      ByteData? bytes =
-          await image.image.toByteData(format: ImageByteFormat.png);
-      completer.complete(bytes!.buffer.asUint8List());
-    }));
-    Uint8List bytes = await completer.future;
-
-    var imageData = base64.encode(bytes);
-    return imageData;
   }
 
   void onChangeMode() {

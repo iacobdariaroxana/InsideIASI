@@ -6,7 +6,7 @@ import keras.utils as image
 from db import functions
 from flask import Flask, request, jsonify
 from flask_cors import CORS
-import os
+
 
 app = Flask(__name__)
 CORS(app, support_credentials=True)
@@ -45,7 +45,8 @@ def prepare_data(actual_label):
     return response
 
 
-model = tf.keras.models.load_model("model-{}-epoch_{:0>2d}".format(1, 7))
+# model = tf.keras.models.load_model("model-{}-epoch_{:0>2d}".format(1, 7))
+model = tf.keras.models.load_model("model-1-last-epoch_08")
 
 
 def get_poi_label(image64):
@@ -60,7 +61,9 @@ def get_poi_label(image64):
     prediction[0] = [1 if x == max_value else 0 for x in prediction[0]]
     # print(prediction[0])
 
-    poi_dict = {'100': 'MetropolitanCathedral', '010': 'NationalTheater', '001': 'PalaceOfCulture'}
+    poi_dict = {'10000': 'CityHall', '01000': 'MetropolitanCathedral', '00100': 'MihaiEminescuUniversityLibrary',
+                '00010': 'NationalTheater',
+                '00001': 'PalaceOfCulture'}
     actual_label = ""
 
     for b in prediction[0]:
@@ -79,5 +82,4 @@ def classify_image():
     return response
 
 
-# print(os.getenv('SECRET_KEY'))
 app.run(host="0.0.0.0", port=8003)

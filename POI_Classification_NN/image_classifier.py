@@ -50,7 +50,7 @@ def prepare_data(actual_label):
     return response
 
 
-model = tf.keras.models.load_model("models/Model/model-{}-epoch_{:0>2d}".format(1, 7))
+model = tf.keras.models.load_model("models/Model/model-{}-final-epoch_{:0>2d}".format(1, 7))
 
 
 def get_poi_label(image64, model_n):
@@ -68,7 +68,9 @@ def get_poi_label(image64, model_n):
     prediction[0] = [1 if x == max_value else 0 for x in prediction[0]]
     # print(prediction[0])
 
-    poi_dict = {'100': 'MetropolitanCathedral', '010': 'NationalTheater', '001': 'PalaceOfCulture'}
+    poi_dict = {'10000': 'CityHall', '01000': 'MetropolitanCathedral', '00100': 'MihaiEminescuUniversityLibrary',
+                '00010': 'NationalTheater',
+                '00001': 'PalaceOfCulture'}
     actual_label = ""
 
     for b in prediction[0]:
@@ -87,8 +89,26 @@ async def classify_image(request: Request):
 
 
 models = {1: 5, 2: 12, 4: 8, 6: 14}
-uvicorn.run(app, host="0.0.0.0", port=8003)
+# uvicorn.run(app, host="0.0.0.0", port=8003)
 
 
+img = image.load_img('img.png', target_size=(256, 341))
+img_array = image.img_to_array(img)
+img_array = np.expand_dims(img_array, axis=0)
+prediction = model.predict(img_array)
+print(prediction)
 
+max_value = max(prediction[0])
+prediction[0] = [1 if x == max_value else 0 for x in prediction[0]]
+print(prediction[0])
 
+poi_dict = {'10000': 'CityHall', '01000': 'MetropolitanCathedral', '00100': 'MihaiEminescuUniversityLibrary',
+            '00010': 'NationalTheater',
+            '00001': 'PalaceOfCulture'}
+actual_label = ""
+
+for b in prediction[0]:
+    actual_label += str(int(b))
+actual_label = poi_dict[actual_label]
+
+print(actual_label)

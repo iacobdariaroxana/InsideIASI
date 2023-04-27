@@ -1,9 +1,8 @@
 import 'package:animated_text_kit/animated_text_kit.dart';
 import 'package:flutter/material.dart';
+import 'package:iasi_ar/models/info.dart';
 import 'package:iasi_ar/models/poi.dart';
 import 'package:iasi_ar/widgets/video_player.dart';
-import 'package:intl/intl.dart';
-import 'package:translator/translator.dart';
 import 'package:url_launcher/url_launcher.dart';
 import 'package:flutter_gen/gen_l10n/app_localizations.dart';
 
@@ -20,12 +19,7 @@ class _ExploreState extends State<Explore> {
   List<String> poiOptions = [];
   Widget selectedOptionWidget = Container();
   bool show = false;
-  String? openingHours;
-  String? info0;
-  String? info1;
-  String? info2;
-  String? info3;
-  final _translator = GoogleTranslator();
+  Information? info;
 
   @override
   void didChangeDependencies() async {
@@ -36,18 +30,14 @@ class _ExploreState extends State<Explore> {
       AppLocalizations.of(context)!.explore_option_video,
       AppLocalizations.of(context)!.explore_option_site,
     ];
-    
-    translate(widget.poi!.openingHours!, setOpeningHours);
-    translate(widget.poi!.info0!, setInfo0);
-    translate(widget.poi!.info1!, setInfo1);
-    translate(widget.poi!.info2!, setInfo2);
-    translate(widget.poi!.info3!, setInfo3);
-  }
-
-  void translate(value, function) {
-    _translator
-        .translate(value, to: widget.languageCode!)
-        .then((value) => function(value.text));
+    Information(
+            openingHours: widget.poi!.openingHours!,
+            info0: widget.poi!.info0!,
+            info1: widget.poi!.info1!,
+            info2: widget.poi!.info2!,
+            info3: widget.poi!.info3!)
+        .getTranslatedInfo(widget.languageCode!)
+        .then((value) => info = value);
   }
 
   Widget createCard(int index) {
@@ -74,7 +64,7 @@ class _ExploreState extends State<Explore> {
         style: const TextStyle(
             fontSize: 20, color: Colors.white, fontWeight: FontWeight.bold),
         child: AnimatedTextKit(animatedTexts: [
-          TypewriterAnimatedText(openingHours!,
+          TypewriterAnimatedText(info!.openingHours,
               speed: const Duration(milliseconds: 60))
         ]));
   }
@@ -82,19 +72,18 @@ class _ExploreState extends State<Explore> {
   Widget getInfosWidget() {
     return SizedBox(
         width: 200.0,
-        // height: 00.0,
         child: DefaultTextStyle(
             style: const TextStyle(
                 fontSize: 20, color: Colors.white, fontWeight: FontWeight.bold),
             child: AnimatedTextKit(
               animatedTexts: [
-                TypewriterAnimatedText(info0!,
+                TypewriterAnimatedText(info!.info0,
                     speed: const Duration(milliseconds: 60)),
-                TypewriterAnimatedText(info1!,
+                TypewriterAnimatedText(info!.info1,
                     speed: const Duration(milliseconds: 60)),
-                TypewriterAnimatedText(info2!,
+                TypewriterAnimatedText(info!.info2,
                     speed: const Duration(milliseconds: 60)),
-                TypewriterAnimatedText(info3!,
+                TypewriterAnimatedText(info!.info3,
                     speed: const Duration(milliseconds: 60))
               ],
               pause: const Duration(milliseconds: 3000),
@@ -104,7 +93,7 @@ class _ExploreState extends State<Explore> {
 
   Widget getInteriorWidget() {
     return SizedBox(
-        width: 350, child: Video(videoUrl: '${widget.poi!.name}.mp4'));
+        width: 350, child: Video(videoUrl: 'videos/${widget.poi!.name}.mp4'));
   }
 
   Widget getLinkWidget() {
@@ -147,26 +136,6 @@ class _ExploreState extends State<Explore> {
       default:
         return Container();
     }
-  }
-
-  setOpeningHours(String hours) {
-    openingHours = hours;
-  }
-
-  setInfo0(String info) {
-    info0 = info;
-  }
-
-  setInfo1(String info) {
-    info1 = info;
-  }
-
-  setInfo2(String info) {
-    info2 = info;
-  }
-
-  setInfo3(String info) {
-    info3 = info;
   }
 
   @override
