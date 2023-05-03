@@ -22,6 +22,7 @@ export class MapService {
   ): Observable<PointOfInterest[]> {
     return this._apiService.getPointsOfInterest(lat, lng, query).pipe(
       map<PointOfInterestDTO[], PointOfInterest[]>((pointsOfInterest) => {
+        console.log(pointsOfInterest);
         const result: PointOfInterest[] = pointsOfInterest.map(
           (pointOfInterest) => {
             return {

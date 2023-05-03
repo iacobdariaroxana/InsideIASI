@@ -7,6 +7,7 @@ const config: CapacitorConfig = {
   bundledWebRuntime: false,
   server: {
     url: 'http://192.168.81.121:4200',
+    // url: 'https://inside-iasi.netlify.app',
     cleartext: true
   }
 };

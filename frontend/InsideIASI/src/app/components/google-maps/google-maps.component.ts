@@ -65,7 +65,7 @@ export class GoogleMapsComponent implements OnInit {
 
   ngOnInit(): void {
     this.setInitialPosition();
-    // setInterval(() => this.setCurrentPosition(), 30 * 1000);
+    setInterval(() => this.setCurrentPosition(), 30 * 1000);
     this._route.queryParams.subscribe((params) => {
       this.getMarkers(params['query']);
     });
@@ -74,6 +74,7 @@ export class GoogleMapsComponent implements OnInit {
   setInitialPosition = async () => {
     await Geolocation.getCurrentPosition()
       .then((response) => {
+        console.log(response);
         this.center = {
           lat: response.coords.latitude,
           lng: response.coords.longitude,
