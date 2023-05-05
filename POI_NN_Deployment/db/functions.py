@@ -1,9 +1,15 @@
 import psycopg2
+from dotenv import dotenv_values
 
-from db.config import config_database
+env = dotenv_values()
 
-
-# conn = psycopg2.connect(conn_string)
+host = env['DBHOST']
+dbname = env['DBNAME']
+user = env['DBUSER']
+password = env['DBPASS']
+sslmode = "require"
+conn_string = "host={0} user={1} dbname={2} password={3} sslmode={4}".format(host, user, dbname, password, sslmode)
+conn = psycopg2.connect(conn_string)
 
 
 def get_poi(name):
