@@ -8,7 +8,7 @@ import 'package:http/http.dart' as http;
 class ImageApiService {
   Future<PointOfInterest?> detectPoi(String image64) async {
     var response = await http.post(
-        Uri.parse('http://192.168.81.121:8003/image_api'),
+        Uri.parse('http://192.168.157.121:8003/image_api'),
         headers: {"Content-Type": "application/json"},
         body: jsonEncode({"image64": image64}));
 

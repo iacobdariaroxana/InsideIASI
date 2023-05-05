@@ -65,16 +65,16 @@ export class GoogleMapsComponent implements OnInit {
 
   ngOnInit(): void {
     this.setInitialPosition();
-    setInterval(() => this.setCurrentPosition(), 30 * 1000);
+    setInterval(() => this.setCurrentPosition(), 60 * 1000);
     this._route.queryParams.subscribe((params) => {
       this.getMarkers(params['query']);
     });
   }
 
   setInitialPosition = async () => {
-    await Geolocation.getCurrentPosition()
+    await Geolocation.getCurrentPosition({ enableHighAccuracy: true })
       .then((response) => {
-        console.log(response);
+        // console.log(response);
         this.center = {
           lat: response.coords.latitude,
           lng: response.coords.longitude,
@@ -87,8 +87,9 @@ export class GoogleMapsComponent implements OnInit {
   };
 
   setCurrentPosition = async () => {
-    await Geolocation.getCurrentPosition()
+    await Geolocation.getCurrentPosition({ enableHighAccuracy: true })
       .then((response) => {
+        // console.log(response);
         this.userLocation = {
           lat: response.coords.latitude,
           lng: response.coords.longitude,
