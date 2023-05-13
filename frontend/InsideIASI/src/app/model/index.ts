@@ -26,10 +26,10 @@ export interface PointOfInterestDTO {
 }
 
 export interface DistanceDTO {
-  numberOfKilometers: {
+  distance: {
     text: string;
   };
-  estimatedTime: {
+  duration: {
     text: string;
   };
 }
@@ -40,7 +40,7 @@ export interface Distance {
 }
 
 export interface AddressDTO {
-  address: string;
+  formatted_address: string;
 }
 
 export interface Address {

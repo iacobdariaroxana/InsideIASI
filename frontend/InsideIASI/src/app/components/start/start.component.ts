@@ -24,14 +24,14 @@ export class StartComponent implements OnInit {
     Preferences.get({ key: 'languageFlag' }).then((value) => {
       if(value.value != null){
         this.roFlag = JSON.parse(value.value!);
-        this.translate.setDefaultLang('ro');
+        if(this.roFlag)
+          this.translate.setDefaultLang('en');
+        else
+          this.translate.setDefaultLang('ro');
       } else {
         this.roFlag = true;
         this.translate.setDefaultLang('en');
       }
-      // value.value != null
-      //   ? (this.roFlag = JSON.parse(value.value!))
-      //   : (this.roFlag = true);
     });
   }
 
@@ -39,7 +39,7 @@ export class StartComponent implements OnInit {
     this.translate.use(lang);
   }
 
-  async switchFromRo() {
+  async switchToRo() {
     this.switchLanguage('ro');
     await Preferences.set({
       key: 'languageFlag',
@@ -48,7 +48,7 @@ export class StartComponent implements OnInit {
     this.roFlag = false;
   }
 
-  async switchFromEn() {
+  async switchToEn() {
     this.switchLanguage('en');
     await Preferences.set({
       key: 'languageFlag',

@@ -1,0 +1,14 @@
+C:\Users\Roxana\Desktop\Licenta\InsideIASI\backend\InsideIASI.DataAccess\bin\Release\net7.0\InsideIASI.DataAccess.deps.json
+C:\Users\Roxana\Desktop\Licenta\InsideIASI\backend\InsideIASI.DataAccess\bin\Release\net7.0\InsideIASI.DataAccess.runtimeconfig.json
+C:\Users\Roxana\Desktop\Licenta\InsideIASI\backend\InsideIASI.DataAccess\bin\Release\net7.0\InsideIASI.DataAccess.dll
+C:\Users\Roxana\Desktop\Licenta\InsideIASI\backend\InsideIASI.DataAccess\bin\Release\net7.0\InsideIASI.DataAccess.pdb
+C:\Users\Roxana\Desktop\Licenta\InsideIASI\backend\InsideIASI.DataAccess\obj\Release\net7.0\InsideIASI.DataAccess.csproj.AssemblyReference.cache
+C:\Users\Roxana\Desktop\Licenta\InsideIASI\backend\InsideIASI.DataAccess\obj\Release\net7.0\InsideIASI.DataAccess.GeneratedMSBuildEditorConfig.editorconfig
+C:\Users\Roxana\Desktop\Licenta\InsideIASI\backend\InsideIASI.DataAccess\obj\Release\net7.0\InsideIASI.DataAccess.AssemblyInfoInputs.cache
+C:\Users\Roxana\Desktop\Licenta\InsideIASI\backend\InsideIASI.DataAccess\obj\Release\net7.0\InsideIASI.DataAccess.AssemblyInfo.cs
+C:\Users\Roxana\Desktop\Licenta\InsideIASI\backend\InsideIASI.DataAccess\obj\Release\net7.0\InsideIASI.DataAccess.csproj.CoreCompileInputs.cache
+C:\Users\Roxana\Desktop\Licenta\InsideIASI\backend\InsideIASI.DataAccess\obj\Release\net7.0\InsideIASI.DataAccess.dll
+C:\Users\Roxana\Desktop\Licenta\InsideIASI\backend\InsideIASI.DataAccess\obj\Release\net7.0\refint\InsideIASI.DataAccess.dll
+C:\Users\Roxana\Desktop\Licenta\InsideIASI\backend\InsideIASI.DataAccess\obj\Release\net7.0\InsideIASI.DataAccess.pdb
+C:\Users\Roxana\Desktop\Licenta\InsideIASI\backend\InsideIASI.DataAccess\obj\Release\net7.0\InsideIASI.DataAccess.genruntimeconfig.cache
+C:\Users\Roxana\Desktop\Licenta\InsideIASI\backend\InsideIASI.DataAccess\obj\Release\net7.0\ref\InsideIASI.DataAccess.dll

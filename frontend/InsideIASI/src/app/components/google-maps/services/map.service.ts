@@ -53,8 +53,8 @@ export class MapService {
       .pipe(
         map<DistanceDTO, Distance>((distance) => {
           return {
-            number_of_km: distance.numberOfKilometers.text,
-            eta: distance.estimatedTime.text.replace("hours", "h").replace("mins", "m"),
+            number_of_km: distance.distance.text,
+            eta: distance.duration.text.replace("hours", "h").replace("mins", "m"),
           };
         })
       );
@@ -62,7 +62,7 @@ export class MapService {
 
   getAddressByLongitudinalCoordinates(lat: number, lng: number): Observable<Address> {
     return this._apiService.getAddressByLongitudinalCoordinates(lat, lng).pipe(map<AddressDTO, Address>((address) => {
-        const data = address.address.split(',');
+        const data = address.formatted_address.split(',');
         const street = data[0].split(" ").slice(1).join(" ");
         return {
           street: street == "fără nume" ? '-' : street,

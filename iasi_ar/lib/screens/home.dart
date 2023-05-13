@@ -1,7 +1,9 @@
 import 'dart:async';
+import 'package:camera/camera.dart';
 import 'package:flutter/material.dart';
 import 'package:iasi_ar/models/app_language.dart';
 import 'package:iasi_ar/provider/app_locale.dart';
+import 'package:iasi_ar/screens/camera.dart';
 import 'package:iasi_ar/services/image_convertor_service.dart';
 import 'package:iasi_ar/services/implementations/image_api_service.dart';
 import 'package:iasi_ar/widgets/detector.dart';
@@ -11,12 +13,11 @@ import 'package:iasi_ar/widgets/explore.dart';
 import 'package:flutter_gen/gen_l10n/app_localizations.dart';
 import 'package:provider/provider.dart';
 import 'package:translator/translator.dart';
-
 import '../service_locator.dart';
 
 class MyHomePage extends StatefulWidget {
-  const MyHomePage({super.key, required this.title});
-  final String title;
+  // List<CameraDescription> cameras;
+  const MyHomePage({super.key});
 
   @override
   State<MyHomePage> createState() => _MyHomePageState();
@@ -33,12 +34,14 @@ class _MyHomePageState extends State<MyHomePage> {
   String predictedPOI = '';
   PointOfInterest? poi;
   AR? ar = AR();
+  // Camera? camera;
   bool exploreButtonVisibility = false;
   bool detectionMode = true;
 
   @override
   void initState() {
     super.initState();
+    // camera = Camera(cameras: widget.cameras);
     dropdownValue = AppLanguage.languages.first;
   }
 
@@ -58,6 +61,7 @@ class _MyHomePageState extends State<MyHomePage> {
     return Scaffold(
       body: Stack(children: [
         ar!,
+        // camera!,
         Positioned(
             left: 10,
             bottom: 15,

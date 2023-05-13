@@ -31,13 +31,20 @@ class _ExploreState extends State<Explore> {
       AppLocalizations.of(context)!.explore_option_site,
     ];
     Information(
-            openingHours: widget.poi!.openingHours!,
+            openingHours: formatOpeningHours(),
             info0: widget.poi!.info0!,
             info1: widget.poi!.info1!,
             info2: widget.poi!.info2!,
             info3: widget.poi!.info3!)
         .getTranslatedInfo(widget.languageCode!)
         .then((value) => info = value);
+  }
+
+  String formatOpeningHours() {
+    String formattedString = widget.poi!.openingHours!
+        .map((e) => "${e.day} ${e.openingTime} ${e.closingTime}")
+        .join("\n");
+    return formattedString;
   }
 
   Widget createCard(int index) {

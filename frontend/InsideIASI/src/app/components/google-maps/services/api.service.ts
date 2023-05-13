@@ -8,7 +8,7 @@ import { AddressDTO, DistanceDTO, PointOfInterestDTO } from 'src/app/model';
 })
 export class ApiService {
   constructor(private readonly _httpClient: HttpClient) {}
-  url: string = 'https://inside-iasi.azurewebsites.net/map';
+  url: string = 'https://inside-iasi.azurewebsites.net/maps';
   // url: string = 'http://localhost:5217/map';
   getPointsOfInterest(
     lat: number,
@@ -20,7 +20,7 @@ export class ApiService {
     httpOptions.headers.append('Content-Type', 'application/json');
     return this._httpClient
       .get(
-        `${this.url}/pois?latitude=${lat}&longitude=${long}&query=${query}`,
+        `${this.url}/places?latitude=${lat}&longitude=${long}&query=${query}`,
         httpOptions
       )
       .pipe(
@@ -41,7 +41,7 @@ export class ApiService {
     httpOptions.headers.append('Content-Type', 'application/json');
     return this._httpClient
       .get(
-        `${this.url}/distance?originLatitude=${originLat}&originLongitude=${originLong}&destLatitude=${destLat}&destLongitude=${destLong}`,
+        `${this.url}/distance?OriginLatitude=${originLat}&OriginLongitude=${originLong}&DestLatitude=${destLat}&DestLongitude=${destLong}`,
         httpOptions
       )
       .pipe(

@@ -1,0 +1,15 @@
+C:\Users\Roxana\Desktop\Licenta\InsideIASI\backend\InsideIASI.Application\bin\Release\net7.0\InsideIASI.Application.deps.json
+C:\Users\Roxana\Desktop\Licenta\InsideIASI\backend\InsideIASI.Application\bin\Release\net7.0\InsideIASI.Application.dll
+C:\Users\Roxana\Desktop\Licenta\InsideIASI\backend\InsideIASI.Application\bin\Release\net7.0\InsideIASI.Application.pdb
+C:\Users\Roxana\Desktop\Licenta\InsideIASI\backend\InsideIASI.Application\bin\Release\net7.0\InsideIASI.DataAccess.dll
+C:\Users\Roxana\Desktop\Licenta\InsideIASI\backend\InsideIASI.Application\bin\Release\net7.0\InsideIASI.DataAccess.pdb
+C:\Users\Roxana\Desktop\Licenta\InsideIASI\backend\InsideIASI.Application\obj\Release\net7.0\InsideIASI.Application.csproj.AssemblyReference.cache
+C:\Users\Roxana\Desktop\Licenta\InsideIASI\backend\InsideIASI.Application\obj\Release\net7.0\InsideIASI.Application.GeneratedMSBuildEditorConfig.editorconfig
+C:\Users\Roxana\Desktop\Licenta\InsideIASI\backend\InsideIASI.Application\obj\Release\net7.0\InsideIASI.Application.AssemblyInfoInputs.cache
+C:\Users\Roxana\Desktop\Licenta\InsideIASI\backend\InsideIASI.Application\obj\Release\net7.0\InsideIASI.Application.AssemblyInfo.cs
+C:\Users\Roxana\Desktop\Licenta\InsideIASI\backend\InsideIASI.Application\obj\Release\net7.0\InsideIASI.Application.csproj.CoreCompileInputs.cache
+C:\Users\Roxana\Desktop\Licenta\InsideIASI\backend\InsideIASI.Application\obj\Release\net7.0\InsideIASI.Application.csproj.CopyComplete
+C:\Users\Roxana\Desktop\Licenta\InsideIASI\backend\InsideIASI.Application\obj\Release\net7.0\InsideIASI.Application.dll
+C:\Users\Roxana\Desktop\Licenta\InsideIASI\backend\InsideIASI.Application\obj\Release\net7.0\refint\InsideIASI.Application.dll
+C:\Users\Roxana\Desktop\Licenta\InsideIASI\backend\InsideIASI.Application\obj\Release\net7.0\InsideIASI.Application.pdb
+C:\Users\Roxana\Desktop\Licenta\InsideIASI\backend\InsideIASI.Application\obj\Release\net7.0\ref\InsideIASI.Application.dll

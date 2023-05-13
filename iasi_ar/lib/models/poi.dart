@@ -1,10 +1,12 @@
+import 'package:iasi_ar/models/opening_hour.dart';
+
 class PointOfInterest {
   final String? name;
   final String? info0;
   final String? info1;
   final String? info2;
   final String? info3;
-  final String? openingHours;
+  final List<OpeningHour>? openingHours;
   final String? link;
 
   const PointOfInterest(
@@ -23,7 +25,7 @@ class PointOfInterest {
         info1: json['info1'],
         info2: json['info2'],
         info3: json['info3'],
-        openingHours: json['opening_hours'],
+        openingHours: json['openingHours'],
         link: json['link']);
   }
 }
