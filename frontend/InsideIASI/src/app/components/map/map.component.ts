@@ -1,7 +1,5 @@
-import { AfterViewInit, Component, OnDestroy, OnInit } from '@angular/core';
-import { first } from 'rxjs';
+import { AfterViewInit, Component, OnDestroy } from '@angular/core';
 import { Location } from '@angular/common';
-import { ImageService } from './services/image.service';
 import { Camera, CameraResultType } from '@capacitor/camera';
 import { HourWeatherInfo } from 'src/app/model';
 import { MatDialog } from '@angular/material/dialog';
@@ -33,7 +31,6 @@ export class MapComponent implements AfterViewInit, OnDestroy {
 
   constructor(
     private location: Location,
-    private readonly _imageService: ImageService,
     private _dialogRef: MatDialog,
     private _translate: TranslateService,
     private _dataService: DataService
@@ -50,36 +47,15 @@ export class MapComponent implements AfterViewInit, OnDestroy {
     // setTimeout(() => {
     //   this.hoursWeatherInfo = this._dataService.getHoursWeatherInfo();
     // }, 1500);
-
     // if (this._dataService.getHourFlag()) {
     //   setTimeout(() => {
     //     this.checkWeatherAlert();
     //   }, 3000);
     // }
-
     // this.weatherIntervalId = setInterval(() => {
     //   this.hoursWeatherInfo = this._dataService.getHoursWeatherInfo();
     //   this.checkWeatherAlert();
     // }, 3600000);
-  }
-
-  async captureImage() {
-    const image = await Camera.getPhoto({
-      quality: 70,
-      allowEditing: false,
-      resultType: CameraResultType.Base64,
-    });
-    this._imageService
-      .getImagePlace(image.base64String!)
-      .pipe(first())
-      .subscribe({
-        next: (response) => {
-          console.log(response);
-        },
-        error: (err) => {
-          console.log(err);
-        },
-      });
   }
 
   async triggerAlert(key: string) {
@@ -91,7 +67,7 @@ export class MapComponent implements AfterViewInit, OnDestroy {
   }
 
   async checkWeatherAlert() {
-    if(this.hoursWeatherInfo.length < 1) return;
+    if (this.hoursWeatherInfo.length < 1) return;
     if (this.hoursWeatherInfo[1].values.precipitationProbability > 50) {
       this.triggerAlert('WeatherAlertRainMessage');
     } else if (this.hoursWeatherInfo[1].values.temperature > 35) {

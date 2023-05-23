@@ -1,4 +1,5 @@
-﻿using InsideIASI.Application.Models.Weather;
+﻿using InsideIASI.Application.Exceptions;
+using InsideIASI.Application.Models.Weather;
 using Newtonsoft.Json;
 using System.Net.Http.Headers;
 using System.Text;
@@ -12,24 +13,25 @@ public class WeatherService : IWeatherService
     {
         _httpClient = httpClient;
     }
-    public async Task<WeatherResponseModel> GetCurrentWeather(WeatherRequestModel weatherRequestModel)
+    public async Task<WeatherResponseModel> GetCurrentWeatherAsync(WeatherRequestModel weatherRequestModel)
     {
         var key = System.Configuration.ConfigurationManager.AppSettings["TomorrowApiKey"];
         var url = $"https://api.tomorrow.io/v4/timelines?apikey={key}";
-        WeatherResponseModel weather = new();
+        //WeatherResponseModel weather = new();
         _httpClient.DefaultRequestHeaders.Accept.Add(new MediaTypeWithQualityHeaderValue("application/json"));
         var stringContent = new StringContent(JsonConvert.SerializeObject(weatherRequestModel), Encoding.UTF8, "application/json");
         HttpResponseMessage response = await _httpClient.PostAsync(url, stringContent);
 
-        if(response.IsSuccessStatusCode)
+        if (response.IsSuccessStatusCode)
         {
             var jsonString = await response.Content.ReadAsStringAsync();
-            var data = JsonConvert.DeserializeObject<WeatherResponseModel>(jsonString);
-            if(data != null)
+            var weather = JsonConvert.DeserializeObject<WeatherResponseModel>(jsonString);
+            if (weather == null)
             {
-                weather = data;
+                throw new InvalidWeatherResponseException();
             }
+            return weather;
         }
-        return weather;
+        throw new WeatherException("Something went wrong while calling the Tommorrow.io API");
     }
 }

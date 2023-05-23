@@ -1,4 +1,5 @@
 ﻿using AutoMapper;
+using InsideIASI.Application.Exceptions;
 using InsideIASI.Application.Models.PointOfInterest;
 using InsideIASI.DataAccess.Entities;
 using InsideIASI.DataAccess.Repositories;
@@ -34,6 +35,7 @@ public class PointOfInterestService : IPointOfInterestService
     public async Task<PointOfInterest> GetByNameAsync(string name)
     {
         var pointOfInterest = await _pointOfInterestRepository.GetByNameAsync(name);
+        if (pointOfInterest == null) { throw new PointOfInterestNotFoundException(name); }
         return pointOfInterest;
     }
 }

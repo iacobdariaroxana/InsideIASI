@@ -47,7 +47,10 @@ dependencies:
   translator: ^0.1.7
   get: ^4.6.5
   get_it: ^7.3.0
-  google_mlkit_text_recognition: ^0.6.0
+  google_mlkit_text_recognition: ^0.5.0
+  flutter_tts: ^3.6.3
+  image_cropper: ^4.0.1
+  image_picker: ^0.8.7+5
   camera: ^0.10.5
   
 
@@ -79,6 +82,7 @@ flutter:
   assets:
     - assets/videos/
     - assets/icons/
+    - assets/images/
 
   # An image asset can refer to one or more resolution-specific "variants", see
   # https://flutter.dev/assets-and-images/#resolution-aware

@@ -6,5 +6,6 @@
     "explore_option_site": "Site",
     "loading_text": "În căutare...",
     "explore_button_text" : "Explorează",
-    "visit_poi_link_button": "Vizitați!"
+    "visit_poi_link_button": "Vizitați!",
+    "crop_option_text": "Decupează imaginea"
 }

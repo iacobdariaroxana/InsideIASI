@@ -1,4 +1,6 @@
-import 'package:translator/translator.dart';
+import 'package:flutter/material.dart';
+import 'package:iasi_ar/services/translator.dart';
+import '../service_locator.dart';
 
 class Information {
   String openingHours;
@@ -6,7 +8,7 @@ class Information {
   String info1;
   String info2;
   String info3;
-  final _translator = GoogleTranslator();
+  final _translator = getIt<Translator>();
 
   Information(
       {required this.openingHours,
@@ -17,15 +19,10 @@ class Information {
 
   Future<Information> getTranslatedInfo(String to) async {
     return Information(
-        openingHours: await translate(openingHours, to),
-        info0: await translate(info0, to),
-        info1: await translate(info1, to),
-        info2: await translate(info2, to),
-        info3: await translate(info3, to));
-  }
-
-  Future<String> translate(value, to) async {
-    var translation = await _translator.translate(value, to: to);
-    return translation.text;
+        openingHours: await _translator.translate(openingHours, to),
+        info0: await _translator.translate(info0, to),
+        info1: await _translator.translate(info1, to),
+        info2: await _translator.translate(info2, to),
+        info3: await _translator.translate(info3, to));
   }
 }

@@ -1,4 +1,5 @@
-﻿using InsideIASI.Application.Models.Address;
+﻿using InsideIASI.Application.Exceptions;
+using InsideIASI.Application.Models.Address;
 using InsideIASI.Application.Models.Place;
 using InsideIASI.Application.Models.PlacesDistance;
 using Newtonsoft.Json;
@@ -24,6 +25,7 @@ public class MapService : IMapService
         foreach (var keyword in placeRequestModel.Query.Split(','))
         {
             var url = $"https://maps.googleapis.com/maps/api/place/nearbysearch/json?keyword={keyword}&location={placeRequestModel.Latitude},{placeRequestModel.Longitude}&rankby=distance&key={key}";
+            
             _httpClient.DefaultRequestHeaders.Accept.Add(new MediaTypeWithQualityHeaderValue("application/json"));
             HttpResponseMessage response = await _httpClient.GetAsync(url);
 
@@ -42,9 +44,8 @@ public class MapService : IMapService
         return pois;
     }
 
-    public async Task<InfoResponseModel> GetDistanceFromUserLocation(DistanceRequestModel distanceRequestModel)
+    public async Task<InfoResponseModel> GetDistanceFromUserLocationAsync(DistanceRequestModel distanceRequestModel)
     {
-        var info = new InfoResponseModel();
         var key = System.Configuration.ConfigurationManager.AppSettings["GoogleMapsKey"];
 
         var url = $"https://maps.googleapis.com/maps/api/distancematrix/json?origins={distanceRequestModel.OriginLatitude}, {distanceRequestModel.OriginLongitude}&destinations={distanceRequestModel.DestLatitude}, {distanceRequestModel.DestLongitude}&mode=walking&key={key}";
@@ -59,32 +60,32 @@ public class MapService : IMapService
 
             if (distancesList != null)
             {
-                info = distancesList.Distances.First().Infos.First();
+                var info = distancesList.Distances.First().Infos.First();
+                return info;
             }
         }
-        return info;
+        throw new DistanceException("Some error occured while calling Google Maps Distance API");
     }
 
-    public async Task<AddressResponseModel> GetAddressByLongitudinalCoordinates(AddressRequestModel addressRequestModel)
+    public async Task<AddressResponseModel> GetAddressByLongitudinalCoordinatesAsync(AddressRequestModel addressRequestModel)
     {
-        var address = new AddressResponseModel();
-
         var key = System.Configuration.ConfigurationManager.AppSettings["GoogleMapsKey"];
 
         var url = $"https://maps.googleapis.com/maps/api/geocode/json?latlng={addressRequestModel.Latitude}, {addressRequestModel.Longitude}&key={key}&result_type=route";
 
         _httpClient.DefaultRequestHeaders.Accept.Add(new MediaTypeWithQualityHeaderValue("application/json"));
         HttpResponseMessage response = await _httpClient.GetAsync(url);
+
         if (response.IsSuccessStatusCode)
         {
             var jsonString = await response.Content.ReadAsStringAsync();
             var addresses = JsonConvert.DeserializeObject<ApiResultResponseModel>(jsonString);
             if (addresses != null)
             {
-                Console.WriteLine(addresses.Addresses.First().Address);
-                address = addresses.Addresses.First();
+                var address = addresses.Addresses.First();
+                return address;
             }
         }
-        return address;
+        throw new AddressException("Some error occured while calling Google Maps Geocoding API");
     }
 }

@@ -1,16 +1,20 @@
 import 'package:animated_text_kit/animated_text_kit.dart';
 import 'package:flutter/material.dart';
-import 'package:iasi_ar/models/info.dart';
+import 'package:flutter_tts/flutter_tts.dart';
 import 'package:iasi_ar/models/poi.dart';
 import 'package:iasi_ar/widgets/video_player.dart';
+import 'package:intl/intl.dart';
 import 'package:url_launcher/url_launcher.dart';
 import 'package:flutter_gen/gen_l10n/app_localizations.dart';
+
+import '../models/info.dart';
 
 class Explore extends StatefulWidget {
   final PointOfInterest? poi;
   final String? languageCode;
+  final FlutterTts? flutterTts;
 
-  const Explore({super.key, this.poi, this.languageCode});
+  const Explore({super.key, this.poi, this.languageCode, this.flutterTts});
   @override
   State<StatefulWidget> createState() => _ExploreState();
 }
@@ -20,6 +24,7 @@ class _ExploreState extends State<Explore> {
   Widget selectedOptionWidget = Container();
   bool show = false;
   Information? info;
+  bool startVoice = true;
 
   @override
   void didChangeDependencies() async {
@@ -32,17 +37,23 @@ class _ExploreState extends State<Explore> {
     ];
     Information(
             openingHours: formatOpeningHours(),
-            info0: widget.poi!.info0!,
-            info1: widget.poi!.info1!,
-            info2: widget.poi!.info2!,
-            info3: widget.poi!.info3!)
+            info0: widget.poi!.info0,
+            info1: widget.poi!.info1,
+            info2: widget.poi!.info2,
+            info3: widget.poi!.info3)
         .getTranslatedInfo(widget.languageCode!)
-        .then((value) => info = value);
+        .then((value) => {info = value});
   }
 
   String formatOpeningHours() {
-    String formattedString = widget.poi!.openingHours!
-        .map((e) => "${e.day} ${e.openingTime} ${e.closingTime}")
+    var index = widget.poi!.openingHours.indexWhere((element) =>
+        element.day!.trim() == DateFormat('EEEE').format(DateTime.now()));
+    var openingHours = widget.poi!.openingHours.sublist(index) +
+        widget.poi!.openingHours.sublist(0, index);
+    String formattedString = openingHours
+        .map((e) => e.openingTime!.contains(RegExp(r'\d'))
+            ? "${e.day} ${e.openingTime} - ${e.closingTime}"
+            : "${e.day} ${e.openingTime}")
         .join("\n");
     return formattedString;
   }
@@ -60,42 +71,59 @@ class _ExploreState extends State<Explore> {
         ));
   }
 
-  void handleExploreOptionPressed(int index) {
+  void handleExploreOptionPressed(int index) async {
+    await widget.flutterTts!.stop();
     setState(() {
       selectedOptionWidget = mapIndexToWidget(index);
     });
   }
 
   Widget getProgramWidget() {
+    // var openingHours = formatOpeningHours();
+    startTextToSpeech(info!.openingHours);
     return DefaultTextStyle(
         style: const TextStyle(
             fontSize: 20, color: Colors.white, fontWeight: FontWeight.bold),
-        child: AnimatedTextKit(animatedTexts: [
-          TypewriterAnimatedText(info!.openingHours,
-              speed: const Duration(milliseconds: 60))
-        ]));
+        child: AnimatedTextKit(
+          animatedTexts: [
+            TypewriterAnimatedText(info!.openingHours,
+                speed: const Duration(milliseconds: 90))
+          ],
+          pause: const Duration(milliseconds: 3000),
+          // displayFullTextOnTap: true,
+        ));
   }
 
   Widget getInfosWidget() {
+    startTextToSpeech(widget.poi!.info0);
+    startVoice = true;
     return SizedBox(
         width: 200.0,
         child: DefaultTextStyle(
             style: const TextStyle(
                 fontSize: 20, color: Colors.white, fontWeight: FontWeight.bold),
             child: AnimatedTextKit(
-              animatedTexts: [
-                TypewriterAnimatedText(info!.info0,
-                    speed: const Duration(milliseconds: 60)),
-                TypewriterAnimatedText(info!.info1,
-                    speed: const Duration(milliseconds: 60)),
-                TypewriterAnimatedText(info!.info2,
-                    speed: const Duration(milliseconds: 60)),
-                TypewriterAnimatedText(info!.info3,
-                    speed: const Duration(milliseconds: 60))
-              ],
-              pause: const Duration(milliseconds: 3000),
-              stopPauseOnTap: true,
-            )));
+                animatedTexts: [
+                  TypewriterAnimatedText(info!.info0,
+                      speed: const Duration(milliseconds: 60)),
+                  TypewriterAnimatedText(info!.info1,
+                      speed: const Duration(milliseconds: 60)),
+                  TypewriterAnimatedText(info!.info2,
+                      speed: const Duration(milliseconds: 60)),
+                  TypewriterAnimatedText(info!.info3,
+                      speed: const Duration(milliseconds: 60))
+                ],
+                pause: const Duration(milliseconds: 2000),
+                stopPauseOnTap: true,
+                // displayFullTextOnTap: true,
+                onNext: (index, loop) {
+                  if (loop) {
+                    startVoice = false;
+                  }
+                  if (startVoice) {
+                    return startTextToSpeech(mapIndexToText(index));
+                  }
+                })));
   }
 
   Widget getInteriorWidget() {
@@ -112,7 +140,7 @@ class _ExploreState extends State<Explore> {
           borderRadius: const BorderRadius.all(Radius.circular(50.0)),
           color: const Color(0xffeebbc3)),
       child: InkWell(
-          onTap: () => launchUrl(Uri.parse(widget.poi!.link!),
+          onTap: () => launchUrl(Uri.parse(widget.poi!.link),
               mode: LaunchMode.externalApplication),
           child: Align(
             alignment: Alignment.center,
@@ -130,6 +158,10 @@ class _ExploreState extends State<Explore> {
     );
   }
 
+  void startTextToSpeech(String text) async {
+    await widget.flutterTts!.speak(text);
+  }
+
   Widget mapIndexToWidget(int index) {
     switch (index) {
       case 0:
@@ -142,6 +174,19 @@ class _ExploreState extends State<Explore> {
         return getLinkWidget();
       default:
         return Container();
+    }
+  }
+
+  String mapIndexToText(int index) {
+    switch (index) {
+      case 0:
+        return info!.info1;
+      case 1:
+        return info!.info2;
+      case 2:
+        return info!.info3;
+      default:
+        return "";
     }
   }
 

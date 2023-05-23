@@ -53,7 +53,7 @@ class _PoiDetectionState extends State<PoiDetection> {
                   onPressed: widget.onChangeMode,
                   style: ElevatedButton.styleFrom(
                       shape: const CircleBorder(),
-                      minimumSize: const Size(120, 120),
+                      minimumSize: const Size(100, 100),
                       backgroundColor: const Color(0xFF232946)),
                   child: Text(AppLocalizations.of(context)!.explore_button_text,
                       style: const TextStyle(letterSpacing: 1.0)),

@@ -8,8 +8,8 @@ public interface IMapService
 {
     Task<IEnumerable<PlaceResponseModel>> GetPlacesAsync(PlaceRequestModel placeRequestModel);
 
-    Task<InfoResponseModel> GetDistanceFromUserLocation(DistanceRequestModel distanceRequestModel);
+    Task<InfoResponseModel> GetDistanceFromUserLocationAsync(DistanceRequestModel distanceRequestModel);
 
-    Task<AddressResponseModel> GetAddressByLongitudinalCoordinates(AddressRequestModel addressRequestModel);
+    Task<AddressResponseModel> GetAddressByLongitudinalCoordinatesAsync(AddressRequestModel addressRequestModel);
 
 }

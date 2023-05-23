@@ -1,4 +1,5 @@
-﻿using InsideIASI.Application.Models.PointOfInterest;
+﻿using InsideIASI.Application.Exceptions;
+using InsideIASI.Application.Models.PointOfInterest;
 using InsideIASI.Application.Services;
 using Microsoft.AspNetCore.Mvc;
 
@@ -6,7 +7,7 @@ namespace InsideIASI.API.Controllers;
 
 [ApiController]
 [Route("[controller]")]
-public class PointsOfInterestController: ControllerBase
+public class PointsOfInterestController : ControllerBase
 {
     private readonly IPointOfInterestService _pointOfInterestService;
 
@@ -25,8 +26,13 @@ public class PointsOfInterestController: ControllerBase
     [HttpGet("{name}")]
     public async Task<IActionResult> GetByNameAsync(string name)
     {
-        var result = await _pointOfInterestService.GetByNameAsync(name);
-        return Ok(result);
+        try
+        {
+            var result = await _pointOfInterestService.GetByNameAsync(name);
+            return Ok(result);
+        }
+        catch (PointOfInterestNotFoundException e) { return NotFound(e.Message); }
+
     }
 
     [HttpGet]

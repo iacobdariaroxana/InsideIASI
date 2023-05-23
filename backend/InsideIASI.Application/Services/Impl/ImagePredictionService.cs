@@ -20,11 +20,11 @@ public class ImagePredictionService : IImagePredictionService
         _httpClient = httpClient;
     }
 
-    public async Task<PointOfInterest> PredictImage(ImageRequestModel imageRequestModel)
+    public async Task<PointOfInterest> PredictImageAsync(ImageRequestModel imageRequestModel)
     {
-        //var url = "http://localhost:5000/predict";
         var url = "https://insideiasi-nn.azurewebsites.net/predict";
         _httpClient.DefaultRequestHeaders.Accept.Add(new MediaTypeWithQualityHeaderValue("application/json"));
+
         var stringContent = new StringContent(JsonConvert.SerializeObject(imageRequestModel), Encoding.UTF8, "application/json");
         HttpResponseMessage response = await _httpClient.PostAsync(url, stringContent);
 
@@ -36,10 +36,10 @@ public class ImagePredictionService : IImagePredictionService
             if (image != null)
             {
                 var pointOfInterest = await _pointOfInterestRepository.GetByNameAsync(image.Label);
+                if (pointOfInterest == null) { throw new PointOfInterestNotFoundException(image.Label); }
                 return pointOfInterest;
             }
         }
-
-        throw new ImagePredictionException();
+        throw new ImagePredictionException("Something went wrong while calling the image classifier API");
     }
 }

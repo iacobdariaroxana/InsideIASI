@@ -6,5 +6,5 @@ namespace InsideIASI.Application.Services;
 
 public interface IImagePredictionService
 {
-    Task<PointOfInterest> PredictImage(ImageRequestModel imageRequestModel);
+    Task<PointOfInterest> PredictImageAsync(ImageRequestModel imageRequestModel);
 }

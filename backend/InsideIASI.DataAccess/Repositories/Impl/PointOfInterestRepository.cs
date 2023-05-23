@@ -1,5 +1,4 @@
 ﻿using InsideIASI.DataAccess.Entities;
-using InsideIASI.DataAccess.Exceptions;
 using InsideIASI.DataAccess.Persistence;
 using Microsoft.EntityFrameworkCore;
 
@@ -21,14 +20,9 @@ public class PointOfInterestRepository : IPointOfInterestRepository
         return addedPointOfInterest;
     }
 
-    public async Task<PointOfInterest> GetByNameAsync(string name)
+    public async Task<PointOfInterest?> GetByNameAsync(string name)
     {
         var pointOfInterest = await _databaseContext.PointsOfInterest.Include(point => point.OpeningHours).Where(point => point.Name == name).FirstOrDefaultAsync();
-        if(pointOfInterest == default)
-        {
-            throw new PointOfInterestNotFoundException(name);
-        }
-
         return pointOfInterest;
     }
 

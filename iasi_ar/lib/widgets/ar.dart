@@ -37,7 +37,7 @@ class ARState extends State<AR> {
     widget.arSessionManager!.onInitialize(
         showAnimatedGuide: false,
         showFeaturePoints: false,
-        showPlanes: true,
+        showPlanes: false,
         showWorldOrigin: false,
         handleTaps: false);
   }

@@ -1,4 +1,5 @@
-﻿using InsideIASI.Application.Models.Image;
+﻿using InsideIASI.Application.Exceptions;
+using InsideIASI.Application.Models.Image;
 using InsideIASI.Application.Services;
 using Microsoft.AspNetCore.Mvc;
 
@@ -16,10 +17,20 @@ public class ImagePredictionsController : ControllerBase
     }
 
     [HttpPost]
-    public async Task<IActionResult> PredictImage([FromBody]ImageRequestModel imageRequestModel)
+    public async Task<IActionResult> PredictImageAsync([FromBody] ImageRequestModel imageRequestModel)
     {
-        var result = await _imagePredicitionService.PredictImage(imageRequestModel);
-
-        return Ok(result);
+        try
+        {
+            var result = await _imagePredicitionService.PredictImageAsync(imageRequestModel);
+            return Ok(result);
+        }
+        catch (PointOfInterestNotFoundException e)
+        {
+            return NotFound(e.Message);
+        }
+        catch (ImagePredictionException e)
+        {
+            return NotFound(e.Message);
+        }
     }
 }

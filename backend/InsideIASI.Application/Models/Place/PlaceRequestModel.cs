@@ -6,5 +6,5 @@ public class PlaceRequestModel
 
     public double Longitude { get; set; } 
 
-    public string? Query { get; set; }
+    public string Query { get; set; } = string.Empty;
 }

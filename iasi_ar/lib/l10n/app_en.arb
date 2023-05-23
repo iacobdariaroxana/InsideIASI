@@ -6,5 +6,6 @@
     "explore_option_site": "Site",
     "loading_text": "Loading...",
     "explore_button_text" : "Explore",
-    "visit_poi_link_button": "Visit us!"
+    "visit_poi_link_button": "Visit us!",
+    "crop_option_text": "Crop image"
 }

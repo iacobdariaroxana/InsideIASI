@@ -14,4 +14,6 @@ public class PointOfInterest: Entity
 
     public IEnumerable<OpeningHour> OpeningHours { get; set; }
 
+    public string Link { get; set; } = string.Empty;
+
 }
