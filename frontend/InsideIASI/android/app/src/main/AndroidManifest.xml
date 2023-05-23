@@ -32,4 +32,8 @@
 
 
     <uses-feature android:name="android.hardware.location.gps" />
+
+    <queries>
+        <package android:name="com.example.iasi_ar"/>
+    </queries>
 </manifest>

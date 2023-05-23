@@ -17,10 +17,10 @@ export interface PointOfInterestDTO {
     };
   };
   name: string;
-  placeid: string;
+  place_id: string;
   rating: number;
   icon: string;
-  openingHours: {
+  opening_hours: {
     open_Now: boolean;
   };
 }

@@ -4,13 +4,11 @@ import { RouterModule, Routes } from '@angular/router';
 import { StartComponent } from './components/start/start.component';
 import { MenuComponent } from './components/menu/menu.component';
 import { MapComponent } from './components/map/map.component';
-import { ARComponent } from './components/ar/ar.component';
 
 const routes: Routes = [
   {path: 'home', component: StartComponent},
   {path: 'menu', component: MenuComponent},
   {path: 'map', component: MapComponent},
-  {path: 'ar', component: ARComponent},
   {path: '', redirectTo: '/home', pathMatch: 'full'}
 ]
 

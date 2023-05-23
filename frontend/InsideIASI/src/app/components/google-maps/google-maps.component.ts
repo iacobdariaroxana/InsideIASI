@@ -14,6 +14,7 @@ import { ActivatedRoute } from '@angular/router';
 import { openGoogleMaps } from './utils';
 import { TranslateService } from '@ngx-translate/core';
 
+
 @Component({
   selector: 'app-google-maps',
   templateUrl: './google-maps.component.html',
@@ -65,7 +66,7 @@ export class GoogleMapsComponent implements OnInit {
 
   ngOnInit(): void {
     this.setInitialPosition();
-    setInterval(() => this.setCurrentPosition(), 60 * 1000);
+    // setInterval(() => this.setCurrentPosition(), 60 * 1000);
     this._route.queryParams.subscribe((params) => {
       this.getMarkers(params['query']);
     });
@@ -74,7 +75,6 @@ export class GoogleMapsComponent implements OnInit {
   setInitialPosition = async () => {
     await Geolocation.getCurrentPosition({ enableHighAccuracy: true })
       .then((response) => {
-        // console.log(response);
         this.center = {
           lat: response.coords.latitude,
           lng: response.coords.longitude,
@@ -89,7 +89,6 @@ export class GoogleMapsComponent implements OnInit {
   setCurrentPosition = async () => {
     await Geolocation.getCurrentPosition({ enableHighAccuracy: true })
       .then((response) => {
-        // console.log(response);
         this.userLocation = {
           lat: response.coords.latitude,
           lng: response.coords.longitude,
@@ -102,6 +101,7 @@ export class GoogleMapsComponent implements OnInit {
 
   setCenterToUserLocation() {
     this.center = this.userLocation;
+    this.map.panTo(this.center);
   }
 
   setDistanceAndETA(lat: number, lng: number) {
@@ -122,13 +122,11 @@ export class GoogleMapsComponent implements OnInit {
   }
 
   getMarkers(query: string) {
-    // this.center.lat, this.center.lng
     this._mapService
       .getPointsOfInterest(this.center.lat, this.center.lng, query)
       .pipe(first())
       .subscribe({
         next: (pointsOfInterest) => {
-          // console.log(pointsOfInterest);
           this.markers = pointsOfInterest.map((pointOfInterest) => {
             return {
               position: {
@@ -151,7 +149,6 @@ export class GoogleMapsComponent implements OnInit {
               open_now: pointOfInterest.open_now,
             };
           });
-          // console.log(this.markers);
         },
         error: (err) => {
           console.log(err);

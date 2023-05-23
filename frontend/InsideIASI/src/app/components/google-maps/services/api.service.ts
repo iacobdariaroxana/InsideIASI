@@ -15,13 +15,9 @@ export class ApiService {
     long: number,
     query: string
   ): Observable<PointOfInterestDTO[]> {
-    const httpOptions = { headers: new HttpHeaders() };
-    httpOptions.headers.append('Access-Control-Allow-Origin', '*');
-    httpOptions.headers.append('Content-Type', 'application/json');
     return this._httpClient
       .get(
-        `${this.url}/places?latitude=${lat}&longitude=${long}&query=${query}`,
-        httpOptions
+        `${this.url}/places?latitude=${lat}&longitude=${long}&query=${query}`
       )
       .pipe(
         map<any, PointOfInterestDTO[]>((response) => {
@@ -36,17 +32,12 @@ export class ApiService {
     destLat: number,
     destLong: number
   ): Observable<DistanceDTO> {
-    const httpOptions = { headers: new HttpHeaders() };
-    httpOptions.headers.append('Access-Control-Allow-Origin', '*');
-    httpOptions.headers.append('Content-Type', 'application/json');
     return this._httpClient
       .get(
-        `${this.url}/distance?OriginLatitude=${originLat}&OriginLongitude=${originLong}&DestLatitude=${destLat}&DestLongitude=${destLong}`,
-        httpOptions
+        `${this.url}/distance?OriginLatitude=${originLat}&OriginLongitude=${originLong}&DestLatitude=${destLat}&DestLongitude=${destLong}`
       )
       .pipe(
         map<any, DistanceDTO>((response) => {
-          // console.log(response);
           return response;
         })
       );
@@ -56,16 +47,16 @@ export class ApiService {
     lat: number,
     lng: number
   ): Observable<AddressDTO> {
-    const httpOptions = { headers: new HttpHeaders() };
-    httpOptions.headers.append('Access-Control-Allow-Origin', '*');
-    httpOptions.headers.append('Content-Type', 'application/json');
     return this._httpClient
-      .get(`${this.url}/address?Latitude=${lat}&Longitude=${lng}`, httpOptions)
+      .get(`${this.url}/address?Latitude=${lat}&Longitude=${lng}`)
       .pipe(
         map<any, AddressDTO>((response) => {
-          // console.log(response);
           return response;
         })
       );
   }
 }
+
+// const httpOptions = { headers: new HttpHeaders() };
+// httpOptions.headers.append('Access-Control-Allow-Origin', '*');
+// httpOptions.headers.append('Content-Type', 'application/json');

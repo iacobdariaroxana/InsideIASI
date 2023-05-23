@@ -1,7 +1,7 @@
 import { Component, OnInit } from '@angular/core';
 import { TranslateService } from '@ngx-translate/core';
 import { MatDialog } from '@angular/material/dialog';
-import { InstructionsComponent } from 'src/app/instructions/instructions.component';
+import { InstructionsComponent } from 'src/app/components/instructions/instructions.component';
 import { Preferences } from '@capacitor/preferences';
 
 @Component({

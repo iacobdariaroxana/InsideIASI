@@ -22,7 +22,6 @@ export class MapService {
   ): Observable<PointOfInterest[]> {
     return this._apiService.getPointsOfInterest(lat, lng, query).pipe(
       map<PointOfInterestDTO[], PointOfInterest[]>((pointsOfInterest) => {
-        // console.log(pointsOfInterest);
         const result: PointOfInterest[] = pointsOfInterest.map(
           (pointOfInterest) => {
             return {
@@ -33,7 +32,7 @@ export class MapService {
               name: pointOfInterest.name,
               icon: pointOfInterest.icon,
               rating: pointOfInterest.rating,
-              open_now: pointOfInterest.openingHours?.open_Now,
+              open_now: pointOfInterest.opening_hours?.open_Now,
             };
           }
         );

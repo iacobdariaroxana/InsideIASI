@@ -1,4 +1,4 @@
-import { CUSTOM_ELEMENTS_SCHEMA, NgModule } from '@angular/core';
+import { NgModule } from '@angular/core';
 import { BrowserModule } from '@angular/platform-browser';
 import { AppComponent } from './app.component';
 import { AppRoutingModule } from './app-routing.module';
@@ -9,14 +9,13 @@ import { MenuComponent } from './components/menu/menu.component';
 import { MapComponent } from './components/map/map.component';
 import { HttpClient, HttpClientModule } from '@angular/common/http';
 import { GoogleMapsComponent } from './components/google-maps/google-maps.component';
-import { ARComponent } from './components/ar/ar.component';
 import { TranslateLoader, TranslateModule } from '@ngx-translate/core';
 import { TranslateHttpLoader } from '@ngx-translate/http-loader';
 import { HourWeatherComponent } from './components/hour-weather/hour-weather.component';
 import { WeatherDialogComponent } from './components/weather-dialog/weather-dialog.component';
 import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
 import {MatDialogModule} from '@angular/material/dialog';
-import { InstructionsComponent } from './instructions/instructions.component';
+import { InstructionsComponent } from './components/instructions/instructions.component';
 
 
 @NgModule({
@@ -26,7 +25,6 @@ import { InstructionsComponent } from './instructions/instructions.component';
     MenuComponent,
     MapComponent,
     GoogleMapsComponent,
-    ARComponent,
     HourWeatherComponent,
     WeatherDialogComponent,
     InstructionsComponent

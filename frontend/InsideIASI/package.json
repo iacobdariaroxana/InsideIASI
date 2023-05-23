@@ -29,6 +29,7 @@
     "@capacitor/haptics": "^4.1.0",
     "@capacitor/ios": "^4.5.0",
     "@capacitor/preferences": "^4.0.2",
+    "@capacitor/app-launcher": "^4.1.0",
     "@ionic/angular": "^6.7.0",
     "@ngx-translate/core": "^14.0.0",
     "@ngx-translate/http-loader": "^7.0.0",

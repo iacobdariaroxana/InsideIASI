@@ -1,6 +1,5 @@
 import { AfterViewInit, Component, OnDestroy } from '@angular/core';
 import { Location } from '@angular/common';
-import { Camera, CameraResultType } from '@capacitor/camera';
 import { HourWeatherInfo } from 'src/app/model';
 import { MatDialog } from '@angular/material/dialog';
 import { WeatherDialogComponent } from 'src/app/components/weather-dialog/weather-dialog.component';
@@ -8,6 +7,7 @@ import { Dialog } from '@capacitor/dialog';
 import { TranslateService } from '@ngx-translate/core';
 import { DataService } from './services/data.service';
 import { Haptics } from '@capacitor/haptics';
+import { AppLauncher } from '@capacitor/app-launcher';
 
 @Component({
   selector: 'app-map',
@@ -78,7 +78,6 @@ export class MapComponent implements AfterViewInit, OnDestroy {
   }
 
   openWeatherDialog() {
-    // console.log(this.hoursWeatherInfo.length);
     if (this.hoursWeatherInfo.length != 0) {
       this._dialogRef.open(WeatherDialogComponent, {
         hasBackdrop: true,
@@ -86,6 +85,10 @@ export class MapComponent implements AfterViewInit, OnDestroy {
         panelClass: 'dialog',
       });
     }
+  }
+
+  async openARApp() {
+    await AppLauncher.openUrl({ url: 'com.example.iasi_ar' });
   }
 
   goBack() {
