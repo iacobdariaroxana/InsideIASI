@@ -44,18 +44,18 @@ export class MapComponent implements AfterViewInit, OnDestroy {
   }
 
   ngAfterViewInit(): void {
-    // setTimeout(() => {
-    //   this.hoursWeatherInfo = this._dataService.getHoursWeatherInfo();
-    // }, 1500);
-    // if (this._dataService.getHourFlag()) {
-    //   setTimeout(() => {
-    //     this.checkWeatherAlert();
-    //   }, 3000);
-    // }
-    // this.weatherIntervalId = setInterval(() => {
-    //   this.hoursWeatherInfo = this._dataService.getHoursWeatherInfo();
-    //   this.checkWeatherAlert();
-    // }, 3600000);
+    setTimeout(() => {
+      this.hoursWeatherInfo = this._dataService.getHoursWeatherInfo();
+    }, 1500);
+    if (this._dataService.getHourFlag()) {
+      setTimeout(() => {
+        this.checkWeatherAlert();
+      }, 3000);
+    }
+    this.weatherIntervalId = setInterval(() => {
+      this.hoursWeatherInfo = this._dataService.getHoursWeatherInfo();
+      this.checkWeatherAlert();
+    }, 3600000);
   }
 
   async triggerAlert(key: string) {

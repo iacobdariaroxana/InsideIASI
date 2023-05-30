@@ -20,7 +20,7 @@ class AppLanguage {
         languageCode: 'ro',
         flagIcon: '🇷🇴',
         countryCode: 'RO',
-        speechRate: 0.7)
+        speechRate: 0.8)
   ];
   static List<AppLanguage> get languages => _languages;
 }

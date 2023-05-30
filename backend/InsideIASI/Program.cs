@@ -1,7 +1,6 @@
 using InsideIASI.DataAccess;
 using InsideIASI.Application;
-using Microsoft.OpenApi.Models;
-using System.Text.Json.Serialization;
+
 
 var MyAllowAnyOrigin = "_myAllowAnyOrigin";
 var builder = WebApplication.CreateBuilder(args);
@@ -21,6 +20,7 @@ builder.Services.AddControllers();
 builder.Services.AddControllers().AddNewtonsoftJson(options =>
     options.SerializerSettings.ReferenceLoopHandling = Newtonsoft.Json.ReferenceLoopHandling.Ignore
 );
+
 // Learn more about configuring Swagger/OpenAPI at https://aka.ms/aspnetcore/swashbuckle
 builder.Services.AddEndpointsApiExplorer();
 builder.Services.AddSwaggerGen();

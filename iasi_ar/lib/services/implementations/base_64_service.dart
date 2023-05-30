@@ -9,7 +9,7 @@ class Base64Service extends ImageConvertorService {
   @override
   Future<String> imageToBase64(ImageProvider imageProvider) async {
     var completer = Completer<Uint8List>();
-
+    
     ImageStream stream =
         imageProvider.resolve(const ImageConfiguration(size: Size(256, 341)));
 

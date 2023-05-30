@@ -10,11 +10,15 @@ import 'package:flutter_gen/gen_l10n/app_localizations.dart';
 import '../models/info.dart';
 
 class Explore extends StatefulWidget {
-  final PointOfInterest? poi;
-  final String? languageCode;
-  final FlutterTts? flutterTts;
+  final PointOfInterest poi;
+  final String languageCode;
+  final FlutterTts flutterTts;
 
-  const Explore({super.key, this.poi, this.languageCode, this.flutterTts});
+  const Explore(
+      {super.key,
+      required this.poi,
+      required this.languageCode,
+      required this.flutterTts});
   @override
   State<StatefulWidget> createState() => _ExploreState();
 }
@@ -25,6 +29,13 @@ class _ExploreState extends State<Explore> {
   bool show = false;
   Information? info;
   bool startVoice = true;
+  bool showWidgets = false;
+
+  @override
+  void dispose() async {
+    super.dispose();
+    await widget.flutterTts.stop();
+  }
 
   @override
   void didChangeDependencies() async {
@@ -37,19 +48,24 @@ class _ExploreState extends State<Explore> {
     ];
     Information(
             openingHours: formatOpeningHours(),
-            info0: widget.poi!.info0,
-            info1: widget.poi!.info1,
-            info2: widget.poi!.info2,
-            info3: widget.poi!.info3)
-        .getTranslatedInfo(widget.languageCode!)
-        .then((value) => {info = value});
+            info0: widget.poi.info0,
+            info1: widget.poi.info1,
+            info2: widget.poi.info2,
+            info3: widget.poi.info3)
+        .getTranslatedInfo(widget.languageCode)
+        .then((value) {
+      info = value;
+      setState(() {
+        showWidgets = true;
+      });
+    });
   }
 
   String formatOpeningHours() {
-    var index = widget.poi!.openingHours.indexWhere((element) =>
+    var index = widget.poi.openingHours.indexWhere((element) =>
         element.day!.trim() == DateFormat('EEEE').format(DateTime.now()));
-    var openingHours = widget.poi!.openingHours.sublist(index) +
-        widget.poi!.openingHours.sublist(0, index);
+    var openingHours = widget.poi.openingHours.sublist(index) +
+        widget.poi.openingHours.sublist(0, index);
     String formattedString = openingHours
         .map((e) => e.openingTime!.contains(RegExp(r'\d'))
             ? "${e.day} ${e.openingTime} - ${e.closingTime}"
@@ -72,7 +88,7 @@ class _ExploreState extends State<Explore> {
   }
 
   void handleExploreOptionPressed(int index) async {
-    await widget.flutterTts!.stop();
+    await widget.flutterTts.stop();
     setState(() {
       selectedOptionWidget = mapIndexToWidget(index);
     });
@@ -95,7 +111,7 @@ class _ExploreState extends State<Explore> {
   }
 
   Widget getInfosWidget() {
-    startTextToSpeech(widget.poi!.info0);
+    startTextToSpeech(info!.info0);
     startVoice = true;
     return SizedBox(
         width: 200.0,
@@ -128,7 +144,7 @@ class _ExploreState extends State<Explore> {
 
   Widget getInteriorWidget() {
     return SizedBox(
-        width: 350, child: Video(videoUrl: 'videos/${widget.poi!.name}.mp4'));
+        width: 350, child: Video(videoUrl: 'videos/${widget.poi.name}.mp4'));
   }
 
   Widget getLinkWidget() {
@@ -140,7 +156,7 @@ class _ExploreState extends State<Explore> {
           borderRadius: const BorderRadius.all(Radius.circular(50.0)),
           color: const Color(0xffeebbc3)),
       child: InkWell(
-          onTap: () => launchUrl(Uri.parse(widget.poi!.link),
+          onTap: () => launchUrl(Uri.parse(widget.poi.link),
               mode: LaunchMode.externalApplication),
           child: Align(
             alignment: Alignment.center,
@@ -159,7 +175,7 @@ class _ExploreState extends State<Explore> {
   }
 
   void startTextToSpeech(String text) async {
-    await widget.flutterTts!.speak(text);
+    await widget.flutterTts.speak(text);
   }
 
   Widget mapIndexToWidget(int index) {
@@ -194,23 +210,25 @@ class _ExploreState extends State<Explore> {
   Widget build(BuildContext context) {
     return Stack(
       children: [
-        Positioned(
-            left: 20.0,
-            right: 20.0,
-            top: 40.0,
-            child: SizedBox(
-                height: 100,
-                child: ListView.separated(
-                    separatorBuilder: (context, index) => const Divider(
-                          indent: 6,
-                        ),
-                    scrollDirection: Axis.horizontal,
-                    itemCount: poiOptions.length,
-                    itemBuilder: (context, index) => createCard(index)))),
-        Align(
-          alignment: Alignment.center,
-          child: selectedOptionWidget,
-        )
+        if (showWidgets) ...[
+          Positioned(
+              left: 20.0,
+              right: 20.0,
+              top: 40.0,
+              child: SizedBox(
+                  height: 100,
+                  child: ListView.separated(
+                      separatorBuilder: (context, index) => const Divider(
+                            indent: 6,
+                          ),
+                      scrollDirection: Axis.horizontal,
+                      itemCount: poiOptions.length,
+                      itemBuilder: (context, index) => createCard(index)))),
+          Align(
+            alignment: Alignment.center,
+            child: selectedOptionWidget,
+          )
+        ]
       ],
     );
   }

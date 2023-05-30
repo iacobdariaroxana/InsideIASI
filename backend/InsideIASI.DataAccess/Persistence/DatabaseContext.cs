@@ -1,5 +1,4 @@
-﻿
-using InsideIASI.DataAccess.Entities;
+﻿using InsideIASI.DataAccess.Entities;
 using Microsoft.EntityFrameworkCore;
 using System.Reflection;
 

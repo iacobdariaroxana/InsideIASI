@@ -1,4 +1,3 @@
-import 'package:flutter/material.dart';
 import 'package:iasi_ar/services/translator.dart';
 import '../service_locator.dart';
 

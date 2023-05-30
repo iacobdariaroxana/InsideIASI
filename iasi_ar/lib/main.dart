@@ -7,7 +7,7 @@ import 'package:iasi_ar/service_locator.dart';
 import 'package:provider/provider.dart';
 
 void main() async {
-  // WidgetsFlutterBinding.ensureInitialized();
+  WidgetsFlutterBinding.ensureInitialized();
   setupServiceLocator();
   runApp(const MyApp());
 }
