@@ -6,8 +6,8 @@ const config: CapacitorConfig = {
   webDir: 'dist/inside-iasi',
   bundledWebRuntime: false,
   server: {
-    url: 'http://192.168.212.121:4200',
-    // url: 'https://inside-iasi.netlify.app',
+    // url: 'http://192.168.212.121:4200',
+    url: 'https://inside-iasi.netlify.app',
     cleartext: true
   }
 };
