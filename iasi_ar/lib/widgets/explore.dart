@@ -211,19 +211,23 @@ class _ExploreState extends State<Explore> {
     return Stack(
       children: [
         if (showWidgets) ...[
-          Positioned(
-              left: 20.0,
-              right: 20.0,
-              top: 40.0,
-              child: SizedBox(
-                  height: 100,
-                  child: ListView.separated(
-                      separatorBuilder: (context, index) => const Divider(
-                            indent: 6,
-                          ),
-                      scrollDirection: Axis.horizontal,
-                      itemCount: poiOptions.length,
-                      itemBuilder: (context, index) => createCard(index)))),
+          SafeArea(
+              child: Align(
+                  alignment: Alignment.topCenter,
+                  // left: 25.0,
+                  // right: 25.0,
+                  // top: 40.0,
+                  child: SizedBox(
+                      height: 100,
+                      width: 340,
+                      child: ListView.separated(
+                          separatorBuilder: (context, index) => index < 4 ? const Divider(
+                                indent: 6,
+                              ) : const Divider(indent: 0,),
+                          scrollDirection: Axis.horizontal,
+                          itemCount: poiOptions.length,
+                          itemBuilder: (context, index) =>
+                              createCard(index))))),
           Align(
             alignment: Alignment.center,
             child: selectedOptionWidget,

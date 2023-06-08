@@ -140,7 +140,6 @@ class _DiscoverPageState extends State<DiscoverPage> {
   }
 
   void initialiseTextToSpeech() async {
-    debugPrint('${widget.language.speechRate}');
     await flutterTts.setLanguage(
         '${widget.language.languageCode}-${widget.language.countryCode}');
     await flutterTts.setSpeechRate(widget.language.speechRate);
