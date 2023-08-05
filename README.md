@@ -1,4 +1,4 @@
-# InsideIASI - The bachelor's thesis
+# 🌍 InsideIASI - The bachelor's thesis
 
 📝 Description
 - The main objective of the application consists in discovering the main points of interest in Iași from an interactive way, through augmented reality. 
